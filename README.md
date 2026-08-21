@@ -1,4 +1,3 @@
-
 # 🏋️ Hệ thống website thương mại điện tử bán đồ và phụ kiện Gym
 
 Đề tài Đồ án Tốt nghiệp: Xây dựng hệ thống website thương mại điện tử chuyên cung cấp trang thiết bị, trang phục và phụ kiện tập Gym/Fitness.
@@ -48,3 +47,7 @@ Hệ thống hỗ trợ toàn bộ quy trình mua sắm trực tuyến đồ t�
    git clone <link-repo-cua-ban>
    cd <ten-thu-muc-du-an>
    ```
+
+### Reset server:
+
+taskkill /IM node.exe /F

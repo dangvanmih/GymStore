@@ -1,0 +1,27 @@
+{
+  "name": "gymstore",
+  "version": "1.0.0",
+  "description": "Đề tài Đồ án Tốt nghiệp: Xây dựng hệ thống website thương mại điện tử chuyên cung cấp trang thiết bị, trang phục và phụ kiện tập Gym/Fitness.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dangvanmih/GymStore.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dangvanmih/GymStore/issues"
+  },
+  "homepage": "https://github.com/dangvanmih/GymStore#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "pug": "^3.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
