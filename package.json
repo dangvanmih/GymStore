@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dangvanmih/GymStore#readme",
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "pug": "^3.0.4"
   },
