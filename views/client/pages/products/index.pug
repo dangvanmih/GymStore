@@ -1,3 +1,48 @@
 extends ../../layouts/default.pug
+include ../../mixins/boxhead.pug
 block main
-  h1 Danh sách sản phẩm
+  .container.py-4
+    .row
+      .col-12.mb-4
+        .box-header
+          +box-header('Danh sách sản phẩm')
+
+    .row
+      //- Sản phẩm 1
+      .col-md-4.col-6.mb-4
+        .product-item
+          .inner-image
+            a(href='#')
+              img(src='https://cdn.hstatic.net/products/1000281824/polowavekem6_9a00a37d7d2740e6a244b5cf776f6de3_large.png', alt='Áo POLO Degrey Heritage Racing')
+          .inner-content
+            h3.inner-title
+              a(href='#') Áo POLO Degrey Heritage Racing - POLOHERI
+            .inner-price
+              span.inner-price-new 380,000đ
+              span.inner-price-old 450,000đ
+
+      //- Sản phẩm 2
+      .col-md-4.col-6.mb-4
+        .product-item
+          .inner-image
+            a(href='#')
+              img(src='https://cdn.hstatic.net/products/1000281824/polowavekem6_9a00a37d7d2740e6a244b5cf776f6de3_large.png', alt='Áo Degrey Jersey Mesh Fabric')
+          .inner-content
+            h3.inner-title
+              a(href='#') Áo Degrey Jersey Mesh Fabric Athlete - JERMESHATH
+            .inner-price
+              span.inner-price-new 330,000đ
+              span.inner-price-old 420,000đ
+
+      //- Sản phẩm 3
+      .col-md-4.col-6.mb-4
+        .product-item
+          .inner-image
+            a(href='#')
+              img(src='https://cdn.hstatic.net/products/1000281824/polowavekem6_9a00a37d7d2740e6a244b5cf776f6de3_large.png', alt='Jacket Degrey màu NAVY')
+          .inner-content
+            h3.inner-title
+              a(href='#') Jacket Degrey màu NAVY THÊU LOGO ATHLETE áo khoác dù thể thao -...
+            .inner-price
+              span.inner-price-new 610,000đ
+              span.inner-price-old 780,000đ

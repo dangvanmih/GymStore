@@ -4,8 +4,9 @@
 
 /* Header Container */
 .header {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   font-family: inherit;
+  border: none;
 }
 
 /* Nav Links */
@@ -259,3 +260,19 @@
   color: #ccc;
   margin: 0 4px;
 }
+
+/* --- Hiệu ứng Ẩn/Hiện Header khi Scroll --- */
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out; /* Tạo chuyển động trượt mượt mà */
+}
+
+/* Class được JS thêm vào khi cuộn xuống */
+.header.hide {
+  transform: translateY(-100%); /* Đẩy toàn bộ header lên trên màn hình */
+}
+
