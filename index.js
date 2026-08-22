@@ -1,8 +1,12 @@
 //Import 
 const express = require('express');
+const database = require('./configs/database.js');
 require('dotenv').config();
-const app = express();
+
 const router = require('./routers/client/index.router')
+
+database.connect();
+const app = express();
 const port = process.env.PORT;
 
 //Configue pug
