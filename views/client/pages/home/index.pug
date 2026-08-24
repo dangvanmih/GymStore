@@ -1,3 +1,23 @@
 extends ../../layouts/default.pug
+include ../../mixins/boxhead.pug
 block main
-  h1 Trang chủ
+  .container.py-4
+    .row
+      .col-12.mb-4
+        .box-header
+          +box-header('Sản phẩm')
+
+    .row
+      //- Sản phẩm 1
+      each item in products
+        .col-md-3.col-6.mb-4
+          .product-item
+            .inner-image
+              a(href='#')
+                img(src=item.thumbnail, alt=item.title)
+            .inner-content
+              h3.inner-title
+                a(href='#') #{item.title}
+              .inner-price
+                span.inner-price-new #{item.priceNew}₫
+                span.inner-price-old #{item.price}₫
