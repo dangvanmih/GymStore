@@ -6,13 +6,13 @@ module.exports.index = async (req, res) => {
     status: "active",
     deleted: false
   });
-
-  products.forEach(item => {
-    item.priceNew = (item.price * (100 - item.discountPercentage) / 100).toFixed(0);
+  const newProducts = products.map(item => {
+    item.priceNew = item.price - (item.price * item.discountPercentage / 100);
+    return item;
   })
 
   res.render("client/pages/products/index", {
     pageTitle: "Trang sản phẩm",
-    products: products
+    products: newProducts
   });
 }
