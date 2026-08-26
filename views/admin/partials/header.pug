@@ -1,0 +1,31 @@
+header.header-admin
+  //- Search Bar
+  .header-logo 
+    a(href="/admin/dashboard")
+      img(src="/admin/images/logo.png", alt="Logo" style='height:60px; object-fit: contain;')
+
+
+  //- Actions & Profile
+  .header-actions
+    button.icon-btn.position-relative(type="button", title="Notifications")
+      i.far.fa-bell
+      span.notif-dot
+
+    .user-profile.dropdown
+      a.dropdown-toggle(href="#", id="userDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+        img.avatar(src="https://ui-avatars.com/api/?name=Spencer&background=6366f1&color=fff", alt="Spencer")
+        .user-info
+          span.name Spencer
+          span.role Administrator
+
+      .dropdown-menu.dropdown-menu-right.shadow-lg
+        a.dropdown-item(href="/admin/profile")
+          i.fas.fa-user.mr-2
+          | Profile
+        a.dropdown-item(href="/admin/settings")
+          i.fas.fa-sliders-h.mr-2
+          | Settings
+        .dropdown-divider
+        a.dropdown-item.text-danger(href="/admin/auth/logout")
+          i.fas.fa-sign-out-alt.mr-2
+          | Logout

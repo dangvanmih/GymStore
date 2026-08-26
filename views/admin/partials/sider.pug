@@ -1,0 +1,49 @@
+aside.sider
+  //- Logo & Toggle Button
+  .sider-header
+    a.logo-brand(href="/admin/dashboard")
+      .logo-icon
+        img(src="/admin/images/short-icon.webp", alt="DEGREY Logo", style='height:36px; object-fit: contain; border-radius: 40%;')
+      span.logo-text DEGREY
+
+    button#sidebarToggle.toggle-btn(type="button", title="Đóng/Mở Menu")
+      i.fas.fa-bars-staggered
+
+  //- Menu Items
+  .sider-body
+    .menu-group-title OVERVIEW
+    ul.nav-menu
+      li.nav-item
+        a.nav-link.active(href="/admin/dashboard")
+          i.fas.fa-th-large
+          span Dashboard
+      li.nav-item
+        a.nav-link(href="/admin/analytics")
+          i.fas.fa-chart-line
+          span Analytics
+
+    .menu-group-title MANAGEMENT
+    ul.nav-menu
+      li.nav-item
+        a.nav-link(href="/admin/products")
+          i.fas.fa-boxes
+          span Products
+      li.nav-item
+        a.nav-link(href="/admin/categories")
+          i.fas.fa-folder
+          span Categories
+      li.nav-item
+        a.nav-link(href="/admin/orders")
+          i.fas.fa-shopping-cart
+          span Orders
+      li.nav-item
+        a.nav-link(href="/admin/accounts")
+          i.fas.fa-users
+          span Users
+
+    .menu-group-title SYSTEM
+    ul.nav-menu
+      li.nav-item
+        a.nav-link(href="/admin/settings")
+          i.fas.fa-cog
+          span Settings
