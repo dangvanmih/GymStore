@@ -1,0 +1,61 @@
+extends ../../layouts/default.pug
+
+append style
+  link(rel="stylesheet", href="/admin/css/product.css")
+
+block main
+  .container-fluid.p-0
+    //- Header trang
+    .d-flex.justify-content-between.align-items-center.mb-4
+      div
+        h3.page-title Danh sách sản phẩm
+        p.text-muted.mb-0 Quản lý danh mục, giá bán và trạng thái kho hàng.
+      a.btn.btn-primary.btn-sm.d-inline-flex.align-items-center.gap-2(href="/admin/products/create")
+        i.fas.fa-plus
+        span Thêm sản phẩm
+
+    //- Wrapper Card cho bảng
+    .card.border-0.shadow-sm.rounded-3
+      .card-body.p-0
+        .table-responsive
+          table.table.table-hover.align-middle.mb-0.custom-enterprise-table
+            thead
+              tr
+                th.text-center(style="width: 60px;") STT
+                th(style="width: 90px;") Hình ảnh
+                th Tiêu đề sản phẩm
+                th.text-end(style="width: 140px;") Giá bán
+                th.text-center(style="width: 150px;") Trạng thái
+                th.text-center(style="width: 130px;") Thao tác
+            tbody
+              if (products && products.length > 0)
+                each items, index in products
+                  tr
+                    td.text-center.fw-medium.text-secondary #{index + 1}
+                    td
+                      .product-img-wrapper
+                        img.product-img(src=items.thumbnail alt=items.title)
+                    td
+                      .fw-semibold.text-dark.product-title #{items.title}
+                      small.text-muted.d-block ID: #{items._id || 'PROD-' + (index + 1)}
+                    td.text-end
+                      span.fw-bold #{items.price.toLocaleString('vi-VN')} đ
+                    td.text-center
+                      if items.status == 'active'
+                        span.badge-status.badge-status-success
+                          i.fas.fa-circle
+                          | Hoạt động
+                      else
+                        span.badge-status.badge-status-danger
+                          i.fas.fa-circle
+                          | Dừng hoạt động
+                    td.text-center
+                      .action-btn-group
+                        a.btn-action.btn-action-edit(href=`/admin/products/edit/${items._id}`, title="Chỉnh sửa")
+                          i.fas.fa-pen
+                        a.btn-action.btn-action-delete(href=`/admin/products/delete/${items._id}`, title="Xóa sản phẩm")
+                          i.fas.fa-trash-alt
+              else
+                tr
+                  td.text-center.py-4(colspan="6")
+                    .text-muted Không tìm thấy sản phẩm nào.

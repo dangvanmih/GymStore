@@ -1,0 +1,153 @@
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-title);
+  letter-spacing: -0.01em;
+}
+
+/* Container Card & Bootstrap Override */
+.card-table-wrapper,
+.card {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Cấu trúc Bảng & Override Bootstrap White Background */
+.custom-enterprise-table,
+.table,
+.table > :not(caption) > * > * {
+  background-color: var(--bg-card) !important;
+  color: var(--text-body) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+.custom-enterprise-table {
+  width: 100%;
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+.custom-enterprise-table thead th {
+  background-color: var(--bg-card-hover) !important;
+  color: var(--text-muted) !important;
+  font-weight: 600;
+  font-size: 0.725rem;
+  text-transform: uppercase;
+
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color) !important;
+  border-top: none;
+}
+
+.custom-enterprise-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color) !important;
+  transition: background-color 0.15s ease;
+}
+
+.custom-enterprise-table tbody tr:hover td {
+  background-color: var(--bg-card-hover) !important;
+}
+
+.custom-enterprise-table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Thumbnail Sản phẩm & Typography */
+.product-img-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  background-color: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-title {
+  color: var(--text-title) !important;
+  line-height: 1.35;
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-price {
+  color: var(--text-title) !important;
+  font-weight: 600;
+  font-family: monospace, sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Status Badges */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.badge-status i {
+  font-size: 0.4rem;
+}
+
+.badge-status-success {
+  background-color: rgba(34, 197, 94, 0.12) !important;
+  color: #4ade80 !important;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.badge-status-danger {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  color: #f87171 !important;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Action Buttons */
+.action-btn-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background-color: transparent;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.btn-action-edit:hover {
+  color: #60a5fa !important;
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-action-delete:hover {
+  color: #f87171 !important;
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
