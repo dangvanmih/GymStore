@@ -3,6 +3,7 @@ const express = require('express');
 const database = require('./configs/database.js');
 require('dotenv').config();
 
+const systemConfig = require('./configs/system.js');
 const routerClient = require('./routers/client/index.router')
 const routerAdmin = require('./routers/admin/index.router')
 database.connect();
@@ -12,6 +13,9 @@ const port = process.env.PORT;
 //Configue pug
 app.set('views', './views');
 app.set('view engine', 'pug');
+
+//app locals Variables
+app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 app.use(express.static('public'));
 
