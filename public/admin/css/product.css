@@ -61,8 +61,8 @@
 }
 /* Thumbnail Sản phẩm & Typography */
 .product-img-wrapper {
-  width: 44px;
-  height: 44px;
+  width: 55px;
+  height: 55px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
   overflow: hidden;
