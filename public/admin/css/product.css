@@ -105,10 +105,11 @@
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .badge-status i {
-  font-size: 0.4rem;
+  font-size: 0.3rem;
 }
 
 .badge-status-success {
