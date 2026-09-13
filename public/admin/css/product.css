@@ -55,6 +55,10 @@
   border-bottom: none !important;
 }
 
+.custom-enterprise-table th,
+.custom-enterprise-table td {
+  vertical-align: middle !important; /* Căn giữa các nội dung ở td trong bảng */
+}
 /* Thumbnail Sản phẩm & Typography */
 .product-img-wrapper {
   width: 44px;
@@ -77,7 +81,7 @@
 .product-title {
   color: var(--text-title) !important;
   line-height: 1.35;
-  max-width: 320px;
+  max-width: 450px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
