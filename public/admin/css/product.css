@@ -17,7 +17,7 @@
 /* Cấu trúc Bảng & Override Bootstrap White Background */
 .custom-enterprise-table,
 .table,
-.table > :not(caption) > * > * {
+.table> :not(caption)>*>* {
   background-color: var(--bg-card) !important;
   color: var(--text-body) !important;
   border-bottom-color: var(--border-color) !important;
@@ -57,8 +57,10 @@
 
 .custom-enterprise-table th,
 .custom-enterprise-table td {
-  vertical-align: middle !important; /* Căn giữa các nội dung ở td trong bảng */
+  vertical-align: middle !important;
+  /* Căn giữa các nội dung ở td trong bảng */
 }
+
 /* Thumbnail Sản phẩm & Typography */
 .product-img-wrapper {
   width: 55px;
@@ -156,4 +158,57 @@
   color: #f87171 !important;
   background-color: rgba(239, 68, 68, 0.15) !important;
   border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Card-header-custom */
+.card-header {
+  background-color: var(--bg-card-hover) !important;
+}
+
+/* btn-ouline-custom */
+
+.btn-outline-custom {
+  color: #818cf8 !important;
+  /* Chữ màu tím nhạt dịu mắt trên nền tối */
+  background-color: rgba(79, 70, 229, 0.1) !important;
+  /* Nền mờ 10% */
+  border-color: rgba(79, 70, 229, 0.4) !important;
+  /* Viền mờ 40% */
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* Trạng thái Hover (Rê chuột) */
+.btn-outline-custom:hover {
+  color: #ffffff !important;
+  background-color: var(--bg-btn-outline-active) !important;
+  border-color: var(--bg-btn-outline-active) !important;
+  box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
+  /* Hiệu ứng phát sáng nhẹ */
+}
+
+/* Trạng thái Active (Đang được chọn / Được click) */
+.btn-outline-custom:active,
+.btn-outline-custom.active {
+  color: #ffffff !important;
+  background-color: var(--bg-btn-outline-active) !important;
+  border-color: var(--bg-btn-outline-active) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Trạng thái Focus (Đang chọn bằng phím Tab/Click) */
+.btn-outline-custom:focus {
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* btn-custom */
+.btn-custom {
+  background-color: var(--bg-btn) !important;
+  color: #ffffff !important;
+}
+
+.btn-custom:hover {
+  background-color: #322997 !important;
+  /* Màu tím đậm hơn khi hover */
+  transition: all 0.25s ease;
 }

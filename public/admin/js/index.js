@@ -1,3 +1,4 @@
+// xử lý sự kiện click vào nút toggle sidebar
 document.addEventListener("DOMContentLoaded", function () {
   const sidebarToggleBtn = document.getElementById("sidebarToggle");
   const sider = document.querySelector(".sider");
@@ -18,3 +19,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+// xử lý sự kiện click vào nút lọc trạng thái sản phẩm
+const buttonStatus = document.querySelectorAll('[button-status]');
+
+if (buttonStatus.length > 0) {
+  let url = new URL(window.location.href);
+  buttonStatus.forEach((button) => {
+    button.addEventListener("click", function () {
+      const status = button.getAttribute("button-status");
+      if(status) {
+        url.searchParams.set("status", status);
+      }
+      else {
+        url.searchParams.delete("status");
+      }
+      window.location.href = url.toString();
+    })
+  })
+}

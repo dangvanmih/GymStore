@@ -10,11 +10,20 @@ block main
       div
         h3.page-title Danh sách sản phẩm
         p.text-muted.mb-0 Quản lý danh mục, giá bán và trạng thái kho hàng.
-      a.btn.btn-primary.btn-sm.d-inline-flex.align-items-center.gap-2(href="/admin/products/create")
-        i.fas.fa-plus
+      a.btn.btn-custom.btn-sm.d-inline-flex.align-items-center(href="/admin/products/create")
+        i.fas.fa-plus.mr-2
         span Thêm sản phẩm
 
     //- Wrapper Card cho bảng
+
+    .card.mb-3 
+      .card-header Bộ lọc và tìm kiếm 
+      .card-body
+        each item in fillterStatus
+          button(
+            class=`btn btn-sm ml-1 btn-outline-custom ${item.class}`, button-status=item.status
+          ) #{item.name}
+
     .card.border-0.shadow-sm.rounded-3
       .card-body.p-0
         .table-responsive

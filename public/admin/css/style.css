@@ -1,5 +1,7 @@
 :root {
   --bg-main: #0b0d14;
+  --bg-btn: #4f46e5;
+  --bg-btn-outline-active: #4f46e5;
   --bg-card: #121520;
   --bg-card-hover: #1a1e2d;
   --border-color: #1e2235;
