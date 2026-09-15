@@ -201,7 +201,7 @@
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3) !important;
 }
 
-/* btn-custom */
+/* BTN-CUSTOM */
 .btn-custom {
   background-color: var(--bg-btn) !important;
   color: #ffffff !important;
@@ -211,4 +211,59 @@
   background-color: #322997 !important;
   /* Màu tím đậm hơn khi hover */
   transition: all 0.25s ease;
+}
+
+/* INPUT SEARCH */
+.search-form {
+  margin: 0 auto;
+  max-width: 380px; /* Chiều rộng vừa vặn cho ô tìm kiếm enterprise */
+  width: 100%;
+}
+
+/* Thẻ input tìm kiếm */
+.search-input {
+  background-color: var(--bg-main) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-title) !important;
+  font-size: 0.8125rem !important;
+  padding: 8px 16px !important;
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+  transition: all 0.2s ease !important;
+  height: 38px !important; /* Chiều cao cố định cho input */
+}
+
+/* Đổi màu chữ placeholder */
+.search-input::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.8;
+}
+
+/* Hiệu ứng khi Focus (Bấm vào gõ) */
+.search-input:focus {
+  border-color: #4f46e5 !important; /* Đổi viền sang màu #4f46e5 */
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+  outline: none !important;
+}
+
+/* Nút Submit Tìm kiếm */
+.btn-search {
+  background-color: var(--bg-card-hover) !important;
+  border: 1px solid var(--border-color) !important;
+  border-left: none !important;
+  color: var(--text-muted) !important;
+  padding: 0 14px !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Hover vào nút tìm kiếm */
+.btn-search:hover {
+  background-color: #4f46e5 !important;
+  border-color: #4f46e5 !important;
+  color: #ffffff !important;
 }

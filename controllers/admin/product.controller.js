@@ -26,6 +26,8 @@ module.exports.index = async (req, res) => {
     fillterStatus[index].class = 'active';
   }
 
+
+
   let findQuery = {
     deleted: false,
   };
@@ -35,12 +37,21 @@ module.exports.index = async (req, res) => {
     findQuery.status = req.query.status;
   };
 
+  // xử lý tìm kiếm sản phẩm theo từ khóa
+  let keyword = "";
+  if (req.query.keyword) {
+    keyword = req.query.keyword;
+    const regex = new RegExp(keyword, 'i'); // 'i' để tìm kiếm không phân biệt chữ hoa chữ thường
+    findQuery.title = regex;
+  };
+
   const products = await Product.find(findQuery)
 
 
   res.render('admin/pages/product/index', {
     pageTitle: 'Trang sản phẩm',
     products: products,
-    fillterStatus: fillterStatus
+    fillterStatus: fillterStatus,
+    keyword: keyword
   });
 }

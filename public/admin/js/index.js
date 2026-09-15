@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // xử lý sự kiện click vào nút lọc trạng thái sản phẩm
 const buttonStatus = document.querySelectorAll('[button-status]');
-
 if (buttonStatus.length > 0) {
   let url = new URL(window.location.href);
   buttonStatus.forEach((button) => {
@@ -37,4 +36,22 @@ if (buttonStatus.length > 0) {
       window.location.href = url.toString();
     })
   })
+};
+
+// Xử lý tìm kiếm sản phẩm
+const searchForm = document.querySelector("#form-search");
+if (searchForm) {
+  let url = new URL(window.location.href);
+  searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const searchValue = e.target.elements.keyword.value.trim();
+    if (searchValue) {
+      url.searchParams.set("keyword", searchValue);
+    }
+    else {
+      url.searchParams.delete("keyword");
+    }
+    window.location.href = url.toString();
+  });
+
 }
