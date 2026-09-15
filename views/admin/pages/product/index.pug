@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
 append style
   link(rel="stylesheet", href="/admin/css/product.css")
 
@@ -23,17 +24,7 @@ block main
           .col-6
             +filter-Status(filterStatus)
           .col-6
-            form#form-search.search-form
-              .input-group
-                input.form-control.form-control-sm.search-input(
-                  type="text", 
-                  name="keyword", 
-                  placeholder="Tìm kiếm sản phẩm...", 
-                  value=keyword
-                )
-                button.btn.btn-sm.btn-search(type="submit")
-                  i.fas.fa-search
-
+            +search(keyword)
     .card.border-0.shadow-sm.rounded-3
       .card-body.p-0
         .table-responsive
