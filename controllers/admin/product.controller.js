@@ -7,7 +7,7 @@ module.exports.index = async (req, res) => {
 
   // Lấy danh sách trạng thái lọc từ helper
   const filterStatus = filterStatusHelper(req);
-  
+
   let findQuery = {
     deleted: false,
   };
@@ -23,13 +23,27 @@ module.exports.index = async (req, res) => {
     findQuery.title = objectSearch.regex;
   }
 
-  const products = await Product.find(findQuery)
+  // Xử lý phân trang
+  let objectPagination = {
+    currentPage: 1,
+    limitItems: 2,
+  };
+  if (req.query.page) {
+    objectPagination.currentPage = parseInt(req.query.page);
+  };
+  objectPagination.skipItems = (objectPagination.currentPage - 1) * objectPagination.limitItems;
+  const totalItems = await Product.countDocuments(findQuery) / objectPagination.limitItems;
+  objectPagination.totalPages = Math.ceil(totalItems);
+
+
+  const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems)
 
 
   res.render('admin/pages/product/index', {
     pageTitle: 'Trang sản phẩm',
     products: products,
     filterStatus: filterStatus,
-    keyword: objectSearch.keyword
+    keyword: objectSearch.keyword,
+    pagination: objectPagination
   });
 }

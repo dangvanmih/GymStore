@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (sidebarToggleBtn && sider) {
     sidebarToggleBtn.addEventListener("click", function () {
       sider.classList.toggle("collapsed");
-      
+
       // Lưu trạng thái vào localStorage để giữ giao diện khi reload
       const collapsedState = sider.classList.contains("collapsed");
       localStorage.setItem("sidebarCollapsed", collapsedState);
@@ -27,7 +27,7 @@ if (buttonStatus.length > 0) {
   buttonStatus.forEach((button) => {
     button.addEventListener("click", function () {
       const status = button.getAttribute("button-status");
-      if(status) {
+      if (status) {
         url.searchParams.set("status", status);
       }
       else {
@@ -54,4 +54,20 @@ if (searchForm) {
     window.location.href = url.toString();
   });
 
-}
+};
+
+// Xử lý phân trang
+const buttonPagination = document.querySelectorAll('[button-pagination]');
+if (buttonPagination.length > 0) {
+  let url = new URL(window.location.href);
+  buttonPagination.forEach((button) => {
+    button.addEventListener("click", function () {
+      const page = button.getAttribute("button-pagination");
+      if (page) {
+        url.searchParams.set("page", page);
+      }
+      window.location.href = url.toString();
+    }
+    )
+  })
+};

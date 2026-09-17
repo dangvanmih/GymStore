@@ -1,3 +1,6 @@
+/* ==========================================
+    PRODUCT PAGE (DARK MODE ENTERPRISE)
+   ========================================== */
 .page-title {
   font-size: 1.25rem;
   font-weight: 700;
@@ -160,6 +163,10 @@
   border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
+/* ==========================================
+   Card search filter & Button Custom (DARK MODE ENTERPRISE)
+   ========================================== */
+
 /* Card-header-custom */
 .card-header {
   background-color: var(--bg-card-hover) !important;
@@ -269,4 +276,56 @@
   background-color: #4f46e5 !important;
   border-color: #4f46e5 !important;
   color: #ffffff !important;
+}
+
+/* ==========================================
+   PAGINATION (DARK MODE ENTERPRISE)
+   ========================================== */
+
+.card-footer {
+  background-color: var(--bg-card) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.pagination {
+  gap: 6px; /* Tạo khoảng cách giữa các nút */
+}
+
+.pagination .page-item .page-link {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-color);
+  color: var(--text-body);
+  border-radius: 6px !important;
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  min-width: 32px;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: none;
+}
+
+/* Hover vào các nút phân trang */
+.pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+  background-color: var(--bg-card-hover);
+  color: var(--text-title);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Trạng thái Active (Trang hiện tại) - Chuẩn màu #4f46e5 */
+.pagination .page-item.active .page-link {
+  background-color: #4f46e5 !important;
+  border-color: #4f46e5 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.35);
+}
+
+/* Trạng thái Disabled (Nút bị vô hiệu hóa) */
+.pagination .page-item.disabled .page-link {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-muted) !important;
+  opacity: 0.4;
+  cursor: not-allowed;
 }
