@@ -42,7 +42,7 @@
 }
 
 .custom-enterprise-table tbody td {
-  padding: 12px 16px;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--border-color) !important;
   transition: background-color 0.15s ease;
 }
@@ -163,10 +163,13 @@
 /* Card-header-custom */
 .card-header {
   background-color: var(--bg-card-hover) !important;
+  padding: 0.7rem !important;
 }
 
 /* btn-ouline-custom */
-
+.cpn-search-filter.card-body {
+  padding: 0.7rem !important;
+}
 .btn-outline-custom {
   color: #818cf8 !important;
   /* Chữ màu tím nhạt dịu mắt trên nền tối */
