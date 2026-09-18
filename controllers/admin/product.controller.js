@@ -1,7 +1,7 @@
 const Product = require('../../models/product.model');
 const filterStatusHelper = require('../../helpers/filterStatus');
 const searchHelper = require('../../helpers/search');
-
+const paginationHelper = require('../../helpers/pagination')
 // GET: /admin/product
 module.exports.index = async (req, res) => {
 
@@ -24,16 +24,22 @@ module.exports.index = async (req, res) => {
   }
 
   // Xử lý phân trang
-  let objectPagination = {
+  
+  // 1. Đếm tổng số sản phẩm thỏa mãn điều kiện
+  const countProducts = await Product.countDocuments(findQuery);
+
+  // 2. Định nghĩa cấu hình phân trang ban đầu
+  const initPagination = {
     currentPage: 1,
     limitItems: 2,
   };
-  if (req.query.page) {
-    objectPagination.currentPage = parseInt(req.query.page);
-  };
-  objectPagination.skipItems = (objectPagination.currentPage - 1) * objectPagination.limitItems;
-  const totalItems = await Product.countDocuments(findQuery) / objectPagination.limitItems;
-  objectPagination.totalPages = Math.ceil(totalItems);
+
+  // 3. Gọi helper phân trang
+  const objectPagination = paginationHelper(
+    initPagination,
+    countProducts,
+    req
+  );
 
 
   const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems)
