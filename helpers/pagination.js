@@ -16,7 +16,7 @@ module.exports = (objectPagination, countProducts, req) => {
   let endPage = objectPagination.totalPages;
 
   if (objectPagination.totalPages > maxPagesToShow) {
-    const half = Math.floor(maxPagesToShow / 2); // half = 2
+    const half = Math.floor(maxPagesToShow / 2); // half = 1
 
     // Tính dải trang xung quanh trang hiện tại
     startPage = objectPagination.currentPage - half;
