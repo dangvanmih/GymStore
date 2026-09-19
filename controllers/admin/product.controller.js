@@ -31,7 +31,7 @@ module.exports.index = async (req, res) => {
   // 2. Định nghĩa cấu hình phân trang ban đầu
   const initPagination = {
     currentPage: 1,
-    limitItems: 2,
+    limitItems: 8,
   };
 
   // 3. Gọi helper phân trang
@@ -52,4 +52,16 @@ module.exports.index = async (req, res) => {
     keyword: objectSearch.keyword,
     pagination: objectPagination
   });
+};
+
+// GET: /admin/product/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+
+  const status = req.params.status;
+  const id = req.params.id
+
+  await Product.updateOne({_id: id}, {status: status});
+
+  res.redirect(req.get("Referer") || "/admin/products");
+
 }

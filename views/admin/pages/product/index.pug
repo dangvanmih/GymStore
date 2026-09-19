@@ -53,11 +53,21 @@ block main
                       span.fw-bold #{items.price.toLocaleString('vi-VN')} đ
                     td.text-center
                       if items.status == 'active'
-                        span.badge-status.badge-status-success
+                        a.badge-status.badge-status-success.text-decoration-none(
+                          href="javascript:;"
+                          data-id=items.id
+                          data-status=items.status
+                          button-change-status
+                        )
                           i.fas.fa-circle
                           | Hoạt động
                       else
-                        span.badge-status.badge-status-danger
+                        a.badge-status.badge-status-danger.text-decoration-none(
+                          href="javascript:;"
+                          data-id=items.id
+                          data-status=items.status
+                          button-change-status
+                        )
                           i.fas.fa-circle
                           | Dừng hoạt động
                     td.text-center
@@ -71,3 +81,12 @@ block main
                   td.text-center.py-4(colspan="6")
                     .text-muted Không tìm thấy sản phẩm nào.
     +pagination(pagination)
+
+    form(
+      action = "",
+      method = "POST",
+      id = "form-change-status",
+      data-path = `${prefixAdmin}/products/change-status`
+    )
+
+    script(src="/admin/js/product.js")
