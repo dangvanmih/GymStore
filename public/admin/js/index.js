@@ -20,6 +20,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// xử lý sự kiện click vào menu sẽ active menu đó.
+document.addEventListener("DOMContentLoaded", () => {
+  const currentUrl = window.location.pathname;
+  const navLinks = document.querySelectorAll(".sider .nav-link");
+
+  navLinks.forEach((link) => {
+    const linkPath = link.getAttribute("href");
+
+    // Xóa active cũ
+    link.classList.remove("active");
+
+    // Kiểm tra nếu URL hiện tại chứa href của thẻ a
+    if (linkPath && currentUrl.startsWith(linkPath)) {
+      // Trường hợp đặc biệt cho trang Dashboard để tránh khớp với mọi đường dẫn /admin
+      if (linkPath.endsWith("/dashboard") && currentUrl !== linkPath) {
+        return;
+      }
+      link.classList.add("active");
+    }
+  });
+});
+
 // xử lý sự kiện click vào nút lọc trạng thái sản phẩm
 const buttonStatus = document.querySelectorAll('[button-status]');
 if (buttonStatus.length > 0) {
