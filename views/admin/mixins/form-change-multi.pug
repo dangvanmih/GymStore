@@ -1,0 +1,20 @@
+mixin form-change-multi(path)
+  form(
+    action=path
+    method="POST"
+    form-change-multi
+    class="form-change-multi"
+  )
+    .input-group.input-group-sm
+      select(name="type" class="form-select form-select-sm custom-select-dark")
+        option(value="" disabled selected) -- Chọn thao tác --
+        option(value="active") Hoạt động
+        option(value="inactive") Dừng hoạt động
+        option(value="delete-all") Xóa tất cả
+      input(
+        type="text"
+        name="ids"
+        value=""
+        class="form-control d-none"
+      )
+      button(type="submit" class="btn btn-sm btn-custom-apply") Áp dụng

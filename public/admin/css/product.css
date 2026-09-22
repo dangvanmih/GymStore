@@ -329,3 +329,54 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+
+/* ==========================================
+   FORM CHANGE MULTI (DARK MODE ENTERPRISE)
+   ========================================== */
+
+/* Khung Select Dark Mode */
+.custom-select-dark {
+  background-color: var(--bg-main) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-title) !important;
+  font-size: 0.8125rem !important;
+  padding: 6px 12px !important;
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+  cursor: pointer;
+  transition: all 0.2s ease !important;
+}
+
+/* Option dropdown styling */
+.custom-select-dark option {
+  background-color: var(--bg-card) !important;
+  color: var(--text-title) !important;
+}
+
+/* Focus state cho ô Select */
+.custom-select-dark:focus {
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+  outline: none !important;
+}
+
+/* Nút Áp Dụng (ghép liền kề với Select) */
+.btn-custom-apply {
+  background-color: #4f46e5 !important;
+  border: 1px solid #4f46e5 !important;
+  color: #ffffff !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500;
+  padding: 0 14px !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap;
+}
+
+.btn-custom-apply:hover {
+  background-color: #4338ca !important; /* Đậm hơn khi hover */
+  border-color: #4338ca !important;
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+}
