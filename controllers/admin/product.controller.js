@@ -24,7 +24,7 @@ module.exports.index = async (req, res) => {
   }
 
   // Xử lý phân trang
-  
+
   // 1. Đếm tổng số sản phẩm thỏa mãn điều kiện
   const countProducts = await Product.countDocuments(findQuery);
 
@@ -42,7 +42,7 @@ module.exports.index = async (req, res) => {
   );
 
 
-  const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems)
+  const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems).sort({position: "desc"})
 
 
   res.render('admin/pages/product/index', {
@@ -60,7 +60,7 @@ module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id
 
-  await Product.updateOne({_id: id}, {status: status});
+  await Product.updateOne({ _id: id }, { status: status });
 
   res.redirect(req.get("Referer") || "/admin/products");
 
@@ -74,13 +74,21 @@ module.exports.changeMulti = async (req, res) => {
 
   switch (type) {
     case "active":
-      await Product.updateMany({_id: {$in: ids}}, {status: "active"});
+      await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
       break;
     case "inactive":
-      await Product.updateMany({_id: {$in: ids}}, {status: "inactive"});
+      await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
       break;
     case "delete-all":
-      await Product.updateMany({_id: {$in: ids}}, {deleted: true}, {deletedAt: new Date()});
+      await Product.updateMany({ _id: { $in: ids } }, { deleted: true }, { deletedAt: new Date() });
+      break;
+    case "change-position":
+      for (const item of ids) {
+        let [id, position] = item.split("-");
+        position = parseInt(position);
+
+        await Product.updateOne({ _id: id }, { position: position });
+      }
       break;
     default:
       break;
@@ -91,13 +99,13 @@ module.exports.changeMulti = async (req, res) => {
 // DELETE: /admin/product/delete/:id
 module.exports.deleteProduct = async (req, res) => {
   const id = req.params.id;
-  
+
   // await Product.deleteOne({_id: id}); // xóa vĩnh viễn
 
   await Product.updateOne(
-    {_id: id}, 
-    {deleted: true},
-    {deletedAt: new Date()},
+    { _id: id },
+    { deleted: true },
+    { deletedAt: new Date() },
   );
 
   res.redirect(req.get("Referer") || "/admin/products");

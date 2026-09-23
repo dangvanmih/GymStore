@@ -99,6 +99,45 @@
   font-size: 0.9rem;
 }
 
+/* Thiết lập kiểu dáng ô nhập vị trí */
+.input-position-dark {
+  width: 60px !important;
+  margin: 0 auto; /* Căn giữa trong cột td */
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  background-color: var(--bg-main) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-title) !important;
+  border-radius: 6px !important;
+  padding: 4px 6px !important;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hiệu ứng khi rê chuột và focus */
+.input-position-dark:hover {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.input-position-dark:focus {
+  background-color: var(--bg-card) !important;
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+  outline: none !important;
+  color: #ffffff !important;
+}
+
+/* Ẩn hai mũi tên tăng giảm mặc định trên Firefox, Chrome, Safari */
+.input-position-dark::-webkit-outer-spin-button,
+.input-position-dark::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-position-dark[type="number"] {
+  -moz-appearance: textfield;
+}
+
 /* Status Badges */
 .badge-status {
   display: inline-flex;

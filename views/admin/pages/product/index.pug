@@ -44,6 +44,7 @@ block main
                 th(style="width: 100px;") Hình ảnh
                 th Tiêu đề sản phẩm
                 th.text-end(style="width: 140px;") Giá bán
+                th.text-center(style = "width: 140px") Vị trí
                 th.text-center(style="width: 150px;") Trạng thái
                 th.text-center(style="width: 130px;") Thao tác
             tbody
@@ -61,6 +62,14 @@ block main
                       small.text-muted.d-block ID: #{items._id || 'PROD-' + (index + 1)}
                     td.text-end
                       span.fw-bold #{items.price.toLocaleString('vi-VN')} đ
+                    td.text-center 
+                      input.form-control.form-control-sm.input-position-dark(
+                        type="number"
+                        value=items.position
+                        min="1"
+                        name="position"
+                        data-id=items._id
+                      )
                     td.text-center
                       if items.status == 'active'
                         a.badge-status.badge-status-success.text-decoration-none(

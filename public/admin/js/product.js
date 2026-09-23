@@ -85,8 +85,21 @@ if (formChangeMulti) {
     }
 
     // 3. Gom danh sách ID
-    const ids = Array.from(checkboxChecked).map(input => input.value);
+    const ids = [];
     const inputIds = formChangeMulti.querySelector("input[name='ids']");
+
+    checkboxChecked.forEach(input => {
+      const id = input.value;
+
+      if (typeChange == "change-position") {
+        const position = input.closest("tr").querySelector("input[name='position']").value;
+
+        ids.push(`${id}-${position}`)
+      }
+      else {
+        ids.push(id);
+      }
+    });
 
     if (inputIds) {
       inputIds.value = ids.join(", "); // Gán chuỗi "id1, id2, id3"
