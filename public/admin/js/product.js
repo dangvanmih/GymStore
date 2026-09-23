@@ -66,19 +66,19 @@ if (formChangeMulti) {
     const checkBoxMulti = document.querySelector("[checkbox-multi]");
     const checkboxChecked = checkBoxMulti ? checkBoxMulti.querySelectorAll("input[name='id']:checked") : [];
 
-    // BƯỚC CHECK 1: Kiểm tra xem đã chọn hành động chưa
+    // Check 1: Kiểm tra xem đã chọn hành động chưa
     if (!typeChange) {
       alert("Vui lòng chọn một hành động!");
       return;
     }
 
-    // BƯỚC CHECK 2: Kiểm tra xem đã chọn ít nhất 1 sản phẩm chưa
+    // Check 2: Kiểm tra xem đã chọn ít nhất 1 sản phẩm chưa
     if (checkboxChecked.length === 0) {
       alert("Vui lòng chọn ít nhất một sản phẩm!");
       return;
     }
 
-    // BƯỚC CHECK 3 (Nâng cao): Xác nhận trước khi xóa nhiều
+    // Check 3: Xác nhận trước khi xóa nhiều
     if (typeChange === "delete-all") {
       const isConfirm = confirm(`Bạn có chắc chắn muốn xóa ${checkboxChecked.length} sản phẩm đã chọn?`);
       if (!isConfirm) return;
