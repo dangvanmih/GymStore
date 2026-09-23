@@ -15,6 +15,7 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    deletedAt: Date
   },
 );
 const Product = mongoose.model("Product", productSchema, "products");
