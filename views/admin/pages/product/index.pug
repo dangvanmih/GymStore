@@ -82,9 +82,9 @@ block main
                           | Dừng hoạt động
                     td.text-center
                       .action-btn-group
-                        a.btn-action.btn-action-edit(href=`/admin/products/edit/${items._id}`, title="Chỉnh sửa")
+                        a.btn-action.btn-action-edit(href=`/admin/products/edit/${items.id}`, title="Chỉnh sửa")
                           i.fas.fa-pen
-                        a.btn-action.btn-action-delete(href=`/admin/products/delete/${items._id}`, title="Xóa sản phẩm")
+                        button(class= "btn-action btn-action-delete" data-id = items.id button-delete)
                           i.fas.fa-trash-alt
               else
                 tr
@@ -97,6 +97,13 @@ block main
       method = "POST",
       id = "form-change-status",
       data-path = `${prefixAdmin}/products/change-status`
+    )
+
+    form(
+      action = "",
+      method = "POST",
+      id = "form-delete-item",
+      data-path = `${prefixAdmin}/products/delete`
     )
 
     script(src="/admin/js/product.js")

@@ -83,4 +83,13 @@ module.exports.changeMulti = async (req, res) => {
       break;
   }
   res.redirect(req.get("Referer") || "/admin/products");
+};
+
+// DELETE: /admin/product/delete/:id
+module.exports.deleteProduct = async (req, res) => {
+  const id = req.params.id;
+  
+  await Product.deleteOne({_id: id});
+
+  res.redirect(req.get("Referer") || "/admin/products");
 }
