@@ -111,6 +111,6 @@ module.exports.deleteProduct = async (req, res) => {
     { deleted: true },
     { deletedAt: new Date() },
   );
-
+  req.flash("success", "Đã xóa thành công!");
   res.redirect(req.get("Referer") || "/admin/products");
 };
