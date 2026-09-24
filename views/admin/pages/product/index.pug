@@ -3,10 +3,15 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
+include ../../mixins/alert.pug
 append style
   link(rel="stylesheet" href="/admin/css/product.css")
 
 block main
+
+  +alert-success(3000)
+  +alert-error(3000)
+
   .container-fluid.p-0
     //- Header trang
     .d-flex.justify-content-between.align-items-center.mb-2

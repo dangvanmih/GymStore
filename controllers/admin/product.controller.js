@@ -1,7 +1,7 @@
 const Product = require('../../models/product.model');
 const filterStatusHelper = require('../../helpers/filterStatus');
 const searchHelper = require('../../helpers/search');
-const paginationHelper = require('../../helpers/pagination')
+const paginationHelper = require('../../helpers/pagination');
 // GET: /admin/product
 module.exports.index = async (req, res) => {
 
@@ -61,7 +61,7 @@ module.exports.changeStatus = async (req, res) => {
   const id = req.params.id
 
   await Product.updateOne({ _id: id }, { status: status });
-
+  req.flash("success", "Cập nhật trạng thái thành công!")
   res.redirect(req.get("Referer") || "/admin/products");
 
 };
@@ -75,12 +75,15 @@ module.exports.changeMulti = async (req, res) => {
   switch (type) {
     case "active":
       await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      req.flash("success", `Đã cập nhật trạng thái ${ids.length} sản phẩm!`)
       break;
     case "inactive":
       await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash("success", `Đã cập nhật trạng thái ${ids.length} sản phẩm!`)
       break;
     case "delete-all":
       await Product.updateMany({ _id: { $in: ids } }, { deleted: true }, { deletedAt: new Date() });
+      req.flash("success", `Đã xóa ${ids.length} sản phẩm!`)
       break;
     case "change-position":
       for (const item of ids) {
@@ -89,6 +92,7 @@ module.exports.changeMulti = async (req, res) => {
 
         await Product.updateOne({ _id: id }, { position: position });
       }
+      req.flash("success", `Đã cập nhật vị trí ${ids.length} sản phẩm!`)
       break;
     default:
       break;

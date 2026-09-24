@@ -1,7 +1,10 @@
 //Import 
 const express = require('express');
 const methodOverride = require("method-override");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const flash = require("express-flash");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const database = require('./configs/database.js');
 require('dotenv').config();
 
@@ -14,12 +17,16 @@ const port = process.env.PORT;
 
 app.use(methodOverride("_method"));
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //Configue pug
 app.set('views', './views');
 app.set('view engine', 'pug');
 
+//Flash
+app.use(cookieParser("DVMLDN"));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
 //app locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 

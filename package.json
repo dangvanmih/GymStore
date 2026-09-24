@@ -19,8 +19,11 @@
   "homepage": "https://github.com/dangvanmih/GymStore#readme",
   "dependencies": {
     "body-parser": "^2.3.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.19.0",
     "method-override": "^3.0.0",
     "mongodb": "^7.5.0",
     "mongoose": "^9.9.3",
