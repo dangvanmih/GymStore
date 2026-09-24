@@ -134,8 +134,11 @@
   margin: 0;
 }
 
+/* Ẩn mũi tên tăng giảm chuẩn W3C (bao gồm Firefox hiện đại) */
 .input-position-dark[type="number"] {
-  -moz-appearance: textfield;
+  appearance: textfield;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield; /* Giữ lại nếu cần hỗ trợ các bản Firefox rất cũ */
 }
 
 /* Status Badges */
