@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+const slug = require("mongoose-slug-updater");
+
+mongoose.plugin(slug);
+
 
 const productSchema = new mongoose.Schema(
   {
@@ -11,12 +15,21 @@ const productSchema = new mongoose.Schema(
     status: String,
     featured: String,
     position: Number,
+    slug: {
+      type: String,
+      slug: "title",
+      unique: true
+    },
     deleted: {
       type: Boolean,
       default: false
     },
-    deletedAt: Date
+    deletedAt: Date,
   },
+  {
+    timestamps: true
+  }
+
 );
 const Product = mongoose.model("Product", productSchema, "products");
 // tham số thứ nhất là tên của model

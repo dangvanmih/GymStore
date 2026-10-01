@@ -1,0 +1,269 @@
+/* ==========================================
+   PRODUCT CREATE PAGE (DARK MODE ENTERPRISE)
+   ========================================== */
+
+/* 1. Thiết lập biến màu chung */
+:root {
+  --bg-dark-card: #131722;
+  --bg-dark-input: #0b0d14;
+  --border-dark: rgba(255, 255, 255, 0.1);
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+}
+
+/* 2. Đặt màu nền và viền cho tất cả các Card */
+.create-product-wrapper .card {
+  background-color: var(--bg-dark-card) !important;
+  border: 1px solid var(--border-dark) !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Header của Card */
+.create-product-wrapper .card-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--border-dark) !important;
+  padding: 16px 20px;
+}
+
+.create-product-wrapper .card-title {
+  color: var(--text-main) !important;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Label & Text bên trong Card */
+.create-product-wrapper label,
+.create-product-wrapper .form-label,
+.create-product-wrapper .form-check-label {
+  color: var(--text-main) !important;
+}
+
+.create-product-wrapper .text-muted,
+.create-product-wrapper small {
+  color: var(--text-muted) !important;
+}
+
+/* 3. Style ô Nhập liệu (Input, Textarea, File) */
+.form-control-dark {
+  background-color: var(--bg-dark-input) !important;
+  border: 1px solid var(--border-dark) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-control-dark::placeholder {
+  color: #4b5563 !important;
+}
+
+.form-control-dark:focus {
+  background-color: #0e111a !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+  outline: none !important;
+  color: #ffffff !important;
+}
+
+/* Input Group Đơn vị (đ, %) */
+.input-group-dark .form-control-dark {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.input-group-dark .input-group-text {
+  background-color: #1f2430 !important;
+  border: 1px solid var(--border-dark) !important;
+  border-left: none !important;
+  color: var(--text-muted) !important;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+/* 4. Custom ô Upload File & Preview Ảnh */
+.upload-image-preview {
+  cursor: pointer;
+  border: 2px dashed rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px;
+  background-color: var(--bg-dark-input, #0b0d14) !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.upload-image-preview:hover {
+  border-color: #4f46e5 !important;
+  background-color: rgba(79, 70, 229, 0.05) !important;
+}
+
+/* 5. Radio Button Trạng Thái */
+.custom-radio {
+  background-color: var(--bg-dark-input) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  cursor: pointer;
+}
+
+.custom-radio:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+}
+
+/* 6. Nút Tạo mới & Nút Quay lại */
+.btn-submit-create {
+  background-color: #4f46e5 !important; /* Thêm màu nền xanh tím nổi bật */
+  border: 1px solid #4f46e5 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 12px 20px;
+  border-radius: 8px !important;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-submit-create:hover {
+  background-color: #4338ca !important; /* Đổi màu đậm hơn một chút khi di chuột vào */
+  border-color: #4338ca !important;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+  transform: translateY(-1px);          /* Hiệu ứng nhích nhẹ lên trên */
+}
+.btn-outline-secondary {
+  color: var(--text-muted) !important;
+  border-color: var(--border-dark) !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-main) !important;
+}
+
+/* Ẩn mũi tên trên Chrome, Safari, Edge, Opera */
+.create-product-wrapper input[type="number"]::-webkit-outer-spin-button,
+.create-product-wrapper input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ẩn mũi tên trên Firefox & chuẩn W3C */
+.create-product-wrapper input[type="number"] {
+  appearance: textfield;
+}
+
+.create-product-wrapper input[type="file"].form-control-dark {
+  display: flex !important;
+  align-items: center !important;
+  height: 44px !important;            /* Cố định chiều cao chuẩn */
+  padding: 4px 8px !important;         /* Padding vừa vặn */
+  line-height: normal !important;      /* Tránh bị trôi dòng */
+  overflow: hidden !important;
+  cursor: pointer;
+}
+
+/* Format nút Choose File (Webkit: Chrome, Edge, Safari) */
+.create-product-wrapper input[type="file"].form-control-dark::-webkit-file-upload-button {
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 14px !important;
+  background-color: #1f2430 !important;
+  color: #818cf8 !important;
+  border: 1px solid rgba(129, 140, 248, 0.3) !important;
+  border-radius: 6px !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  margin-right: 12px !important;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-product-wrapper input[type="file"].form-control-dark::-webkit-file-upload-button:hover {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+  border-color: #4f46e5 !important;
+}
+
+/* Format nút Choose File trên Firefox */
+.create-product-wrapper input[type="file"].form-control-dark::file-selector-button {
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 14px !important;
+  background-color: #1f2430 !important;
+  color: #818cf8 !important;
+  border: 1px solid rgba(129, 140, 248, 0.3) !important;
+  border-radius: 6px !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  margin-right: 12px !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.create-product-wrapper input[type="file"].form-control-dark::file-selector-button:hover {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+  border-color: #4f46e5 !important;
+}
+
+/* ==========================================
+   FIX RADIO BUTTON COLORS (ACTIVE / INACTIVE)
+   ========================================== */
+
+/* Trạng thái chưa chọn (Mặc định) */
+.create-product-wrapper .form-check-input[type="radio"] {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  background-color: #0b0d14 !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  cursor: pointer;
+  appearance: none !important; /* Tắt style mặc định trình duyệt */
+  -webkit-appearance: none !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 1. TRẠNG THÁI "HOẠT ĐỘNG" (XANH LÁ) KHI TÍCH CHỌN */
+.create-product-wrapper .form-check-input[type="radio"][value="active"]:checked {
+  background-color: #10b981 !important; /* Màu xanh lá */
+  border-color: #34d399 !important;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6) !important;
+  /* Chèn chấm tròn trắng ở giữa */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+}
+
+/* Đổi màu chữ nhãn "Hoạt động" sang xanh */
+.create-product-wrapper .form-check:has(.form-check-input[value="active"]:checked) .form-check-label {
+  color: #34d399 !important;
+  font-weight: 600;
+}
+
+/* 2. TRẠNG THÁI "DỪNG HOẠT ĐỘNG" (ĐỎ) KHI TÍCH CHỌN */
+.create-product-wrapper .form-check-input[type="radio"][value="inactive"]:checked {
+  background-color: #ef4444 !important; /* Màu đỏ */
+  border-color: #f87171 !important;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6) !important;
+  /* Chèn chấm tròn trắng ở giữa */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+}
+
+/* Đổi màu chữ nhãn "Dừng hoạt động" sang đỏ */
+.create-product-wrapper .form-check:has(.form-check-input[value="inactive"]:checked) .form-check-label {
+  color: #f87171 !important;
+  font-weight: 600;
+}
+
+/* Style cho label đi kèm */
+.create-product-wrapper .form-check-label {
+  color: #9ca3af !important;
+  cursor: pointer;
+  user-select: none;
+  padding-left: 6px;
+  transition: color 0.2s ease;
+}

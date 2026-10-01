@@ -2,6 +2,7 @@ const Product = require('../../models/product.model');
 const filterStatusHelper = require('../../helpers/filterStatus');
 const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
+const systemConfig = require('../../configs/system');
 // GET: /admin/product
 module.exports.index = async (req, res) => {
 
@@ -42,7 +43,7 @@ module.exports.index = async (req, res) => {
   );
 
 
-  const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems).sort({position: "desc"})
+  const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems).sort({ position: "desc" })
 
 
   res.render('admin/pages/product/index', {
@@ -62,7 +63,7 @@ module.exports.changeStatus = async (req, res) => {
 
   await Product.updateOne({ _id: id }, { status: status });
   req.flash("success", "Cập nhật trạng thái thành công!")
-  res.redirect(req.get("Referer") || "/admin/products");
+  res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
 
 };
 
@@ -97,7 +98,7 @@ module.exports.changeMulti = async (req, res) => {
     default:
       break;
   }
-  res.redirect(req.get("Referer") || "/admin/products");
+  res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
 };
 
 // DELETE: /admin/product/delete/:id
@@ -112,5 +113,32 @@ module.exports.deleteProduct = async (req, res) => {
     { deletedAt: new Date() },
   );
   req.flash("success", "Đã xóa thành công!");
-  res.redirect(req.get("Referer") || "/admin/products");
+  res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
+};
+
+// GET: /admin/product/create
+module.exports.createProduct = async (req, res) => {
+  res.render('admin/pages/product/create', {
+    pageTitle: 'Trang sản phẩm',
+  });
+};
+
+// POST: /admin/product/create
+module.exports.createPostProduct = async (req, res) => {
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+
+  if (req.body.position == "") {
+    const countProducts = await Product.countDocuments();
+    req.body.position = countProducts + 1;
+  }
+  else {
+    req.body.position = parseInt(req.body.position);
+  }
+  const product = new Product(req.body);
+  await product.save();
+  req.flash("success", "Đã thêm sản phẩm thành công!");
+  res.redirect(`${systemConfig.prefixAdmin}/products`);
+
 };

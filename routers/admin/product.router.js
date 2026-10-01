@@ -7,4 +7,6 @@ router.get('/', controller.index);
 router.patch('/change-status/:status/:id' , controller.changeStatus);
 router.patch('/change-multi/' , controller.changeMulti);
 router.delete('/delete/:id' , controller.deleteProduct);
+router.get('/create/' , controller.createProduct);
+router.post('/create/' , controller.createPostProduct);
 module.exports = router;
