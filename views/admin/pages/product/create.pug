@@ -108,13 +108,22 @@ block main
                   upload-image-input
                 )
                 .upload-image-preview.text-center.p-3
-                  img(
-                    src=""
-                    alt="Preview"
-                    upload-image-preview
-                    class="img-fluid rounded d-none"
-                    style="max-height: 200px; object-fit: contain;"
-                  )
+                  .position-relative.d-inline-block(upload-preview-container)
+                    img(
+                      src=""
+                      alt="Preview"
+                      upload-image-preview
+                      class="img-fluid rounded d-none"
+                      style="max-height: 200px; object-fit: contain;"
+                    )
+                    //- Nút gỡ ảnh (Ban đầu ẩn đi bằng class d-none)
+                    button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2.d-none(
+                      type="button"
+                      upload-image-remove
+                      title="Gỡ ảnh"
+                      style="width: 32px; height: 32px; padding: 0; line-height: 32px; z-index: 5;"
+                    )
+                      i.fas.fa-times
                   .upload-placeholder(upload-placeholder)
                     i.fas.fa-cloud-upload-alt.fa-2x.text-muted.mb-2
                     p.small.text-muted.mb-0 Kéo thả hoặc bấm để chọn tệp hình ảnh

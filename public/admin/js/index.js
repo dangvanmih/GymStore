@@ -111,4 +111,86 @@ if (showAlert) {
       showAlert.classList.add("alert-hidden");
     });
   }
-}
+};
+
+// Xử lý upload preview ảnh sản phẩm
+document.addEventListener("DOMContentLoaded", () => {
+  const uploadImageWrapper = document.querySelector("[upload-image]");
+
+  if (uploadImageWrapper) {
+    const uploadImageInput = uploadImageWrapper.querySelector("[upload-image-input]");
+    const uploadImagePreview = uploadImageWrapper.querySelector("[upload-image-preview]");
+    const uploadPlaceholder = uploadImageWrapper.querySelector("[upload-placeholder]");
+    const uploadImageRemove = uploadImageWrapper.querySelector("[upload-image-remove]");
+    
+    // Khối preview chứa placeholder & img
+    const uploadPreviewWrapper = uploadImageWrapper.querySelector(".upload-image-preview");
+
+    // Hàm chung xử lý hiển thị preview
+    const handlePreview = (file) => {
+      if (file && file.type.startsWith("image/")) {
+        uploadImagePreview.src = URL.createObjectURL(file);
+        uploadImagePreview.classList.remove("d-none");
+
+        if (uploadImageRemove) {
+          uploadImageRemove.classList.remove("d-none");
+        }
+        if (uploadPlaceholder) {
+          uploadPlaceholder.classList.add("d-none");
+        }
+      }
+    };
+
+    if (uploadImageInput && uploadImagePreview && uploadPreviewWrapper) {
+      // 1. Chọn file truyền thống bằng input
+      uploadImageInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        handlePreview(file);
+      });
+
+      // 2. Xử lý Drag & Drop CHỈ TRÊN KHUNG PREVIEW
+      uploadPreviewWrapper.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadPreviewWrapper.classList.add("dragover");
+      });
+
+      uploadPreviewWrapper.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadPreviewWrapper.classList.remove("dragover");
+      });
+
+      uploadPreviewWrapper.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadPreviewWrapper.classList.remove("dragover");
+
+        const files = e.dataTransfer.files;
+        if (files && files.length > 0) {
+          const file = files[0];
+          
+          // Gán file vừa thả vào input file để gửi đi khi submit form
+          uploadImageInput.files = files;
+
+          // Hiển thị preview
+          handlePreview(file);
+        }
+      });
+
+      // 3. Nút Gỡ/Xóa ảnh
+      if (uploadImageRemove) {
+        uploadImageRemove.addEventListener("click", () => {
+          uploadImageInput.value = "";
+          uploadImagePreview.src = "";
+          uploadImagePreview.classList.add("d-none");
+          uploadImageRemove.classList.add("d-none");
+
+          if (uploadPlaceholder) {
+            uploadPlaceholder.classList.remove("d-none");
+          }
+        });
+      }
+    }
+  }
+});
