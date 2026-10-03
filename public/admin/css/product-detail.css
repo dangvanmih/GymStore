@@ -24,10 +24,17 @@
 }
 
 /* --- 2. Typography & Color Tokens --- */
-.text-title { color: var(--text-title) !important; }
-.text-body { color: var(--text-body) !important; }
-.text-muted { color: var(--text-muted) !important; }
-.text-price { color: #f43f5e !important; } /* Đỏ cam nổi bật cho giá */
+.text-title {
+  color: var(--text-title) !important;
+}
+
+.text-body {
+  color: var(--text-body) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
 
 /* --- 3. Breadcrumb Header --- */
 .breadcrumb {
@@ -35,49 +42,56 @@
   padding: 0 !important;
   margin-bottom: 0 !important;
 }
+
 .breadcrumb-item a {
   color: var(--text-muted) !important;
   text-decoration: none;
   transition: color 0.2s ease;
 }
+
 .breadcrumb-item a:hover {
   color: var(--bg-btn) !important;
 }
+
 .breadcrumb-item.active {
   color: var(--text-title) !important;
   font-weight: 500;
 }
 
-/* --- 4. Custom Buttons (Đồng bộ Indigo Palette) --- */
+/* --- 4. Custom Compact Buttons --- */
 .btn-primary-custom {
   background-color: var(--bg-btn) !important;
   color: #ffffff !important;
   border: none !important;
-  padding: 0.5rem 1.25rem;
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.875rem !important;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 6px !important;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   transition: all 0.2s ease;
 }
+
 .btn-primary-custom:hover {
   background-color: var(--primary-hover) !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.3);
 }
 
 .btn-outline-custom {
   background-color: transparent !important;
   color: var(--text-body) !important;
   border: 1px solid var(--border-color) !important;
-  padding: 0.5rem 1.25rem;
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.875rem !important;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 6px !important;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   transition: all 0.2s ease;
 }
+
 .btn-outline-custom:hover {
   background-color: var(--primary-color) !important;
   color: var(--text-title) !important;
@@ -96,9 +110,11 @@
   overflow: hidden;
   transition: border-color 0.2s ease;
 }
+
 .product-image-container:hover {
   border-color: var(--bg-btn) !important;
 }
+
 .product-image-container img {
   max-height: 380px;
   width: auto;
@@ -106,31 +122,14 @@
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
 }
 
-/* --- 6. Khối Giá & Metadata Cards --- */
-.price-box {
-  background-color: var(--bg-main) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 10px;
-}
-
-.meta-card {
-  background-color: var(--bg-main) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 10px;
-  transition: all 0.2s ease;
-}
-.meta-card:hover {
-  border-color: var(--primary-hover) !important;
-  background-color: var(--bg-card-hover) !important;
-}
-/* --- Khối Hiển Thị Giá --- */
+/* --- 6. Khối Hiển Thị Giá & Metadata Cards --- */
 .price-box {
   background-color: var(--bg-main) !important;
   border: 1px solid var(--border-color) !important;
   border-radius: 10px;
   display: flex !important;
   align-items: center !important;
-  gap: 1rem !important; /* Tạo khoảng cách rõ ràng giữa giá mới, giá cũ và badge */
+  gap: 1rem !important;
 }
 
 /* Giá mới */
@@ -144,12 +143,25 @@
 /* Giá cũ gạch ngang */
 .old-price {
   color: var(--text-muted) !important;
-  text-decoration: line-through !important; /* Ép gạch ngang */
+  text-decoration: line-through !important;
   font-size: 1rem;
   opacity: 0.8;
 }
 
-/* Badge phần trăm giảm giá */
+/* Metadata Cards */
+.meta-card {
+  background-color: var(--bg-main) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.meta-card:hover {
+  border-color: var(--primary-hover) !important;
+  background-color: var(--bg-card-hover) !important;
+}
+
+/* --- 7. Status Badges --- */
 .badge-discount {
   background-color: rgba(239, 68, 68, 0.2) !important;
   color: #ef4444 !important;
@@ -160,7 +172,6 @@
   font-weight: 600;
 }
 
-/* --- 7. Status Badges --- */
 .badge-success-custom {
   background-color: rgba(16, 185, 129, 0.15) !important;
   color: #10b981 !important;
@@ -187,6 +198,7 @@
 .nav-tabs {
   border-bottom: 1px solid var(--border-color) !important;
 }
+
 .nav-tabs .nav-link {
   color: var(--text-muted) !important;
   border: none !important;
@@ -196,9 +208,11 @@
   font-weight: 500;
   transition: all 0.2s ease;
 }
+
 .nav-tabs .nav-link:hover {
   color: var(--text-title) !important;
 }
+
 .nav-tabs .nav-link.active {
   color: var(--text-title) !important;
   border-bottom: 2px solid var(--bg-btn) !important;
@@ -212,11 +226,12 @@
   color: var(--text-body) !important;
 }
 
-/* --- 9. Định dạng Nội dung Mô tả HTML (Rich Text) --- */
+/* --- 9. Nội dung Mô tả HTML (Rich Text) --- */
 .product-description {
   color: var(--text-body) !important;
   line-height: 1.7;
 }
+
 .product-description h1,
 .product-description h2,
 .product-description h3,
@@ -225,10 +240,12 @@
   margin-top: 1.2rem;
   margin-bottom: 0.6rem;
 }
+
 .product-description p {
   color: var(--text-body) !important;
   margin-bottom: 1rem;
 }
+
 .product-description img {
   max-width: 100%;
   height: auto;
@@ -236,40 +253,14 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Nút bấm cỡ nhỏ (Compact Buttons) */
-.btn-primary-custom {
-  background-color: var(--bg-btn) !important;
-  color: #ffffff !important;
-  border: none !important;
-  padding: 0.35rem 0.85rem !important; /* Giảm padding */
-  font-size: 0.875rem !important;      /* Chữ nhỏ hơn (14px) */
-  font-weight: 500;
-  border-radius: 6px !important;       /* Bo góc nhỏ hơn */
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  transition: all 0.2s ease;
-}
-.btn-primary-custom:hover {
-  background-color: var(--primary-hover) !important;
-  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.3);
-}
+/* --- 10. Responsive Tweaks --- */
+@media (max-width: 576px) {
+  .price-box {
+    flex-wrap: wrap;
+    gap: 0.5rem !important;
+  }
 
-.btn-outline-custom {
-  background-color: transparent !important;
-  color: var(--text-body) !important;
-  border: 1px solid var(--border-color) !important;
-  padding: 0.35rem 0.85rem !important; /* Giảm padding */
-  font-size: 0.875rem !important;      /* Chữ nhỏ hơn (14px) */
-  font-weight: 500;
-  border-radius: 6px !important;       /* Bo góc nhỏ hơn */
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  transition: all 0.2s ease;
-}
-.btn-outline-custom:hover {
-  background-color: var(--primary-color) !important;
-  color: var(--text-title) !important;
-  border-color: var(--primary-color) !important;
+  .text-price {
+    font-size: 1.3rem;
+  }
 }

@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 
 append style
   link(rel="stylesheet" href="/admin/css/product-detail.css")
+
 block main
   .container-fluid.px-4.py-4
     //- Header & Action Bar
@@ -17,7 +18,7 @@ block main
             li.breadcrumb-item.active(aria-current="page")= product.title
       
       .d-flex.gap-2
-        a.btn.btn-sm.btn-outline-custom.mr-4(href=`${prefixAdmin}/products`)
+        a.btn.btn-sm.btn-outline-custom.mr-3(href=`${prefixAdmin}/products`)
           i.fas.fa-arrow-left.mr-2
           | Quay lại
         a.btn.btn-sm.btn-primary-custom(href=`${prefixAdmin}/products/edit/${product.id}`)
@@ -30,16 +31,6 @@ block main
         .card.border-0.shadow-sm.h-100
           .card-body.p-4.text-center.d-flex.flex-column.justify-content-center
             .product-image-container.position-relative.w-100.rounded.p-3
-              //- Badge Trạng thái
-              if product.status === "active"
-                span.badge.badge-success-custom.position-absolute.top-0.start-0.m-3
-                  i.fas.fa-check-circle.me-1
-                  | Đang hoạt động
-              else
-                span.badge.badge-danger-custom.position-absolute.top-0.start-0.m-3
-                  i.fas.fa-times-circle.me-1
-                  | Dừng hoạt động
-
               if product.thumbnail
                 img.img-fluid.rounded(
                   src=product.thumbnail
@@ -71,6 +62,7 @@ block main
                 span.badge.badge-discount= `-${product.discountPercentage}%`
               else
                 span.fs-3.fw-bold.text-price= `${Number(product.price).toLocaleString('vi-VN')}đ`
+
             //- Khối thống kê Metadata
             .row.g-3.mb-4
               .col-4
@@ -97,11 +89,11 @@ block main
                   span.fw-semibold.text-title= product.category.title
 
               .d-flex.justify-content-between.align-items-center.py-2.border-bottom-custom
-                span.text-muted Trạng thái xóa:
-                if product.deleted
-                  span.badge.badge-danger-custom Đã xóa
+                span.text-muted Trạng thái hoạt động:
+                if product.status === "active"
+                  span.badge.badge-success-custom Hoạt động
                 else
-                  span.badge.badge-success-custom Bình thường
+                  span.badge.badge-danger-custom Dừng hoạt động
 
     //- Khối Tabs bên dưới
     .card.border-0.shadow-sm.mt-4
@@ -114,7 +106,15 @@ block main
               data-bs-target="#desc-pane"
               type="button"
             ) Mô tả chi tiết
-      .card-body.p-4
+          li.nav-item
+            button.nav-link(
+              id="system-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#system-pane"
+              type="button"
+            ) Thông tin hệ thống
+
+      .card-body.p-4(style="min-height: 160px;")
         .tab-content(id="productTabContent")
           .tab-pane.fade.show.active(id="desc-pane" role="tabpanel")
             if product.description
@@ -123,8 +123,8 @@ block main
               p.text-muted.fst-italic.mb-0 Chưa có mô tả cho sản phẩm này.
 
           .tab-pane.fade(id="system-pane" role="tabpanel")
-            .row.g-3
-              .col-md-6
+            .row.g-3.m-0
+              .col-md-6.ps-0
                 .meta-card.p-3.rounded
                   h6.fw-bold.text-title.mb-2 Khởi tạo dữ liệu
                   p.mb-1.small.text-body
@@ -133,12 +133,12 @@ block main
                   p.mb-0.small.text-body
                     strong Thời gian tạo: 
                     span= product.createdAt ? product.createdAt.toLocaleString('vi-VN') : "N/A"
-              .col-md-6
+              .col-md-6.pe-0
                 .meta-card.p-3.rounded
                   h6.fw-bold.text-title.mb-2 Cập nhật gần nhất
                   p.mb-1.small.text-body
                     strong Người sửa: 
-                    //- span= product.updatedBy && product.updatedBy.length > 0 ? product.updatedBy[product.updatedBy.length - 1].accountFullName : "N/A"
+                    span= product.updatedBy && product.updatedBy.length > 0 ? product.updatedBy[product.updatedBy.length - 1].accountFullName : "N/A"
                   p.mb-0.small.text-body
                     strong Thời gian sửa: 
-                    //- span= product.updatedAt ? product.updatedAt.toLocaleString('vi-VN') : "N/A"
+                    span= product.updatedAt ? product.updatedAt.toLocaleString('vi-VN') : "N/A"
