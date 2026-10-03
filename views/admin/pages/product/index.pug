@@ -96,7 +96,7 @@ block main
                           | Dừng hoạt động
                     td.text-center
                       .action-btn-group
-                        a.btn-action.btn-action-edit(href=`/admin/products/edit/${items.id}`, title="Chỉnh sửa")
+                        a.btn-action.btn-action-edit(href=`${prefixAdmin}/products/edit/${items.id}`, title="Chỉnh sửa")
                           i.fas.fa-pen
                         button(class= "btn-action btn-action-delete" data-id = items.id button-delete)
                           i.fas.fa-trash-alt

@@ -12,4 +12,6 @@ router.patch('/change-multi/' , controller.changeMulti);
 router.delete('/delete/:id' , controller.deleteProduct);
 router.get('/create/' , controller.createProduct);
 router.post('/create/' , upload.single('thumbnail'), validate.createPost, controller.createPostProduct);
+router.get('/edit/:id' , controller.editProduct);
+router.patch('/edit/:id' , upload.single('thumbnail'), validate.createPost, controller.editPatchProduct);
 module.exports = router;
