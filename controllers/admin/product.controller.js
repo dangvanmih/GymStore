@@ -189,4 +189,23 @@ module.exports.editPatchProduct = async (req, res) => {
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
   }
 
+};
+
+// GET: /admin/product/detail/:id
+module.exports.detailProduct = async (req, res) => {
+  try {
+    const findQuery = {
+      deleted: false,
+      _id: req.params.id
+    };
+    const product = await Product.findOne(findQuery);
+    res.render('admin/pages/product/detail', {
+      pageTitle: 'Trang chi tiết sản phẩm',
+      product: product
+    });
+  }
+  catch (error) {
+    req.flash("error", "Không tìm thấy sản phẩm!");
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
+  };
 }

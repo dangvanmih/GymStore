@@ -1,0 +1,144 @@
+extends ../../layouts/default.pug
+
+append style
+  link(rel="stylesheet" href="/admin/css/product-detail.css")
+block main
+  .container-fluid.px-4.py-4
+    //- Header & Action Bar
+    .d-flex.justify-content-between.align-items-center.mb-4
+      div
+        h3.fw-bold.text-title.mb-1= pageTitle
+        nav(aria-label="breadcrumb")
+          ol.breadcrumb.bg-transparent.p-0.mb-0
+            li.breadcrumb-item
+              a(href=`${prefixAdmin}/dashboard`) Dashboard
+            li.breadcrumb-item
+              a(href=`${prefixAdmin}/products`) Sản phẩm
+            li.breadcrumb-item.active(aria-current="page")= product.title
+      
+      .d-flex.gap-2
+        a.btn.btn-sm.btn-outline-custom.mr-4(href=`${prefixAdmin}/products`)
+          i.fas.fa-arrow-left.mr-2
+          | Quay lại
+        a.btn.btn-sm.btn-primary-custom(href=`${prefixAdmin}/products/edit/${product.id}`)
+          i.fas.fa-edit.mr-2
+          | Chỉnh sửa
+
+    .row.g-4
+      //- Cột trái: Hình ảnh
+      .col-lg-5
+        .card.border-0.shadow-sm.h-100
+          .card-body.p-4.text-center.d-flex.flex-column.justify-content-center
+            .product-image-container.position-relative.w-100.rounded.p-3
+              //- Badge Trạng thái
+              if product.status === "active"
+                span.badge.badge-success-custom.position-absolute.top-0.start-0.m-3
+                  i.fas.fa-check-circle.me-1
+                  | Đang hoạt động
+              else
+                span.badge.badge-danger-custom.position-absolute.top-0.start-0.m-3
+                  i.fas.fa-times-circle.me-1
+                  | Dừng hoạt động
+
+              if product.thumbnail
+                img.img-fluid.rounded(
+                  src=product.thumbnail
+                  alt=product.title
+                )
+              else
+                .py-5.text-muted
+                  i.fas.fa-image.fa-4x.mb-2
+                  p.mb-0 Chưa có hình ảnh
+
+      //- Cột phải: Thông tin chính
+      .col-lg-7
+        .card.border-0.shadow-sm.h-100
+          .card-body.p-4
+            h4.fw-bold.text-title.mb-3= product.title
+
+            //- Khối hiển thị giá đã fix format & khoảng cách
+            .price-box.p-3.rounded.mb-4.d-flex.align-items-center.gap-3
+              if product.discountPercentage > 0
+                - const newPrice = (product.price * (1 - product.discountPercentage / 100)).toFixed(0);
+                
+                //- Giá mới (Sau giảm giá)
+                span.fs-3.fw-bold.text-price= `${Number(newPrice).toLocaleString('vi-VN')}đ`
+                
+                //- Giá cũ (Gạch ngang)
+                span.old-price= `${Number(product.price).toLocaleString('vi-VN')}đ`
+                
+                //- Phần trăm giảm
+                span.badge.badge-discount= `-${product.discountPercentage}%`
+              else
+                span.fs-3.fw-bold.text-price= `${Number(product.price).toLocaleString('vi-VN')}đ`
+            //- Khối thống kê Metadata
+            .row.g-3.mb-4
+              .col-4
+                .meta-card.p-3.rounded.text-center
+                  small.text-muted.d-block.mb-1 Kho hàng
+                  span.fw-bold.fs-5(class=product.stock > 0 ? "text-success" : "text-danger")
+                    = product.stock > 0 ? `${product.stock} sản phẩm` : "Hết hàng"
+
+              .col-4
+                .meta-card.p-3.rounded.text-center
+                  small.text-muted.d-block.mb-1 Thứ tự vị trí
+                  span.fw-bold.fs-5.text-title= product.position || 0
+
+              .col-4
+                .meta-card.p-3.rounded.text-center
+                  small.text-muted.d-block.mb-1 Mã ID
+                  span.fw-bold.fs-6.text-muted.text-truncate.d-block(title=product.id)= product.id
+
+            //- Chi tiết bảng thông tin
+            .info-list.d-flex.flex-column.gap-3
+              if product.category
+                .d-flex.justify-content-between.align-items-center.py-2.border-bottom-custom
+                  span.text-muted Danh mục:
+                  span.fw-semibold.text-title= product.category.title
+
+              .d-flex.justify-content-between.align-items-center.py-2.border-bottom-custom
+                span.text-muted Trạng thái xóa:
+                if product.deleted
+                  span.badge.badge-danger-custom Đã xóa
+                else
+                  span.badge.badge-success-custom Bình thường
+
+    //- Khối Tabs bên dưới
+    .card.border-0.shadow-sm.mt-4
+      .card-header.bg-transparent.border-bottom-custom.pt-3.px-4
+        ul.nav.nav-tabs.card-header-tabs(id="productTab" role="tablist")
+          li.nav-item
+            button.nav-link.active(
+              id="desc-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#desc-pane"
+              type="button"
+            ) Mô tả chi tiết
+      .card-body.p-4
+        .tab-content(id="productTabContent")
+          .tab-pane.fade.show.active(id="desc-pane" role="tabpanel")
+            if product.description
+              .product-description!= product.description
+            else
+              p.text-muted.fst-italic.mb-0 Chưa có mô tả cho sản phẩm này.
+
+          .tab-pane.fade(id="system-pane" role="tabpanel")
+            .row.g-3
+              .col-md-6
+                .meta-card.p-3.rounded
+                  h6.fw-bold.text-title.mb-2 Khởi tạo dữ liệu
+                  p.mb-1.small.text-body
+                    strong Người tạo: 
+                    span= product.createdBy ? product.createdBy.accountFullName : "Hệ thống"
+                  p.mb-0.small.text-body
+                    strong Thời gian tạo: 
+                    span= product.createdAt ? product.createdAt.toLocaleString('vi-VN') : "N/A"
+              .col-md-6
+                .meta-card.p-3.rounded
+                  h6.fw-bold.text-title.mb-2 Cập nhật gần nhất
+                  p.mb-1.small.text-body
+                    strong Người sửa: 
+                    //- span= product.updatedBy && product.updatedBy.length > 0 ? product.updatedBy[product.updatedBy.length - 1].accountFullName : "N/A"
+                  p.mb-0.small.text-body
+                    strong Thời gian sửa: 
+                    //- span= product.updatedAt ? product.updatedAt.toLocaleString('vi-VN') : "N/A"

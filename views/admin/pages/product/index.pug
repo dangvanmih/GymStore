@@ -98,7 +98,12 @@ block main
                       .action-btn-group
                         a.btn-action.btn-action-edit(href=`${prefixAdmin}/products/edit/${items.id}`, title="Chỉnh sửa")
                           i.fas.fa-pen
-                        button(class= "btn-action btn-action-delete" data-id = items.id button-delete)
+                        a.btn-action.btn-action-detail(
+                          href=`${prefixAdmin}/products/detail/${items.id}`
+                          title="Xem chi tiết"
+                        )
+                          i.fas.fa-eye
+                        button(class= "btn-action btn-action-delete" data-id = items.id button-delete title="Xóa sản phẩm")
                           i.fas.fa-trash-alt
               else
                 tr

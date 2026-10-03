@@ -205,6 +205,12 @@
   border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
+.btn-action-detail:hover {
+  color: #60a5fa !important;
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
 /* ==========================================
    Card search filter & Button Custom (DARK MODE ENTERPRISE)
    ========================================== */
