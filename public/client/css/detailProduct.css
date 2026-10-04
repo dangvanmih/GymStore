@@ -1,0 +1,246 @@
+/* ==========================================
+   PRODUCT DETAIL PAGE - OVERRIDE STYLES
+   ========================================== */
+
+/* Breadcrumb */
+.custom-breadcrumb .breadcrumb-item a {
+  color: #6c757d !important;
+  text-decoration: none !important;
+  font-size: 0.875rem !important;
+}
+
+.custom-breadcrumb .breadcrumb-item.active {
+  color: #212529 !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+}
+
+/* Ảnh sản phẩm */
+.product-image-container {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  max-height: 520px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.product-main-img {
+  max-height: 520px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+}
+
+.badge-discount {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  background-color: #e53e3e !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  padding: 4px 8px !important;
+  border-radius: 2px !important;
+  z-index: 2 !important;
+}
+
+/* Tên sản phẩm */
+.product-title {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  line-height: 1.4 !important;
+}
+
+/* Định dạng Giá (Fix dính chữ) */
+.product-price-box {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.badge-discount-text {
+  background-color: #e53e3e !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  padding: 2px 8px !important;
+  border-radius: 2px !important;
+}
+
+.price-old {
+  color: #a0aec0 !important;
+  text-decoration: line-through !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+}
+
+.price-new {
+  color: #e53e3e !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+}
+
+/* Ô nhập số lượng */
+.quantity-input-group {
+  border: 1px solid #cbd5e0 !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  display: inline-flex !important;
+}
+
+.btn-qty {
+  border: none !important;
+  background-color: #f7fafc !important;
+  width: 36px !important;
+  height: 38px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn-qty:hover {
+  background-color: #edf2f7 !important;
+}
+
+.input-qty {
+  width: 45px !important;
+  height: 38px !important;
+  border: none !important;
+  text-align: center !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background-color: #ffffff !important;
+}
+
+.input-qty::-webkit-outer-spin-button,
+.input-qty::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* Nút bấm */
+.btn-chat-now {
+  background-color: #edf2f7 !important;
+  color: #2d3748 !important;
+  font-weight: 600 !important;
+  height: 38px !important;
+  padding: 0 16px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.875rem !important;
+}
+
+.btn-add-cart {
+  background-color: #1a202c !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  height: 38px !important;
+  padding: 0 20px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.5px !important;
+}
+
+.btn-add-cart:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Khối chính sách */
+.policy-box {
+  background-color: #f7fafc !important;
+  border: 1px solid #edf2f7 !important;
+  border-radius: 4px !important;
+  font-size: 0.825rem !important;
+  color: #4a5568 !important;
+  min-height: 75px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* SỬA LỖI VIỀN ĐEN ACCORDION BOOTSTRAP */
+.product-accordion {
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.product-accordion .accordion-item {
+  border: none !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+}
+
+.product-accordion .accordion-button {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: #1a202c !important;
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  padding: 14px 0 !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.product-accordion .accordion-button:focus {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.product-accordion .accordion-body {
+  padding: 0 0 14px 0 !important;
+  color: #4a5568 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+}
+
+/* ==========================================
+   CUSTOM ACCORDION ICON (+ / -)
+   ========================================== */
+
+/* 1. Tắt mũi tên mặc định của Bootstrap */
+.product-accordion .accordion-button::after {
+  display: none !important;
+}
+
+/* 2. Căn chỉnh nút Accordion giữa chữ và icon dấu + / - */
+.product-accordion .accordion-button {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 16px 0 !important;
+  border: none !important;
+  color: #1a202c !important;
+}
+
+/* 3. Mặc định khi MỞ ACCORDION: Hiển thị dấu trừ (-) */
+.product-accordion .accordion-button .accordion-icon::before {
+  content: "−" !important; /* Dấu trừ */
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  line-height: 1 !important;
+}
+
+/* 4. Khi ĐÓNG ACCORDION (có class .collapsed): Hiển thị dấu cộng (+) */
+.product-accordion .accordion-button.collapsed .accordion-icon::before {
+  content: "+" !important; /* Dấu cộng */
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  line-height: 1 !important;
+}

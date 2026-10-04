@@ -13,11 +13,12 @@ block main
         .col-md-3.col-6.mb-4
           .product-item
             .inner-image
-              a(href='#')
+              a(href=`/products/${item.slug}`)
                 img(src=item.thumbnail, alt=item.title)
             .inner-content
               h3.inner-title
-                a(href='#') #{item.title}
+                a(href=`/products/${item.slug}`) #{item.title}
+                | #{item.title} - #{item.slug}
               .inner-price
                 span.inner-price-new #{item.priceNew}₫
                 span.inner-price-old #{item.price}₫

@@ -75,3 +75,28 @@ window.addEventListener("scroll", () => {
 });
 
 //end-scrol-header
+
+
+
+// tăng giảm số lượng sản phẩm
+document.addEventListener("DOMContentLoaded", () => {
+  const btnQtyList = document.querySelectorAll("[action-qty]");
+
+  btnQtyList.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const action = btn.getAttribute("action-qty");
+      const input = btn.parentElement.querySelector("input[name='quantity']");
+      if (!input) return;
+
+      let currentVal = parseInt(input.value) || 1;
+      const min = parseInt(input.getAttribute("min")) || 1;
+      const max = parseInt(input.getAttribute("max")) || 999;
+
+      if (action === "minus") {
+        if (currentVal > min) input.value = currentVal - 1;
+      } else if (action === "plus") {
+        if (currentVal < max) input.value = currentVal + 1;
+      }
+    });
+  });
+});
