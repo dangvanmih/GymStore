@@ -20,7 +20,7 @@ app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //Configue pug
-app.set('views', './views');
+app.set('views', `${__dirname}/views`);
 app.set('view engine', 'pug');
 
 //Flash
@@ -30,7 +30,7 @@ app.use(flash());
 //app locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-app.use(express.static('public'));
+app.use(express.static(`${__dirname}/public`));
 
 //route
 routerClient(app);
