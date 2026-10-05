@@ -43,7 +43,6 @@ module.exports.index = async (req, res) => {
     req
   );
 
-
   const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems).sort({ position: "desc" })
 
 
@@ -137,9 +136,7 @@ module.exports.createPostProduct = async (req, res) => {
   else {
     req.body.position = parseInt(req.body.position);
   }
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
+
   const product = new Product(req.body);
   await product.save();
   req.flash("success", "Đã thêm sản phẩm thành công!");
@@ -198,7 +195,13 @@ module.exports.detailProduct = async (req, res) => {
       deleted: false,
       _id: req.params.id
     };
-    const product = await Product.findOne(findQuery);
+
+    const product = await Product.findOne(findQuery).lean();
+
+    product.priceNew = Math.round(
+      product.price * (1 - product.discountPercentage / 100) / 10000
+    ) * 10000;
+
     res.render('admin/pages/product/detail', {
       pageTitle: 'Trang chi tiết sản phẩm',
       product: product
@@ -206,6 +209,8 @@ module.exports.detailProduct = async (req, res) => {
   }
   catch (error) {
     req.flash("error", "Không tìm thấy sản phẩm!");
-    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
-  };
-}
+    res.redirect(
+      req.get("Referer") || `${systemConfig.prefixAdmin}/products`
+    );
+  }
+};

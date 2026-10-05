@@ -5,9 +5,12 @@ module.exports.index = async (req, res) => {
   const products = await Product.find({
     status: "active",
     deleted: false
-  }).sort({ position: "desc" });
+  }).sort({ position: "desc" }).lean();
+
   const newProducts = products.map(item => {
-    item.priceNew = item.price - (item.price * item.discountPercentage / 100);
+    item.priceNew = Math.round(
+      item.price * (1 - item.discountPercentage / 100) / 10000
+    ) * 10000;
     return item;
   })
 
@@ -20,25 +23,19 @@ module.exports.index = async (req, res) => {
 // GET: /products/:slug
 module.exports.detailProduct = async (req, res) => {
   try {
-    const slug = req.params.slug;
     const product = await Product.findOne({
       slug: slug,
       status: "active",
       deleted: false
-    });
+    }).lean();
 
-    // Chuyển Mongoose Document thành Plain Object để gán thêm thuộc tính priceNew
-    const productDetail = product.toObject();
-
-    // Tính giá mới (làm tròn số nguyên để tránh số thập phân lẻ)
-    const discount = productDetail.discountPercentage || 0;
-    productDetail.priceNew = Math.round(
-      productDetail.price * (1 - discount / 100)
-    );
+    product.priceNew = Math.round(
+      product.price * (1 - (product.discountPercentage || 0) / 100) / 10000
+    ) * 10000;
 
     res.render("client/pages/products/detail", {
       pageTitle: product.title,
-      product: productDetail
+      product: product
     });
   }
   catch (error) {
