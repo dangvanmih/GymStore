@@ -23,6 +23,7 @@ module.exports.index = async (req, res) => {
 // GET: /products/:slug
 module.exports.detailProduct = async (req, res) => {
   try {
+    const slug = req.params.slug;
     const product = await Product.findOne({
       slug: slug,
       status: "active",
@@ -39,6 +40,7 @@ module.exports.detailProduct = async (req, res) => {
     });
   }
   catch (error) {
+    console.log(error);
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
   }
 }
