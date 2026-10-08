@@ -194,3 +194,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
+// xử lý sự kiện sắp xếp sản phẩm
+const sort = document.querySelector("[sort]");
+if (sort) {
+  let url = new URL(window.location.href);
+  const sortSelect = sort.querySelector("[sort-select]");
+  const btnClearSort = sort.querySelector("[sort-clear]");
+
+  sortSelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    const [sortKey, sortValue] = value.split("-");
+    if (sortKey && sortValue) {
+      url.searchParams.set("sortKey", sortKey);
+      url.searchParams.set("sortValue", sortValue);
+
+      window.location.href = url.href;
+    };
+  });
+
+  btnClearSort.addEventListener("click", () => {
+    url.searchParams.delete("sortKey");
+    url.searchParams.delete("sortValue");
+    window.location.href = url.href;
+  })
+
+  const sortKey = url.searchParams.get("sortKey");
+  const sortValue = url.searchParams.get("sortValue");
+  if (sortKey && sortValue) {
+    const value = `${sortKey}-${sortValue}`;
+    sortSelect.value = value;
+  }
+};

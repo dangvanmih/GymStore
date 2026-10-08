@@ -429,3 +429,65 @@
   box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
 }
 
+/* ==========================================
+   CUSTOM DARK MODE SORT SELECT & CLEAR BUTTON
+   ========================================== */
+
+/* Ô Chọn Sắp xếp (Select) */
+.form-select-dark {
+  background-color: #131722 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px !important;
+  height: 35px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  padding: 0 36px 0 14px !important;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  /* Icon mũi tên xuống màu xám trắng chuẩn Dark Mode */
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 14px 12px !important;
+}
+
+.form-select-dark:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+  outline: none !important;
+}
+
+.form-select-dark option {
+  background-color: #131722 !important;
+  color: #e2e8f0 !important;
+  padding: 10px;
+}
+
+.form-select-dark option:disabled {
+  color: #6b7280 !important;
+}
+
+/* Nút Clear Sắp Xếp */
+.btn-clear-sort {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  color: #f87171 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  border-radius: 8px !important;
+  height: 35px !important;
+  padding: 0 16px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-clear-sort:hover {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}

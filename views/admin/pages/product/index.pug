@@ -4,6 +4,7 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
+include ../../mixins/sort.pug
 append style
   link(rel="stylesheet" href="/admin/css/product.css")
 
@@ -28,11 +29,13 @@ block main
       .card-header Bộ lọc và tìm kiếm 
       .cpn-search-filter.card-body
         .row.align-items-center
-          .col-md-5.col-lg-4
+          .col-md-4.col-lg-3
             +filter-Status(filterStatus)
-          .col-md-4.col-lg-4
+          .col-md-3.col-lg-3
             +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-          .col-md-3.col-lg-4
+          .col-md-3.col-lg-3
+            +sort()
+          .col-md-2.col-lg-3
             +search(keyword)
     .card.border-0.shadow-sm.rounded-3
       .card-body.p-0
