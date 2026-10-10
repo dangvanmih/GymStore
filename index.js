@@ -1,6 +1,7 @@
 //Import
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
 const flash = require("express-flash");
@@ -28,6 +29,10 @@ app.set('view engine', 'pug');
 app.use(cookieParser("DVMLDN"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
+
+//tinymce
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
 //app locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 

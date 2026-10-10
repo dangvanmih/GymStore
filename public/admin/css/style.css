@@ -140,3 +140,95 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
+
+
+/* ===== TinyMCE Dark Theme ===== */
+
+/* Khung ngoài */
+.tox.tox-tinymce {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--bg-main) !important;
+}
+.tox-editor-header {
+    background-color: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+/* Toolbar header */
+.tox .tox-menubar {
+    background-color: var(--bg-card) !important;
+    color: var(--text-body) !important;
+}
+
+/* Các thanh toolbar */
+.tox .tox-toolbar,
+.tox .tox-toolbar__primary,
+.tox .tox-toolbar__overflow,
+.tox .tox-toolbar-overlord {
+    background-color: var(--bg-card) !important;
+}
+
+/* Các nhóm nút */
+.tox .tox-toolbar__group {
+    border-color: var(--border-color) !important;
+}
+
+/* Nút toolbar */
+.tox .tox-mbtn {
+    background-color: var(--bg-card) !important;
+    color: var(--text-body) !important;
+}
+
+.tox .tox-tbtn svg {
+  background-color: var(--bg-card) !important;
+  fill: var(--text-body) !important;
+}
+.tox-editor-header .tox-toolbar__group {
+  background-color: var(--bg-card) !important;
+}
+.tox .tox-tbtn:hover {
+    background-color: var(--bg-card-hover) !important;
+}
+
+.tox .tox-tbtn--disabled,
+.tox .tox-tbtn--bespoke,
+.tox .tox-tbtn,
+.tox .tox-tbtn:focus {
+    color: var(--text-body) !important;
+    background-color: var(--bg-card) !important;
+}
+
+
+/* Khu vực nội dung bên trong editor */
+.tox .tox-edit-area,
+.tox .tox-edit-area__iframe {
+    background-color: var(--bg-main) !important;
+}
+
+/* Footer / status bar */
+.tox .tox-statusbar {
+    background-color: var(--bg-card) !important;
+    border-top: 1px solid var(--border-color) !important;
+    color: var(--text-muted) !important;
+}
+
+/* Chữ và đường dẫn ở footer */
+.tox .tox-statusbar a,
+.tox .tox-statusbar__path-item,
+.tox .tox-statusbar__wordcount {
+    color: var(--text-body) !important;
+}
+
+/* Nút resize footer */
+.tox .tox-statusbar__resize-handle {
+    color: var(--text-muted) !important;
+}
+
+/* Viền khi focus editor */
+.tox.tox-tinymce:focus-within {
+    border-color: var(--primary-hover) !important;
+}
+.tox-promotion {
+  display: none !important;
+}

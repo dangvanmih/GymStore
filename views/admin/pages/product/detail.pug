@@ -116,7 +116,7 @@ block main
         .tab-content(id="productTabContent")
           .tab-pane.fade.show.active(id="desc-pane" role="tabpanel")
             if product.description
-              .product-description!= product.description
+              .product-description !{product.description}
             else
               p.text-muted.fst-italic.mb-0 Chưa có mô tả cho sản phẩm này.
 
