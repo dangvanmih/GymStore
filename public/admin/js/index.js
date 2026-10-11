@@ -60,7 +60,7 @@ if (buttonStatus.length > 0) {
   })
 };
 
-// Xử lý tìm kiếm sản phẩm
+// Xử lý tìm kiếm
 const searchForm = document.querySelector("#form-search");
 if (searchForm) {
   let url = new URL(window.location.href);
@@ -113,7 +113,7 @@ if (showAlert) {
   }
 };
 
-// Xử lý upload preview ảnh sản phẩm
+// Xử lý upload preview ảnh
 document.addEventListener("DOMContentLoaded", () => {
   const uploadImageWrapper = document.querySelector("[upload-image]");
 
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// xử lý sự kiện sắp xếp sản phẩm
+// xử lý sự kiện sắp xếp
 const sort = document.querySelector("[sort]");
 if (sort) {
   let url = new URL(window.location.href);

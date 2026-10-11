@@ -1,7 +1,7 @@
 // Xử lý logic thay đổi trạng thái sản phẩm
 const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
-if (buttonsChangeStatus.length > 0) {
-  const formChangeStatus = document.querySelector("#form-change-status");
+const formChangeStatus = document.querySelector("#form-change-status");
+if (buttonsChangeStatus.length > 0 && formChangeStatus) {
 
   const path = formChangeStatus.getAttribute("data-path");
 
@@ -19,37 +19,39 @@ if (buttonsChangeStatus.length > 0) {
 };
 
 // xử lý logic nút checkbox
-const checkBoxMulti = document.querySelector("[checkbox-multi]");
-if (checkBoxMulti) {
-  const inputCheckAll = checkBoxMulti.querySelector("input[name='checkall']");
-  const inputcheckbox = checkBoxMulti.querySelectorAll("input[name='id']");
+document.addEventListener("DOMContentLoaded", () => {
+  const checkBoxMulti = document.querySelector("[checkbox-multi]");
 
-  inputCheckAll.addEventListener("click", () => {
-    if (inputCheckAll.checked) {
-      inputcheckbox.forEach(checkbox => {
-        checkbox.checked = true
-      });
-    }
-    else {
-      inputcheckbox.forEach(checkbox => {
-        checkbox.checked = false;
-      });
-    }
+  if (!checkBoxMulti) return;
+
+  const inputCheckAll = checkBoxMulti.querySelector(
+    "input[name='checkall']"
+  );
+
+  const inputCheckbox = checkBoxMulti.querySelectorAll(
+    "input[name='id']"
+  );
+
+  if (!inputCheckAll) return;
+
+  inputCheckAll.addEventListener("change", () => {
+    inputCheckbox.forEach((checkbox) => {
+      checkbox.checked = inputCheckAll.checked;
+    });
   });
 
-  inputcheckbox.forEach(checkbox => {
-    checkbox.addEventListener("click", () => {
-      countChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked").length;
+  inputCheckbox.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      const countChecked = checkBoxMulti.querySelectorAll(
+        "input[name='id']:checked"
+      ).length;
 
-      if (inputcheckbox.length == countChecked) {
-        inputCheckAll.checked = true
-      }
-      else {
-        inputCheckAll.checked = false
-      }
-    })
-  })
-};
+      inputCheckAll.checked =
+        inputCheckbox.length > 0 &&
+        countChecked === inputCheckbox.length;
+    });
+  });
+});
 
 // Xử lý thay đổi trạng thái nhiều sản phẩm
 const formChangeMulti = document.querySelector("[form-change-multi]");
@@ -135,3 +137,6 @@ if (buttonDelete.length > 0) {
     });
   });
 };
+
+
+

@@ -12,6 +12,4 @@ tinymce.init({
    blockquote { border-left: 3px solid #4f46e5; 
    padding-left: 12px; color: #94a3b8; } 
    code, pre { background-color: #121520; color: #a5b4fc; } `
-
-
 });
