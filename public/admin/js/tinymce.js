@@ -1,6 +1,5 @@
 tinymce.init({
   selector: 'textarea',
-  content_css: '/admin/css/tinymce.css',
   license_key: 'gpl',
   plugins: 'lists link image table code help wordcount',
 
