@@ -4,6 +4,7 @@ include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
 include ../../mixins/filterStatus.pug
+include ../../mixins/table-tree.pug
 append style
   link(rel="stylesheet" href="/admin/css/product.css")
 
@@ -52,52 +53,7 @@ block main
                 th.text-center(style="width: 130px;") Thao tác
             tbody
               if (category && category.length > 0)
-                each items, index in category
-                  tr
-                    td.text-center
-                      input(type="checkbox" name="id" value=items.id)
-                    td.text-center.fw-medium.text-secondary #{index + 1}
-                    td
-                      .fw-semibold.text-dark.product-title #{items.title}
-                      small.text-muted.d-block ID: #{items._id || 'PROD-' + (index + 1)}
-                    td.text-center 
-                      input.form-control.form-control-sm.input-position-dark(
-                        type="number"
-                        value=items.position
-                        min="1"
-                        name="position"
-                        data-id=items._id
-                      )
-                    td.text-center
-                      if items.status == 'active'
-                        a.badge-status.badge-status-success.text-decoration-none(
-                          href="javascript:;"
-                          data-id=items.id
-                          data-status=items.status
-                          button-change-status
-                        )
-                          i.fas.fa-circle
-                          | Hoạt động
-                      else
-                        a.badge-status.badge-status-danger.text-decoration-none(
-                          href="javascript:;"
-                          data-id=items.id
-                          data-status=items.status
-                          button-change-status
-                        )
-                          i.fas.fa-circle
-                          | Dừng hoạt động
-                    td.text-center
-                      .action-btn-group
-                        a.btn-action.btn-action-edit(href=`${prefixAdmin}/categories/edit/${items.id}`, title="Chỉnh sửa")
-                          i.fas.fa-pen
-                        a.btn-action.btn-action-detail(
-                          href=`${prefixAdmin}/categories/detail/${items.id}`
-                          title="Xem chi tiết"
-                        )
-                          i.fas.fa-eye
-                        button(class= "btn-action btn-action-delete" data-id = items.id button-delete title="Xóa danh mục")
-                          i.fas.fa-trash-alt
+                +table-tree(category)
               else
                 tr
                   td.text-center.py-4(colspan="6")

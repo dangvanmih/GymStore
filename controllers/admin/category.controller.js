@@ -1,6 +1,6 @@
 const Category = require("../../models/category.model")
 const systemConfig = require('../../configs/system');
-
+const createTreeHelper = require("../../helpers/createTree")
 // GET: /admin/categories
 module.exports.index = async (req, res) => {
 
@@ -8,19 +8,31 @@ module.exports.index = async (req, res) => {
     deleted: false,
   };
 
-  const category = await Category.find(findQuery)
+  
+  const category = await Category.find(findQuery);
 
+  const newCategory = createTreeHelper.tree(category);
 
   res.render('admin/pages/category/index', {
     pageTitle: 'Trang Danh mục sản phẩm',
-    category: category
+    category: newCategory
   });
 };
 
 // GET: /admin/categories/create
 module.exports.create = async (req, res) => {
+
+  let findQuery = {
+    deleted: false,
+  };
+
+  const category = await Category.find(findQuery)
+
+  const newCategory = createTreeHelper.tree(category)
+
   res.render('admin/pages/category/create', {
     pageTitle: 'Thêm danh mục',
+    category: newCategory
   });
 };
 
