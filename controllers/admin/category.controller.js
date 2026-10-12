@@ -8,7 +8,7 @@ module.exports.index = async (req, res) => {
     deleted: false,
   };
 
-  
+
   const category = await Category.find(findQuery);
 
   const newCategory = createTreeHelper.tree(category);
@@ -51,4 +51,48 @@ module.exports.createPost = async (req, res) => {
   await category.save();
   req.flash("success", "Đã thêm danh mục thành công!");
   res.redirect(`${systemConfig.prefixAdmin}/categories`);
+};
+
+// POST: /admin/categories/edit/:id
+module.exports.edit = async (req, res) => {
+  const id = req.params.id;
+
+  let findQuery = {
+    deleted: false,
+    _id: id
+  };
+  const category = await Category.findOne(findQuery);
+
+  const data = await Category.find({
+    deleted: false
+  });
+
+  const newCategory = createTreeHelper.tree(data);
+
+  res.render('admin/pages/category/edit', {
+    pageTitle: 'Chỉnh sửa danh mục',
+    category: category,
+    data: newCategory
+  });
+};
+
+// PATCH: /admin/categories/edit/:id
+module.exports.editPost = async (req, res) => {
+
+  req.body.position = parseInt(req.body.position);
+  const id = req.params.id;
+
+  if (req.file) {
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  }
+  try {
+    await Category.updateOne({ _id: id }, req.body);
+    req.flash("success", "Cập nhật danh mục thành công!");
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`)
+  }
+  catch (error) {
+    req.flash("error", "Cập nhật danh mục không thành công!");
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`);
+  }
+
 };
