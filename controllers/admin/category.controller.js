@@ -53,7 +53,7 @@ module.exports.createPost = async (req, res) => {
   res.redirect(`${systemConfig.prefixAdmin}/categories`);
 };
 
-// POST: /admin/categories/edit/:id
+// GET: /admin/categories/edit/:id
 module.exports.edit = async (req, res) => {
   const id = req.params.id;
 

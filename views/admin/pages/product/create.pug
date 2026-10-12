@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 append style
   link(rel="stylesheet" href="/admin/css/product-create.css")
@@ -41,6 +42,16 @@ block main
                   placeholder="Ví dụ: Áo Sơ Mi Degrey Black Pattern..."
                   required
                 )
+                .mb-3
+                  label.form-label.fw-medium(for="category_id") Danh mục cha 
+                  select.form-select.form-select-dark(
+                    name="category_id"
+                    id="category_id"
+                    class="form-control"
+                  )
+                    option(value="" disabled selected) -- Chọn danh mục --
+                    if(category)
+                      +select-tree(category)
 
               //- Mô tả
               .mb-3
