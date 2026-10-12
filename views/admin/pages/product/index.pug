@@ -60,7 +60,7 @@ block main
                   tr
                     td.text-center
                       input(type="checkbox" name="id" value=items.id)
-                    td.text-center.fw-medium.text-secondary #{index + 1}
+                    td.text-center.fw-medium.text-secondary #{pagination.limitItems*(pagination.currentPage - 1) + (index + 1)}
                     td
                       .product-img-wrapper
                         img.product-img(src=items.thumbnail alt=items.title)

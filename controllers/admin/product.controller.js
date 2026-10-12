@@ -33,7 +33,7 @@ module.exports.index = async (req, res) => {
   // 2. Định nghĩa cấu hình phân trang ban đầu
   const initPagination = {
     currentPage: 1,
-    limitItems: 8,
+    limitItems: 7,
   };
 
   // 3. Gọi helper phân trang

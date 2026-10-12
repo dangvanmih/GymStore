@@ -4,10 +4,10 @@ mixin table-tree(category, level = 1)
     tr
       td.text-center
         input(type="checkbox" name="id" value=items.id)
-      td.text-center.fw-medium.text-secondary #{index + 1}
+      td.text-center.fw-medium.text-secondary #{items.index}
       td
         .fw-semibold.text-dark.product-title #{prefix}#{items.title}
-        small.text-muted.d-block ID: #{items._id || 'PROD-' + (index + 1)}
+        small.text-muted.d-block ID: #{items._id || 'PROD-' + (items.index)}
       td.text-center 
         input.form-control.form-control-sm.input-position-dark(
           type="number"
