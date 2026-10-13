@@ -1,13 +1,13 @@
-link(rel="stylesheet", href="/admin/css/sider.css")
+link(rel="stylesheet" href="/admin/css/sider.css")
 aside.sider
   //- Logo & Toggle Button
   .sider-header
     a.logo-brand(href=`${prefixAdmin}/dashboard`)
       .logo-icon
-        img(src="/admin/images/short-icon.webp", alt="DEGREY Logo", style='height:36px; object-fit: contain; border-radius: 40%;')
+        img(src="/admin/images/short-icon.webp" alt="DEGREY Logo" style='height:36px; object-fit: contain; border-radius: 40%;')
       span.logo-text DEGREY
 
-    button#sidebarToggle.toggle-btn(type="button", title="Đóng/Mở Menu")
+    button#sidebarToggle.toggle-btn(type="button" title="Đóng/Mở Menu")
       i.fas.fa-bars-staggered
 
   //- Menu Items
@@ -41,7 +41,14 @@ aside.sider
         a.nav-link(href=`${prefixAdmin}/accounts`)
           i.fas.fa-users
           span Users
-
+      li.nav-item
+        a.nav-link(href=`${prefixAdmin}/roles`)
+          i.fas.fa-shield-alt
+          span Roles
+      li.nav-item
+        a.nav-link(href=`${prefixAdmin}/permissions`)
+          i.fas.fa-key
+          span Permissions
     .menu-group-title SYSTEM
     ul.nav-menu
       li.nav-item

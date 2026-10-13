@@ -1,0 +1,71 @@
+/* ==========================================
+   CREATE ROLE PAGE - DARK MODE STYLES
+   ========================================== */
+
+/* Input & Textarea Dark Mode chuẩn Enterprise */
+.form-control-dark {
+  background-color: #1a1f2c !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-control-dark:focus {
+  background-color: #1a1f2c !important;
+  color: #ffffff !important;
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+  outline: none !important;
+}
+
+.form-control-dark::placeholder {
+  color: #64748b !important;
+}
+
+/* Nút Trở về */
+.btn-secondary-dark {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 9px 18px;
+  border-radius: 8px !important;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-secondary-dark:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Nút Submit Tạo mới */
+.btn-submit-role {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 10px 24px;
+  border-radius: 8px !important;
+  border: 1px solid #4f46e5 !important;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.btn-submit-role:hover {
+  background-color: #4338ca !important;
+  border-color: #4338ca !important;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+  transform: translateY(-1px);
+  color: #ffffff !important;
+}
+.card {
+  background-color: #1a1f2c !important;
+}

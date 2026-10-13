@@ -1,0 +1,53 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+append style
+  link(rel="stylesheet" href="/admin/css/role.css")
+
+block main
+  +alert-success(5000)
+  .roles-management-wrapper.container-fluid.py-4
+    //- Tiêu đề trang & Nút thêm mới
+    .row.align-items-center.mb-4
+      .col-md-6
+        h1.page-title.mb-0 Nhóm quyền
+      .col-md-6.text-right
+        a.btn.btn-add-role(href=`${prefixAdmin}/roles/create`)
+          i.fas.fa-plus.mr-2
+          | Thêm mới
+
+    //- Bảng danh sách nhóm quyền
+    .card.card-dark.border-0.shadow-sm
+      .card-body.p-0
+        .table-responsive
+          table.table.table-dark.table-hover.align-middle.mb-0
+            thead
+              tr
+                th.text-center(style="width: 60px;") STT
+                th Nhóm quyền
+                th Mô tả ngắn
+                th.text-center(style="width: 180px;") Hành động
+            tbody
+              if role && role.length > 0
+                each item, index in role
+                  tr
+                    td.text-center.fw-medium #{index + 1}
+                    td
+                      span.role-title.fw-bold #{item.title}
+                    td
+                      span.role-desc !{item.description || "Chưa có mô tả"}
+                    td.text-center
+                      .d-flex.justify-content-center.gap-2
+                        a.btn-action.btn-sm.btn-action-view(href=`${prefixAdmin}/roles/detail/${item.id}` title="Chi tiết")
+                          i.fas.fa-eye
+                        a.btn-action.btn-sm.btn-action-edit(href=`${prefixAdmin}roles/edit/${item.id}` title="Sửa")
+                          i.fas.fa-edit
+                        button.btn-action.btn-sm.btn-action-delete(
+                          data-id=item.id
+                          button-delete
+                          title="Xóa"
+                        )
+                          i.fas.fa-trash
+              else
+                tr
+                  td.text-center.py-4(colspan="4")
+                    p.text-muted.mb-0 Chưa có nhóm quyền nào được tạo.

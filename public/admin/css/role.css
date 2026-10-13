@@ -1,0 +1,115 @@
+/* ==========================================
+   ROLES MANAGEMENT PAGE - DARK MODE ENTERPRISE
+   ========================================== */
+
+/* Tiêu đề trang */
+.roles-management-wrapper .page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f8fafc !important;
+}
+
+/* Nút Thêm mới nhóm quyền */
+.btn-add-role {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 10px 18px;
+  border-radius: 8px !important;
+  border: 1px solid #4f46e5 !important;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-add-role:hover {
+  background-color: #4338ca !important;
+  border-color: #4338ca !important;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+  transform: translateY(-1px);
+  color: #ffffff !important;
+}
+
+/* Khung Card bao bọc bảng */
+.card.card-dark {
+  background-color: #131722 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+/* Định dạng Bảng dữ liệu Dark Mode */
+.table.table-dark {
+  background-color: transparent !important;
+  color: #e2e8f0 !important;
+  margin-bottom: 0 !important;
+}
+
+.table.table-dark th {
+  background-color: #1a1f2c !important;
+  color: #94a3b8 !important;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.table.table-dark td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  vertical-align: middle;
+  color: #e2e8f0 !important;
+  font-size: 0.875rem;
+}
+
+.table.table-hover.table-dark tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Tên nhóm quyền & Mô tả */
+.role-title {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.role-desc {
+  color: #9ca3af !important;
+}
+
+/* Các nút hành động trong bảng (Xem, Sửa, Xóa) */
+.btn-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background-color: transparent;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.btn-action-edit:hover {
+  color: #60a5fa !important;
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-action-delete:hover {
+  color: #f87171 !important;
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn-action-view:hover {
+  color: #60a5fa !important;
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
