@@ -6,7 +6,7 @@ block main
   .roles-create-wrapper.container-fluid.py-4
     //- Tiêu đề trang & Nút quay lại
     .d-flex.align-items-center.justify-content-between.mb-4
-      h1.page-title.mb-0 Thêm mới nhóm quyền
+      h1.page-title.mb-0 Thêm mới vai trò
       a.btn.btn-secondary-dark(href="/admin/roles")
         <i class="fas.fa-arrow-left.me-2"></i> Trở về danh sách
 
@@ -19,15 +19,15 @@ block main
               action=`${prefixAdmin}/roles/create`
               method="POST"
             )
-              //- Tên nhóm quyền
+              //- Tên vai trò
               .mb-3
                 label.form-label.fw-semibold.text-light(for="title") 
-                  | Tên nhóm quyền <span class="text-danger">*</span>
+                  | Tên vai trò <span class="text-danger">*</span>
                 input.form-control.form-control-dark(
                   type="text"
                   id="title"
                   name="title"
-                  placeholder="Nhập tên nhóm quyền (Ví dụ: Quản trị viên, Nhân viên kho...)"
+                  placeholder="Nhập tên vai trò (Ví dụ: Quản trị viên, Nhân viên kho...)"
                   required
                 )
 
@@ -38,7 +38,7 @@ block main
                   id="description"
                   name="description"
                   rows="4"
-                  placeholder="Nhập mô tả chi tiết chức năng của nhóm quyền này..."
+                  placeholder="Nhập mô tả chi tiết chức năng của vai trò này..."
                 )
 
               //- Nút hành động

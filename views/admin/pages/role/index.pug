@@ -5,11 +5,12 @@ append style
 
 block main
   +alert-success(5000)
+  +alert-error(5000)
   .roles-management-wrapper.container-fluid.py-4
     //- Tiêu đề trang & Nút thêm mới
     .row.align-items-center.mb-4
       .col-md-6
-        h1.page-title.mb-0 Nhóm quyền
+        h1.page-title.mb-0 Vai trò
       .col-md-6.text-right
         a.btn.btn-add-role(href=`${prefixAdmin}/roles/create`)
           i.fas.fa-plus.mr-2
@@ -23,7 +24,7 @@ block main
             thead
               tr
                 th.text-center(style="width: 60px;") STT
-                th Nhóm quyền
+                th Vai trò
                 th Mô tả ngắn
                 th.text-center(style="width: 180px;") Hành động
             tbody
@@ -39,7 +40,7 @@ block main
                       .d-flex.justify-content-center.gap-2
                         a.btn-action.btn-sm.btn-action-view(href=`${prefixAdmin}/roles/detail/${item.id}` title="Chi tiết")
                           i.fas.fa-eye
-                        a.btn-action.btn-sm.btn-action-edit(href=`${prefixAdmin}roles/edit/${item.id}` title="Sửa")
+                        a.btn-action.btn-sm.btn-action-edit(href=`${prefixAdmin}/roles/edit/${item.id}` title="Sửa")
                           i.fas.fa-edit
                         button.btn-action.btn-sm.btn-action-delete(
                           data-id=item.id
@@ -50,4 +51,11 @@ block main
               else
                 tr
                   td.text-center.py-4(colspan="4")
-                    p.text-muted.mb-0 Chưa có nhóm quyền nào được tạo.
+                    p.text-muted.mb-0 Chưa có vai trò nào được tạo.
+    form(
+      action = "",
+      method = "POST",
+      id = "form-delete-item",
+      data-path = `${prefixAdmin}/roles/delete`
+    )
+    script(src="/admin/js/role.js")

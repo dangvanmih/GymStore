@@ -33,3 +33,46 @@ module.exports.createPost = async (req, res) => {
   res.redirect(`${systemConfig.prefixAdmin}/roles`);
 };
 
+// GET: /admin/roles/edit/:id
+module.exports.edit = async (req, res) => {
+
+  let findQuery = {
+    deleted: false,
+    _id: req.params.id
+  };
+
+  const role = await Role.findOne(findQuery);
+
+  res.render('admin/pages/role/edit', {
+    pageTitle: 'Trang chỉnh sửa',
+    role: role
+  });
+};
+
+// PATCH: /admin/roles/edit/:id
+module.exports.editPatch = async (req, res) => {
+
+  const id = req.params.id
+  try {
+    await Role.updateOne({ _id: id }, req.body);
+    req.flash("success", "Cập nhật nhóm quyền thành công!");
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`)
+  } catch (error) {
+    req.flash("error", "Cập nhật nhóm quyền không thành công!");
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`);
+  }
+};
+
+// DELETE: /admin/roles/delete/:id
+module.exports.delete = async (req, res) => {
+
+  const id = req.params.id
+  try {
+    await Role.updateOne({ _id: id }, {deleted:true});
+    req.flash("success", "Xóa vai trò thành công!");
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`)
+  } catch (error) {
+    req.flash("error", "Xóa vai trò không thành công!");
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`);
+  }
+};
