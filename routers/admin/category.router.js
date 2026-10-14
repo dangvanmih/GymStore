@@ -23,4 +23,5 @@ router.patch(
   uploadCloudinaryMiddleware.uploadCloudinary,
   validate.createPost,
   controller.editPost);
+router.delete('/delete/:id', controller.deleteCategory);
 module.exports = router;

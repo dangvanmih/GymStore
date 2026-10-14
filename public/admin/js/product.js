@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// xử lý xóa sản phẩm
+// xử lý xóa role
 const buttonDelete = document.querySelectorAll("[button-delete]");
 
 if (buttonDelete.length > 0) {
@@ -63,21 +63,33 @@ if (buttonDelete.length > 0) {
 
   buttonDelete.forEach(button => {
     button.addEventListener("click", () => {
-      const isConfim = confirm("Bạn có chắc muốn xóa sản phẩm này không?");
+      // Gọi SweetAlert2 thay cho confirm() mặc định
+      Swal.fire({
+        title: "Bạn có chắc chắn muốn xóa?",
+        text: "Hành động này sẽ xóa tạm thời sản phẩm và có thể khôi phục!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ef4444", // Màu đỏ cho nút xóa
+        cancelButtonColor: "#334155",  // Màu xám tối cho nút hủy
+        confirmButtonText: "Đồng ý xóa",
+        cancelButtonText: "Hủy bỏ",
+        background: "#131722",         // Nền khớp với card Dark Mode
+        color: "#f8fafc",
+        customClass: {
+          popup: 'sw2-compact-popup' // Áp dụng class thu nhỏ
+        }             
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const id = button.getAttribute("data-id");
 
-      if (isConfim) {
-        const id = button.getAttribute("data-id");
+          const action = `${path}/${id}?_method=DELETE`;
+          console.log(action);
 
-        const action = `${path}/${id}?_method=DELETE`;
-        console.log(action);
-
-        formDeleteItem.action = action;
-
-        formDeleteItem.submit();
-      }
+          formDeleteItem.action = action;
+          formDeleteItem.submit();
+        }
+      });
     });
   });
-};
-
-
+}
 

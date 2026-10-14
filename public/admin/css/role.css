@@ -113,30 +113,3 @@
   background-color: rgba(59, 130, 246, 0.15) !important;
   border-color: rgba(59, 130, 246, 0.3) !important;
 }
-
-/* ==========================================
-   CUSTOM SWEETALERT2 COMPACT SIZE
-   ========================================== */
-.sw2-compact-popup {
-  width: 380px !important;       /* Thu nhỏ chiều ngang (mặc định của swal2 thường là 500px+) */
-  padding: 1.5rem !important;    /* Giảm khoảng cách đệm bên trong */
-  border-radius: 12px !important;/* Bo góc đồng bộ với card hệ thống */
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-.sw2-compact-popup .swal2-title {
-  font-size: 1.15rem !important;   /* Thu nhỏ tiêu đề cho gọn */
-  font-weight: 600 !important;
-}
-
-.sw2-compact-popup .swal2-html-container {
-  font-size: 0.875rem !important;  /* Thu nhỏ cỡ chữ nội dung mô tả */
-  color: #94a3b8 !important;
-}
-
-.sw2-compact-popup .swal2-actions button {
-  font-size: 0.85rem !important;   /* Thu nhỏ cỡ chữ ở nút bấm */
-  padding: 8px 18px !important;  /* Thu gọn nút bấm */
-  border-radius: 6px !important;
-  font-weight: 600 !important;
-}

@@ -10,7 +10,7 @@ if (buttonDelete.length > 0) {
       // Gọi SweetAlert2 thay cho confirm() mặc định
       Swal.fire({
         title: "Bạn có chắc chắn muốn xóa?",
-        text: "Hành động này sẽ xóa vĩnh viễn nhóm quyền và không thể khôi phục!",
+        text: "Hành động này sẽ xóa tạm thời nhóm quyền và có thể khôi phục!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#ef4444", // Màu đỏ cho nút xóa

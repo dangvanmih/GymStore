@@ -160,3 +160,16 @@ module.exports.changeStatus = async (req, res) => {
   res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`);
 
 };
+
+// DELETE: /admin/product/delete/:id
+module.exports.deleteCategory = async (req, res) => {
+  const id = req.params.id;
+
+  await Category.updateOne(
+    { _id: id },
+    { deleted: true },
+    { deletedAt: new Date() },
+  );
+  req.flash("success", "Đã xóa thành công!");
+  res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`);
+};
