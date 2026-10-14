@@ -9,6 +9,16 @@ module.exports.index = async (req, res) => {
     deleted: false,
   };
 
+  // sort
+  let sortQuery = {};
+  if (req.query.sortKey && req.query.sortValue) {
+    sortQuery[req.query.sortKey] = req.query.sortValue;
+  }
+  else {
+    sortQuery.position = "desc"; // sắp xếp theo vị trí giảm dần
+  }
+  // end sors
+
   // xử lý tìm kiếm sản phẩm theo từ khóa
   const objectSearch = searchHelper(req);
   if (objectSearch.regex) {
@@ -16,13 +26,14 @@ module.exports.index = async (req, res) => {
   }
 
 
-  const category = await Category.find(findQuery);
+  const category = await Category.find(findQuery).sort(sortQuery);
 
   const newCategory = createTreeHelper.tree(category);
 
   res.render('admin/pages/category/index', {
     pageTitle: 'Trang Danh mục sản phẩm',
-    category: newCategory
+    category: newCategory,
+    keyword: objectSearch.keyword
   });
 };
 
@@ -102,4 +113,38 @@ module.exports.editPost = async (req, res) => {
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`);
   }
 
+};
+
+// PATCH: /admin/categories/change-multi
+module.exports.changeMulti = async (req, res) => {
+
+  const type = req.body.type;
+  const ids = req.body.ids.split(", ");
+
+  switch (type) {
+    case "active":
+      await Category.updateMany({ _id: { $in: ids } }, { status: "active" });
+      req.flash("success", `Đã cập nhật trạng thái ${ids.length} danh mục!`)
+      break;
+    case "inactive":
+      await Category.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash("success", `Đã cập nhật trạng thái ${ids.length} danh mục!`)
+      break;
+    case "delete-all":
+      await Category.updateMany({ _id: { $in: ids } }, { deleted: true }, { deletedAt: new Date() });
+      req.flash("success", `Đã xóa ${ids.length} danh mục!`)
+      break;
+    case "change-position":
+      for (const item of ids) {
+        let [id, position] = item.split("-");
+        position = parseInt(position);
+
+        await Category.updateOne({ _id: id }, { position: position });
+      }
+      req.flash("success", `Đã cập nhật vị trí ${ids.length} danh mục!`)
+      break;
+    default:
+      break;
+  }
+  res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`);
 };

@@ -2,7 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/search.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
-include ../../mixins/sort.pug
+include ../../mixins/sort-category.pug
 include ../../mixins/filterStatus.pug
 include ../../mixins/table-tree.pug
 append style
@@ -32,7 +32,7 @@ block main
           .col-md-3.col-lg-3
             +form-change-multi(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
           .col-md-3.col-lg-3
-            +sort()
+            +sort-category()
           .col-md-2.col-lg-3
             +search(keyword)
     .card.border-0.shadow-sm.rounded-3
