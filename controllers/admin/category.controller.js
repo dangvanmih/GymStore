@@ -148,3 +148,15 @@ module.exports.changeMulti = async (req, res) => {
   }
   res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`);
 };
+
+// PATCH: /admin/categories/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+
+  const status = req.params.status;
+  const id = req.params.id
+
+  await Category.updateOne({ _id: id }, { status: status });
+  req.flash("success", "Cập nhật trạng thái thành công!")
+  res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/categories`);
+
+};

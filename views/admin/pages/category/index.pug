@@ -58,4 +58,10 @@ block main
                 tr
                   td.text-center.py-4(colspan="6")
                     .text-muted Không tìm thấy sản phẩm nào.
+    form(
+      action = "",
+      method = "POST",
+      id = "form-change-status",
+      data-path = `${prefixAdmin}/categories/change-status`
+    )
     script(src="/admin/js/category.js")
