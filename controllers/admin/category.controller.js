@@ -1,12 +1,19 @@
-const Category = require("../../models/category.model")
+const Category = require("../../models/category.model");
 const systemConfig = require('../../configs/system');
-const createTreeHelper = require("../../helpers/createTree")
+const createTreeHelper = require("../../helpers/createTree");
+const searchHelper = require('../../helpers/search');
 // GET: /admin/categories
 module.exports.index = async (req, res) => {
 
   let findQuery = {
     deleted: false,
   };
+
+  // xử lý tìm kiếm sản phẩm theo từ khóa
+  const objectSearch = searchHelper(req);
+  if (objectSearch.regex) {
+    findQuery.title = objectSearch.regex;
+  }
 
 
   const category = await Category.find(findQuery);
