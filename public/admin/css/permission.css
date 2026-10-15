@@ -1,0 +1,397 @@
+.permissions-wrapper {
+  --perm-bg: #0b0d14;
+  --perm-card: #121520;
+  --perm-card-hover: #171b29;
+  --perm-border: #1e2235;
+  --perm-text: #e2e8f0;
+  --perm-muted: #94a3b8;
+  --perm-primary: #4f46e5;
+  --perm-primary-hover: #6366f1;
+  --perm-radius: 10px;
+
+  color: var(--perm-text);
+  padding-top: 28px !important;
+  padding-bottom: 36px !important;
+}
+
+/* ===== PAGE HEADER ===== */
+
+.permissions-wrapper .page-title {
+  color: #f1f5f9;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.4;
+  position: relative;
+}
+
+.permissions-wrapper .page-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 25px;
+  margin-right: 12px;
+  vertical-align: -4px;
+  background: var(--perm-primary);
+  border-radius: 4px;
+}
+
+/* ===== UPDATE BUTTON ===== */
+
+.permissions-wrapper .btn-update-permissions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 18px;
+
+  color: #fff;
+  background: var(--perm-primary);
+  border: 1px solid var(--perm-primary);
+  border-radius: 7px;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+
+  box-shadow: 0 2px 8px rgb(79 70 229 / 15%);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.permissions-wrapper .btn-update-permissions:hover {
+  color: #fff;
+  background: var(--perm-primary-hover);
+  border-color: var(--perm-primary-hover);
+  box-shadow: 0 4px 14px rgb(79 70 229 / 25%);
+  transform: translateY(-1px);
+}
+
+.permissions-wrapper .btn-update-permissions:active {
+  transform: translateY(0);
+}
+
+.permissions-wrapper .btn-update-permissions:focus-visible {
+  outline: 2px solid #818cf8;
+  outline-offset: 3px;
+}
+
+/* ===== MAIN CARD ===== */
+
+.permissions-wrapper .card.card-dark {
+  overflow: hidden;
+  background: var(--perm-card) !important;
+  border: 1px solid var(--perm-border) !important;
+  border-radius: var(--perm-radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%) !important;
+}
+
+.permissions-wrapper .card-header-dark {
+  min-height: 54px;
+  padding: 16px 20px !important;
+
+  background: #151927 !important;
+  border-bottom: 1px solid var(--perm-border) !important;
+}
+
+.permissions-wrapper .card-header-dark span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #e2e8f0 !important;
+  font-size: 14px;
+  font-weight: 650 !important;
+}
+
+.permissions-wrapper .card-header-dark span::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  background: #818cf8;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgb(129 140 248 / 25%);
+}
+
+/* ===== TABLE CONTAINER ===== */
+
+.permissions-wrapper .table-responsive {
+  height: auto;
+  max-height: none;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.permissions-wrapper .table-responsive::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.permissions-wrapper .table-responsive::-webkit-scrollbar-track {
+  background: var(--perm-card);
+}
+
+.permissions-wrapper .table-responsive::-webkit-scrollbar-thumb {
+  background: #343b50;
+  border-radius: 10px;
+}
+
+.permissions-wrapper .table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #4b5570;
+}
+
+/* ===== TABLE BASE ===== */
+
+.permissions-wrapper table.table-permissions,
+.permissions-wrapper table[table-permissions] {
+  width: 100%;
+  min-width: 620px;
+  margin-bottom: 0;
+
+  color: var(--perm-text) !important;
+  background: var(--perm-card) !important;
+  border-color: var(--perm-border) !important;
+
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+/* Reset Bootstrap table-dark defaults */
+
+.permissions-wrapper .table-dark,
+.permissions-wrapper .table-dark > :not(caption) > * > * {
+  color: var(--perm-text);
+  background-color: var(--perm-card);
+  border-color: var(--perm-border);
+}
+
+.permissions-wrapper table > :not(caption) > * > * {
+  padding: 12px 16px;
+  border-color: var(--perm-border) !important;
+  box-shadow: none;
+}
+
+/* ===== TABLE HEADER ===== */
+
+.permissions-wrapper table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  height: 50px;
+  color: #cbd5e1 !important;
+  background: #191e2d !important;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #30364b !important;
+  white-space: nowrap;
+}
+
+.permissions-wrapper table thead th.permission-feature-col {
+  position: sticky;
+  left: 0;
+  z-index: 7;
+
+  width: 240px;
+  min-width: 240px;
+  text-align: left;
+}
+
+.permissions-wrapper table thead th.permission-role-col {
+  min-width: 125px;
+  text-align: center;
+}
+
+/* ===== FEATURE COLUMN ===== */
+
+.permissions-wrapper table tbody tr:not(.table-group-header) td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+
+  min-width: 240px;
+  color: #cbd5e1 !important;
+  background: var(--perm-card) !important;
+
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+/* Keep first column consistent when hovering */
+
+.permissions-wrapper .table-hover > tbody > tr:hover > td:first-child {
+  background: var(--perm-card-hover) !important;
+}
+
+/* ===== GROUP HEADER ===== */
+
+.permissions-wrapper table tbody tr.table-group-header > td {
+  position: static;
+  padding: 11px 16px;
+
+  color: #a5b4fc !important;
+  background: #191e2d !important;
+
+  border-top: 1px solid #30364b !important;
+  border-bottom: 1px solid var(--perm-border) !important;
+
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.permissions-wrapper table tbody tr.table-group-header b {
+  font-weight: 750;
+}
+
+/* ===== TABLE ROWS ===== */
+
+.permissions-wrapper table tbody tr:not(.table-group-header) td {
+  height: 45px;
+  background-color: var(--perm-card);
+}
+
+.permissions-wrapper .table-hover > tbody > tr:not(.table-group-header):hover > * {
+  color: var(--perm-text);
+  background-color: var(--perm-card-hover) !important;
+}
+
+.permissions-wrapper table tbody tr:not(.table-group-header) td:not(:first-child) {
+  text-align: center;
+}
+
+/* ===== CHECKBOX ===== */
+
+.permissions-wrapper .form-check-input.checkbox-dark {
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: inline-grid;
+  place-content: center;
+  vertical-align: middle;
+
+  width: 16px;
+  height: 16px;
+  margin: 0;
+
+  background-color: #0f1220;
+  border: 1px solid #424a60;
+  border-radius: 4px;
+
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.permissions-wrapper .form-check-input.checkbox-dark::before {
+  content: "";
+  width: 8px;
+  height: 5px;
+
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+
+  transform: rotate(-45deg) scale(0);
+  transition: transform 0.12s ease;
+}
+
+.permissions-wrapper .form-check-input.checkbox-dark:checked {
+  background-color: var(--perm-primary);
+  border-color: var(--perm-primary);
+}
+
+.permissions-wrapper .form-check-input.checkbox-dark:checked::before {
+  transform: rotate(-45deg) scale(1);
+}
+
+.permissions-wrapper .form-check-input.checkbox-dark:hover {
+  border-color: #818cf8;
+}
+
+.permissions-wrapper .form-check-input.checkbox-dark:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 25%);
+}
+
+.permissions-wrapper .form-check-input.checkbox-dark:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ===== HIDDEN ID ROW ===== */
+
+.permissions-wrapper tr[data-name="id"] {
+  display: none !important;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .permissions-wrapper {
+    padding-top: 20px !important;
+  }
+
+  .permissions-wrapper .page-title {
+    font-size: 21px;
+  }
+
+  .permissions-wrapper .page-title::before {
+    height: 21px;
+  }
+
+  .permissions-wrapper .btn-update-permissions {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  .permissions-wrapper .card-header-dark {
+    padding: 14px 16px !important;
+  }
+
+  .permissions-wrapper .table-responsive {
+    max-height: calc(100vh - 200px);
+  }
+
+  .permissions-wrapper table thead th.permission-feature-col,
+  .permissions-wrapper table tbody tr:not(.table-group-header) td:first-child {
+    width: 180px;
+    min-width: 180px;
+  }
+
+  .permissions-wrapper table > :not(caption) > * > * {
+    padding: 11px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .permissions-wrapper *,
+  .permissions-wrapper *::before,
+  .permissions-wrapper *::after {
+    transition: none !important;
+  }
+}
+
+.permissions-wrapper .permission-description {
+  color: var(--perm-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.permissions-wrapper .permission-card-description {
+  margin-top: 5px;
+  color: var(--perm-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}

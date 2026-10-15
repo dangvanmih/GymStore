@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     link.classList.remove("active");
 
     // Kiểm tra nếu URL hiện tại chứa href của thẻ a
-    if (linkPath && currentUrl.startsWith(linkPath)) {
+    if (linkPath && currentUrl === linkPath) {
       // Trường hợp đặc biệt cho trang Dashboard để tránh khớp với mọi đường dẫn /admin
       if (linkPath.endsWith("/dashboard") && currentUrl !== linkPath) {
         return;

@@ -1,0 +1,164 @@
+
+extends ../../layouts/default.pug
+
+append style
+  link(rel="stylesheet" href="/admin/css/permission.css")
+
+block main
+  .permissions-wrapper.container-fluid.py-4
+    .d-flex.align-items-center.justify-content-between.mb-4.flex-wrap.gap-3
+      div
+        h1.page-title.mb-1 Phân quyền
+        p.permission-description.mb-0
+          | Quản lý quyền truy cập và thao tác theo từng nhóm quyền.
+
+      button.btn.btn-update-permissions(
+        type="submit"
+        button-submit
+      )
+        i.fas.fa-save.me-2
+        | Cập nhật
+
+    div(data-records=records)
+
+    if records
+      .card.card-dark.border-0.shadow-sm.mb-3
+        .card-header.card-header-dark.d-flex.align-items-center.justify-content-between.py-3
+          div
+            span.fw-bold.text-light Danh sách nhóm quyền
+            p.permission-card-description.mb-0
+              | Tích chọn các thao tác được phép thực hiện cho từng nhóm.
+
+        .card-body.p-0
+          .table-responsive
+            table.table.table-dark.table-hover.table-bordered.align-middle.mb-0(table-permissions)
+              thead
+                //- Hàng chứa ID ẩn (hoặc dùng để code JS nhận diện ID nhóm quyền)
+                tr(data-name="id" class="d-none")
+                  td
+                  each item in records
+                    td.text-center
+                      input(type="text" value=item.id)
+
+                //- Hàng tiêu đề hiển thị Title nhóm quyền
+                tr
+                  th.permission-feature-col Tính năng
+                  each item in records
+                    th.text-center.permission-role-col #{item.title}
+
+              tbody
+                //- Nhóm: Danh mục sản phẩm
+                tr.table-group-header
+                  td(colspan=records.length + 1)
+                    b Danh mục sản phẩm
+                tr(data-name="products-category_view")
+                  td.ps-4 Xem
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="products-category_create")
+                  td.ps-4 Thêm mới
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="products-category_edit")
+                  td.ps-4 Sửa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="products-category_delete")
+                  td.ps-4 Xóa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+
+                //- Sản phẩm
+                tr.table-group-header
+                  td(colspan=records.length + 1)
+                    b Sản phẩm
+                tr(data-name="products_view")
+                  td.ps-4 Xem
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="products_create")
+                  td.ps-4 Thêm mới
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="products_edit")
+                  td.ps-4 Sửa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="products_delete")
+                  td.ps-4 Xóa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+
+                //- Nhóm quyền
+                tr.table-group-header
+                  td(colspan=records.length + 1)
+                    b Nhóm quyền
+                tr(data-name="roles_view")
+                  td.ps-4 Xem
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="roles_create")
+                  td.ps-4 Thêm mới
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="roles_edit")
+                  td.ps-4 Sửa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="roles_delete")
+                  td.ps-4 Xóa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox") 
+                tr(data-name="roles_permission")
+                  td.ps-4 Phân quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+
+                //- Tài khoản
+                tr.table-group-header
+                  td(colspan=records.length + 1)
+                    b Tài khoản
+                tr(data-name="accounts-view")
+                  td.ps-4 Xem
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="accounts-view_create")
+                  td.ps-4 Thêm mới
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="accounts-view_edit")
+                  td.ps-4 Sửa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+                tr(data-name="accounts-view_delete")
+                  td.ps-4 Xóa
+                  each item in records
+                    td.text-center
+                      input.form-check-input.checkbox-dark(type="checkbox")
+
+    form(
+      id="form-change-permissions"
+      method="POST"
+      action=`${prefixAdmin}/roles/permissions?_method=PATCH`
+      class="d-none"
+    ) 
+      div(class="form-group")
+        input(type="text" class="form-control" name="permissions")    
+
+    script(src="/admin/js/role.js")

@@ -10,7 +10,7 @@ module.exports.index = async (req, res) => {
   const role = await Role.find(findQuery);
 
   res.render('admin/pages/role/index', {
-    pageTitle: 'Trang danh sách quyền',
+    pageTitle: 'Trang danh sách vai trò',
     role: role
   });
 };
@@ -68,11 +68,60 @@ module.exports.delete = async (req, res) => {
 
   const id = req.params.id
   try {
-    await Role.updateOne({ _id: id }, {deleted:true});
+    await Role.updateOne({ _id: id }, { deleted: true });
     req.flash("success", "Xóa vai trò thành công!");
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`)
   } catch (error) {
     req.flash("error", "Xóa vai trò không thành công!");
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`);
+  }
+};
+
+// GET: /admin/roles/permissions
+module.exports.permission = async (req, res) => {
+
+  let findQuery = {
+    deleted: false,
+  };
+
+  const records = await Role.find(findQuery);
+
+  res.render('admin/pages/role/permission', {
+    pageTitle: 'Trang danh sách quyền',
+    records: records
+  });
+};
+
+// PATCH: /admin/roles/permissions
+module.exports.permissionPatch = async (req, res) => {
+  try {
+    const permissions = JSON.parse(req.body.permissions);
+
+    if (Array.isArray(permissions) && permissions.length > 0) {
+      for (const item of permissions) {
+        await Role.updateOne(
+          { _id: item.id },
+          { permissions: item.permissions }
+        );
+      }
+
+      req.flash("success", "Cập nhật phân quyền thành công!");
+    } else {
+      req.flash("error", "Dữ liệu phân quyền không hợp lệ!");
+    }
+
+    res.redirect(
+      req.get("Referer") ||
+      `${systemConfig.prefixAdmin}/roles/permissions`
+    );
+  } catch (error) {
+    console.error(error);
+
+    req.flash("error", "Cập nhật phân quyền không thành công!");
+
+    res.redirect(
+      req.get("Referer") ||
+      `${systemConfig.prefixAdmin}/roles/permissions`
+    );
   }
 };
