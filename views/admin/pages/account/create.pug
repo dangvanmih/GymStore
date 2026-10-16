@@ -1,0 +1,140 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+append style
+  link(rel="stylesheet" href="/admin/css/account-create.css")
+block main
+  +alert-error(5000)
+  .accounts-create-wrapper.container-fluid.py-4
+    //- Tiêu đề trang & Nút quay lại
+    .d-flex.align-items-center.justify-content-between.mb-4
+      h1.page-title.mb-0 Thêm mới tài khoản
+      a.btn.btn-secondary-dark(href=`${prefixAdmin}/accounts`)
+        i.fas.fa-arrow-left.mr-2
+        | Trở về danh sách
+
+    //- Form tạo mới tài khoản
+    .row.justify-content-center
+      .col-lg-8
+        .card.card-dark.border-0.shadow-sm
+          .card-body.p-4
+            form(
+              action=`${prefixAdmin}/accounts/create`
+              method="POST"
+              enctype="multipart/form-data"
+            )
+              //- Họ tên
+              .mb-3
+                label.form-label.fw-semibold.text-light(for="fullName") 
+                  | Họ tên <span class="text-danger">*</span>
+                input.form-control.form-control-dark(
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  placeholder="Nhập họ và tên..."
+                  required
+                )
+
+              //- Email
+              .mb-3
+                label.form-label.fw-semibold.text-light(for="email") 
+                  | Email <span class="text-danger">*</span>
+                input.form-control.form-control-dark(
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Nhập địa chỉ email..."
+                  required
+                )
+
+              //- Mật khẩu
+              .mb-3
+                label.form-label.fw-semibold.text-light(for="password") 
+                  | Mật khẩu <span class="text-danger">*</span>
+                input.form-control.form-control-dark(
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Nhập mật khẩu..."
+                  required
+                )
+
+              //- Số điện thoại
+              .mb-3
+                label.form-label.fw-semibold.text-light(for="phone") Số điện thoại
+                input.form-control.form-control-dark(
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  placeholder="Nhập số điện thoại..."
+                )
+
+              //- Chọn Nhóm quyền (Roles)
+              .mb-3
+                label.form-label.fw-semibold.text-light.mr-2(for="role_id") 
+                  | Nhóm quyền <span class="text-danger">*</span>
+                select.form-select.form-select-dark(
+                  name="role_id"
+                  id="role_id"
+                  required
+                )
+                  option(value="" disabled selected) -- Chọn nhóm quyền --
+                  if roles && roles.length > 0
+                    each item in roles
+                      option(value=item.id) #{item.title}
+
+              //- Tải lên ảnh đại diện (Avatar)
+              .mb-3
+                .card.bg-transparent.border-0.shadow-sm.mb-4
+                  .card-body.p-0
+                    .upload-image-wrapper(upload-image)
+                      label.form-label.fw-medium.text-light(for="avatar") Chọn ảnh đại diện
+                      input#thumbnail.form-control-file.form-control-dark.mb-3(
+                        type="file"
+                        name="avatar"
+                        accept="image/*"
+                        upload-image-input
+                      )
+                      .upload-image-preview.text-center.p-3(upload-preview-container)
+                        img(
+                          src=""
+                          alt="Preview"
+                          upload-image-preview
+                          class="img-fluid rounded d-none"
+                          style="max-height: 200px; object-fit: contain;"
+                        )
+                        button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2.d-none(
+                          type="button"
+                          upload-image-remove
+                          title="Gỡ ảnh"
+                        )
+                          i.fas.fa-times
+                        .upload-placeholder(upload-placeholder)
+                          i.fas.fa-cloud-upload-alt.fa-2x.text-muted.mb-2
+                          p.small.text-muted.mb-0 Kéo thả hoặc bấm để chọn tệp hình ảnh
+              //- Trạng thái (Hoạt động / Dừng)
+              .mb-4
+                label.form-label.fw-semibold.text-light.d-block.mb-2 Trạng thái
+                .d-flex
+                  .form-check.mr-2
+                    input.form-check-input.checkbox-dark(
+                      type="radio"
+                      id="statusActive"
+                      name="status"
+                      value="active"
+                      checked
+                    )
+                    label.form-check-label.text-light(for="statusActive") Hoạt động
+                  .form-check
+                    input.form-check-input.checkbox-dark(
+                      type="radio"
+                      id="statusInactive"
+                      name="status"
+                      value="inactive"
+                    )
+                    label.form-check-label.text-light(for="statusInactive") Dừng hoạt động
+
+              //- Nút submit
+              .text-end
+                button.btn.btn-submit-account(type="submit")
+                  i.fas.fa-save.mr-2
+                  | Tạo mới 

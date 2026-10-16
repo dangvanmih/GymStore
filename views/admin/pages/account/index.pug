@@ -1,0 +1,88 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+append style
+  link(rel="stylesheet" href="/admin/css/account-list.css")
+
+block main
+  +alert-success(5000)
+  +alert-error(5000)
+  .roles-management-wrapper.container-fluid.py-4
+    //- Tiêu đề trang & Nút thêm mới
+    .row.align-items-center.mb-4
+      .col-md-6
+        h1.page-title.mb-0 Danh sách tài khoản
+      .col-md-6.text-right
+        a.btn.btn-add-role(href=`${prefixAdmin}/accounts/create`)
+          i.fas.fa-plus.mr-2
+          | Thêm mới
+    //- Bảng danh sách nhóm quyền
+    .card.card-dark.border-0.shadow-sm
+      .card-body.p-0
+        .table-responsive
+          table.table.table-dark.table-hover.align-middle.mb-0
+            thead.text-center
+              tr
+                th.text-center(style="width: 60px;") STT
+                th avatar
+                th Vai trò
+                th Email 
+                th Trạng thái
+                th.text-center(style="width: 180px;") Hành động
+            tbody.text-center
+              if account && account.length > 0
+                each items, index in account
+                  tr
+                    td.text-center.fw-medium #{index + 1}
+                    td 
+                      img(
+                        src=items.avatar 
+                        alt=items.fullName 
+                        width="100px"
+                        height="auto"
+                      )
+                    td
+                      span.role-title.fw-bold #{items.role.title}
+                    td
+                      span.role-email #{items.email}
+                    td.text-center
+                      if items.status == 'active'
+                        a.badge-status.badge-status-success.text-decoration-none(
+                          href="javascript:;"
+                          data-id=items.id
+                          data-status=items.status
+                          button-change-status
+                        )
+                          i.fas.fa-circle
+                          | Hoạt động
+                      else
+                        a.badge-status.badge-status-danger.text-decoration-none(
+                          href="javascript:;"
+                          data-id=items.id
+                          data-status=items.status
+                          button-change-status
+                        )
+                          i.fas.fa-circle
+                          | Dừng hoạt động
+                    td.text-center
+                      .d-flex.justify-content-center.gap-2
+                        a.btn-action.btn-sm.btn-action-detail(href=`${prefixAdmin}/accounts/detail/${items.id}` title="Chi tiết")
+                          i.fas.fa-eye
+                        a.btn-action.btn-sm.btn-action-edit(href=`${prefixAdmin}/accounts/edit/${items.id}` title="Sửa")
+                          i.fas.fa-edit
+                        button.btn-action.btn-sm.btn-action-delete(
+                          data-id=items.id
+                          button-delete
+                          title="Xóa"
+                        )
+                          i.fas.fa-trash
+              else
+                tr
+                  td.text-center.py-4(colspan="4")
+                    p.text-muted.mb-0 Chưa có vai trò nào được tạo.
+    form(
+      action = "",
+      method = "POST",
+      id = "form-delete-item",
+      data-path = `${prefixAdmin}/accounts/delete`
+    )
+    script(src="/admin/js/role.js")

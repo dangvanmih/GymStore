@@ -1,0 +1,152 @@
+/* ==========================================
+   ENTERPRISE DESIGN SYSTEM - ACCOUNTS LIST
+   ========================================== */
+
+.roles-management-wrapper .page-title {
+  color: var(--text-title, #ffffff) !important;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+/* Nút Thêm mới - Vuông vắn, chuyên nghiệp */
+.roles-management-wrapper .btn-add-role {
+  background-color: var(--bg-btn, #4f46e5) !important;
+  color: var(--text-title, #ffffff) !important;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 6px !important; /* Bo góc nhẹ chuẩn Enterprise */
+  border: 1px solid var(--bg-btn, #4f46e5) !important;
+  transition: background-color 0.15s ease-in-out;
+  box-shadow: none !important; /* Bỏ đổ bóng rườm rà */
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.roles-management-wrapper .btn-add-role:hover {
+  background-color: #4338ca !important;
+  border-color: #4338ca !important;
+  color: #ffffff !important;
+}
+
+/* Card bao bọc bảng */
+.roles-management-wrapper .card-dark {
+  background-color: var(--bg-card, #121520) !important;
+  border: 1px solid var(--border-color, #1e2235) !important;
+  border-radius: 8px !important; /* Góc card vuông vắn hơn */
+  overflow: hidden;
+}
+
+/* Bảng dữ liệu Enterprise Data Grid */
+.roles-management-wrapper .table-dark {
+  background-color: transparent !important;
+  color: var(--text-body, #94a3b8) !important;
+  margin-bottom: 0 !important;
+}
+
+.roles-management-wrapper .table-dark thead th {
+  background-color: #161922 !important;
+  color: var(--text-title, #ffffff) !important;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--border-color, #1e2235) !important;
+  border-top: none !important;
+}
+
+.roles-management-wrapper .table-dark td {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--border-color, #1e2235) !important;
+  vertical-align: middle !important;
+  font-size: 0.85rem;
+  color: var(--text-body, #94a3b8) !important;
+}
+
+.roles-management-wrapper .table-hover.table-dark tbody tr:hover {
+  background-color: var(--bg-card-hover, #1a1e2d) !important;
+}
+
+/* Avatar dạng bo góc nhẹ chuẩn doanh nghiệp (thay vì tròn xoe) */
+.roles-management-wrapper table img {
+  width: 36px !important;
+  height: 36px !important;
+  object-fit: cover;
+  border-radius: 6px !important; /* Bo góc nhẹ */
+  border: 1px solid var(--border-color, #1e2235);
+  background-color: #171b2a;
+}
+
+/* Chữ hiển thị thông tin */
+.roles-management-wrapper .role-title {
+  color: var(--text-title, #ffffff) !important;
+  font-weight: 500;
+}
+
+.roles-management-wrapper .role-email {
+  color: var(--text-body, #94a3b8) !important;
+}
+
+/* Badge trạng thái kiểu Tag dữ liệu chuẩn Enterprise */
+.roles-management-wrapper .badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px !important; /* Dạng thẻ tag vuông góc nhẹ */
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.roles-management-wrapper .badge-status i {
+  font-size: 0.45rem;
+}
+
+.roles-management-wrapper .badge-status-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.roles-management-wrapper .badge-status-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Các nút hành động dạng Icon Box vuông */
+.btn-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background-color: transparent;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.btn-action-edit:hover {
+  color: #60a5fa !important;
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-action-delete:hover {
+  color: #f87171 !important;
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn-action-detail:hover {
+  color: #60a5fa !important;
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
