@@ -22,8 +22,9 @@ block main
           table.table.table-dark.table-hover.align-middle.mb-0
             thead.text-center
               tr
-                th.text-center(style="width: 60px;") STT
+                th(style="width: 60px;") STT
                 th avatar
+                th Họ và tên
                 th Vai trò
                 th Email 
                 th Trạng thái
@@ -40,6 +41,7 @@ block main
                         width="100px"
                         height="auto"
                       )
+                    td #{items.fullName}
                     td
                       span.role-title.fw-bold #{items.role.title}
                     td
