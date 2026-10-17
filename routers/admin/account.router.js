@@ -12,6 +12,10 @@ router.post('/create',
   uploadCloudinaryMiddleware.uploadCloudinary,
   validate.createPost,
   controller.createPost);
-
-
+router.get('/edit/:id', controller.edit);
+router.patch('/edit/:id',
+  upload.single('avatar'),
+  uploadCloudinaryMiddleware.uploadCloudinary,
+  validate.editPatch,
+  controller.editPatch);
 module.exports = router;
