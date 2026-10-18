@@ -20,13 +20,13 @@ header.header-admin
           span.role Administrator
 
       .dropdown-menu.dropdown-menu-right.shadow-lg
-        a.dropdown-item(href="/admin/profile")
+        a.dropdown-item(href=`${prefixAdmin}/profile`)
           i.fas.fa-user.mr-2
           | Profile
-        a.dropdown-item(href="/admin/settings")
+        a.dropdown-item(href=`${prefixAdmin}/setting`)
           i.fas.fa-sliders-h.mr-2
           | Settings
         .dropdown-divider
-        a.dropdown-item.text-danger(href="/admin/auth/logout")
+        a.dropdown-item.text-danger(href=`${prefixAdmin}/auth/logout`)
           i.fas.fa-sign-out-alt.mr-2
           | Logout

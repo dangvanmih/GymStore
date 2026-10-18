@@ -38,7 +38,7 @@ module.exports.loginPost = async (req, res) => {
       return res.redirect(req.get("Referer"));
     }
 
-    if(user.status == "inactive") {
+    if (user.status == "inactive") {
       req.flash("error", "Tài khoản đã bị khóa!");
       return res.redirect(req.get("Referer"));
     }
@@ -55,4 +55,11 @@ module.exports.loginPost = async (req, res) => {
     req.flash("error", "Đã xảy ra lỗi khi đăng nhập!");
     return res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/auth/login`);
   }
+};
+
+// GET: /admin/auth/login
+module.exports.logout = (req, res) => {
+  res.clearCookie("token");
+  return res.redirect(`${systemConfig.prefixAdmin}/auth/login`);
+
 };
