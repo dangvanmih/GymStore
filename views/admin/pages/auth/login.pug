@@ -1,0 +1,111 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+block main 
+  +alert-success(3000)
+  +alert-error(3000)
+  .login-page
+      .background-glow.glow-one
+      .background-glow.glow-two
+
+      .topbar
+        a.brand(href="/")
+          span.brand-icon
+            img(src="/admin/images/short-icon.webp" alt="DEGREY Logo" style='height:36px; object-fit: contain; border-radius: 40%;')
+          span ADMIN DEGREY
+
+        span.topbar-caption Quản lý dễ dàng · Hiệu quả tối đa
+
+      main.login-layout
+        section.welcome-section
+          span.eyebrow
+            i.fas.fa-sparkles
+            |  HỆ THỐNG QUẢN LÝ SẢN PHẨM
+
+          h1 Chào mừng
+            br
+            span trở lại!
+
+          p.welcome-description
+            | Đăng nhập để tiếp tục quản lý hệ thống
+            | và nâng cao hiệu quả công việc của bạn.
+
+          .feature-list
+            .feature-item
+              .feature-icon
+                i.fas.fa-shield-halved
+              .feature-text
+                h3 Bảo mật
+                p Thông tin của bạn luôn được bảo vệ
+
+            .feature-item
+              .feature-icon
+                i.fas.fa-bolt
+              .feature-text
+                h3 Thao tác 
+                p Tối ưu trải nghiệm, tiết kiệm thời gian
+
+            .feature-item
+              .feature-icon
+                i.fas.fa-chart-line
+              .feature-text
+                h3 Quản lý 
+                p Kiểm soát toàn diện hệ thống
+
+        section.login-card
+          .card-logo
+            img(src="/admin/images/short-icon.webp" alt="DEGREY Logo" style='height:48px; object-fit: contain; border-radius: 40%;')
+
+          h2 Đăng nhập
+          p.card-description Vui lòng nhập thông tin tài khoản của bạn
+          form(action=`${prefixAdmin}/auth/login` method="POST")
+            .form-group
+              label(for="email") Email
+              .input-wrapper
+                i.far.fa-envelope.input-icon
+                input#email(
+                  type="email"
+                  name="email"
+                  placeholder="Nhập địa chỉ email"
+                  autocomplete="username"
+                  required
+                )
+
+            .form-group
+              label(for="password") Mật khẩu
+              .input-wrapper
+                i.fas.fa-lock.input-icon
+                input#password(
+                  type="password"
+                  name="password"
+                  placeholder="Nhập mật khẩu"
+                  autocomplete="current-password"
+                  required
+                )
+                button.toggle-password(
+                  type="button"
+                  aria-label="Hiện mật khẩu"
+                  data-toggle-password
+                )
+                  i.far.fa-eye
+
+            .form-options
+              label.remember-label
+                input(type="checkbox" name="remember")
+                span Ghi nhớ tài khoản
+
+            button.btn-login(type="submit")
+              span Đăng nhập
+
+          .divider
+            span Đăng nhập an toàn
+
+          .security-note
+            i.fas.fa-shield-halved
+            span Kết nối bảo mật · Quản lý an toàn
+
+          .card-footer
+            span Chưa có tài khoản?
+            a(href="https://mail.google.com/mail/u/0/#inbox") Liên hệ quản trị viên
+
+      footer.page-footer
+        span © 2026 Degrey code by Dang Van Minh.

@@ -306,3 +306,29 @@ if (buttonsChangeStatus.length > 0 && formChangeStatus) {
     })
   })
 };
+
+// show - hide password
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleButton = document.querySelector("[data-toggle-password]");
+  const passwordInput = document.querySelector("#password");
+
+  if (toggleButton && passwordInput) {
+    toggleButton.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+
+      passwordInput.type = isPassword ? "text" : "password";
+
+      const icon = toggleButton.querySelector("i");
+
+      if (icon) {
+        icon.classList.toggle("fa-eye", !isPassword);
+        icon.classList.toggle("fa-eye-slash", isPassword);
+      }
+
+      toggleButton.setAttribute(
+        "aria-label",
+        isPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+      );
+    });
+  }
+});
