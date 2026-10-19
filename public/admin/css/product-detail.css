@@ -264,3 +264,58 @@
     font-size: 1.3rem;
   }
 }
+/* ==========================================
+   KHU VỰC CHI TIẾT TỒN KHO THEO SIZE (DARK / CUSTOM TONE)
+   ========================================== */
+
+.variants-detail-box {
+  background-color: var(--bg-main); /* Tông màu nền tối cùng tone với card/form */
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Biểu tượng & Tiêu đề */
+.variants-detail-box h6 {
+  color: #e9ecef;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+.variants-detail-box h6 i {
+  color: #0d6efd;
+}
+
+/* Đăng ký Bảng Size theo Tone Tối */
+.variants-detail-box table {
+  color: #dee2e6;
+}
+
+.variants-detail-box table thead th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #adb5bd;
+  background-color: #2c3036; /* Nền header bảng sẫm màu */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.variants-detail-box table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.15s ease;
+}
+
+.variants-detail-box table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.variants-detail-box table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+/* Badge số lượng / Trạng thái */
+.variants-detail-box .badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+  font-size: 0.75rem;
+}

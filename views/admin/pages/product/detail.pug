@@ -21,7 +21,7 @@ block main
         a.btn.btn-sm.btn-outline-custom.mr-3(href=`${prefixAdmin}/products`)
           i.fas.fa-arrow-left.mr-2
           | Quay lại
-        a.btn.btn-sm.btn-primary-custom(href=`${prefixAdmin}/products/edit/${product.id}`)
+        a.btn.btn-sm.btn-primary-custom(href=`${prefixAdmin}/products/edit/${product._id}`)
           i.fas.fa-edit.mr-2
           | Chỉnh sửa
 
@@ -61,13 +61,22 @@ block main
               else
                 span.fs-3.fw-bold.text-price= `${Number(product.price).toLocaleString('vi-VN')}đ`
 
+            //- Tính tổng số lượng kho (Nếu có variants thì cộng tổng, ngược lại lấy product.stock)
+            - 
+              var totalStock = 0;
+              if (product.hasVariants && product.variants && product.variants.length > 0) {
+                totalStock = product.variants.reduce((total, item) => total + (item.stock || 0), 0);
+              } else {
+                totalStock = product.stock || 0;
+              }
+
             //- Khối thống kê Metadata
             .row.g-3.mb-4
               .col-4
                 .meta-card.p-3.rounded.text-center
-                  small.text-muted.d-block.mb-1 Kho hàng
-                  span.fw-bold.fs-5(class=product.stock > 0 ? "text-success" : "text-danger")
-                    = product.stock > 0 ? `${product.stock} sản phẩm` : "Hết hàng"
+                  small.text-muted.d-block.mb-1 Tổng tồn kho
+                  span.fw-bold.fs-5(class=totalStock > 0 ? "text-success" : "text-danger")
+                    = totalStock > 0 ? `${totalStock} sản phẩm` : "Hết hàng"
 
               .col-4
                 .meta-card.p-3.rounded.text-center
@@ -77,14 +86,21 @@ block main
               .col-4
                 .meta-card.p-3.rounded.text-center
                   small.text-muted.d-block.mb-1 Mã ID
-                  span.fw-bold.fs-6.text-muted.text-truncate.d-block(title=product.id)= product.id
+                  span.fw-bold.fs-6.text-muted.text-truncate.d-block(title=product._id)= product._id
 
             //- Chi tiết bảng thông tin
-            .info-list.d-flex.flex-column.gap-3
-              if product.category
+            .info-list.d-flex.flex-column.gap-3.mb-4
+              if category
                 .d-flex.justify-content-between.align-items-center.py-2.border-bottom-custom
                   span.text-muted Danh mục:
-                  span.fw-semibold.text-title= product.category.title
+                  span.fw-semibold.text-title= category.title
+
+              .d-flex.justify-content-between.align-items-center.py-2.border-bottom-custom
+                span.text-muted Loại sản phẩm:
+                if product.hasVariants
+                  span.badge.bg-info.text-dark Phân loại theo Size
+                else
+                  span.badge.bg-secondary Free Size / Đơn lẻ
 
               .d-flex.justify-content-between.align-items-center.py-2.border-bottom-custom
                 span.text-muted Trạng thái hoạt động:
@@ -92,6 +108,30 @@ block main
                   span.badge.badge-success-custom Hoạt động
                 else
                   span.badge.badge-danger-custom Dừng hoạt động
+
+            //- KHU VỰC HIỂN THỊ DANH SÁCH SIZE & TỒN KHO
+            if product.hasVariants && product.variants && product.variants.length > 0
+              .variants-detail-box.p-3.rounded.border
+                h6.fw-bold.text-title.mb-3
+                  i.fas.fa-boxes.me-2.mr-2
+                  | Chi tiết tồn kho theo Size
+                .table-responsive
+                  table.table.table-sm.table-borderless.align-middle.mb-0
+                    thead.table-light
+                      tr
+                        th.py-2 Kích cỡ (Size)
+                        th.py-2.text-center Số lượng kho
+                        th.py-2.text-end Trạng thái
+                    tbody
+                      each variant in product.variants
+                        tr.border-bottom-custom
+                          td.py-2.fw-bold.text-title= variant.size
+                          td.py-2.text-center.fw-semibold= `${variant.stock} sản phẩm`
+                          td.py-2.text-end
+                            if variant.stock > 0
+                              span.badge.bg-success Còn hàng
+                            else
+                              span.badge.bg-danger Hết hàng
 
     //- Khối Tabs bên dưới
     .card.border-0.shadow-sm.mt-4

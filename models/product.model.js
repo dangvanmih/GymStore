@@ -3,6 +3,20 @@ const slug = require("mongoose-slug-updater");
 
 mongoose.plugin(slug);
 
+// Schema cho từng Size & Tồn kho
+const variantSchema = new mongoose.Schema({
+  size: {
+    type: String, // Ví dụ: "S", "M", "L", "XL", "40", "41"
+    required: true,
+    trim: true
+  },
+  stock: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: 0
+  }
+});
 
 const productSchema = new mongoose.Schema(
   {
@@ -14,7 +28,19 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
-    stock: Number,
+    // Cờ đánh dấu sản phẩm có phân loại Size hay không
+    hasVariants: {
+      type: Boolean,
+      default: false
+    },
+
+    stock: {
+      type: Number,
+      default: 0
+    },
+    // Dành cho sản phẩm Có Size (Quần, áo, đai lưng...)
+    variants: [variantSchema],
+
     thumbnail: String,
     status: String,
     featured: String,

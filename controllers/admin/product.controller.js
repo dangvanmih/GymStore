@@ -145,23 +145,44 @@ module.exports.createProduct = async (req, res) => {
 
 // POST: /admin/product/create
 module.exports.createPostProduct = async (req, res) => {
-  req.body.price = parseInt(req.body.price);
-  req.body.discountPercentage = parseInt(req.body.discountPercentage);
-  req.body.stock = parseInt(req.body.stock);
+  req.body.price = parseInt(req.body.price) || 0;
+  req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0;
 
-  if (req.body.position == "") {
+  // Kiểm tra cờ phân loại Size
+  if (req.body.hasVariants === "true" || req.body.hasVariants === true) {
+    req.body.hasVariants = true;
+    req.body.stock = 0; // Đặt stock chung = 0
+
+    // Ép kiểu mảng variants gửi lên
+    if (Array.isArray(req.body.variants)) {
+      req.body.variants = req.body.variants
+        .filter((item) => item.size && item.size.trim() !== "") // Loại bỏ dòng rỗng
+        .map((item) => ({
+          size: item.size.trim(),
+          stock: parseInt(item.stock) || 0
+        }));
+    } else {
+      req.body.variants = [];
+    }
+  } else {
+    req.body.hasVariants = false;
+    req.body.stock = parseInt(req.body.stock) || 0;
+    req.body.variants = [];
+  }
+
+  // Xử lý vị trí position
+  if (!req.body.position || req.body.position === "") {
     const countProducts = await Product.countDocuments();
     req.body.position = countProducts + 1;
-  }
-  else {
+  } else {
     req.body.position = parseInt(req.body.position);
   }
 
   const product = new Product(req.body);
   await product.save();
+
   req.flash("success", "Đã thêm sản phẩm thành công!");
   res.redirect(`${systemConfig.prefixAdmin}/products`);
-
 };
 
 // GET: /admin/product/edit/:id
@@ -191,46 +212,64 @@ module.exports.editProduct = async (req, res) => {
 };
 
 
-// PATCH: /admin/product/edit/:id
+// PATCH: /admin/products/edit/:id
 module.exports.editPatchProduct = async (req, res) => {
-  req.body.price = parseInt(req.body.price);
-  req.body.discountPercentage = parseInt(req.body.discountPercentage);
-  req.body.stock = parseInt(req.body.stock);
-  req.body.position = parseInt(req.body.position);
   const id = req.params.id;
 
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  req.body.price = parseInt(req.body.price) || 0;
+  req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0;
+  req.body.position = parseInt(req.body.position) || 0;
+
+  // Xử lý phân loại Size & Stock
+  if (req.body.hasVariants === "true" || req.body.hasVariants === true) {
+    req.body.hasVariants = true;
+    req.body.stock = 0; // Đưa stock chung về 0 khi dùng phân loại size
+
+    if (Array.isArray(req.body.variants)) {
+      req.body.variants = req.body.variants
+        .filter((item) => item.size && item.size.trim() !== "")
+        .map((item) => ({
+          size: item.size.trim(),
+          stock: parseInt(item.stock) || 0
+        }));
+    } else {
+      req.body.variants = [];
+    }
+  } else {
+    req.body.hasVariants = false;
+    req.body.stock = parseInt(req.body.stock) || 0;
+    req.body.variants = []; // Xóa mảng variants nếu chuyển sản phẩm về Free Size
   }
+
   try {
     await Product.updateOne({ _id: id }, req.body);
     req.flash("success", "Cập nhật sản phẩm thành công!");
-    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`)
-  }
-  catch (error) {
-    req.flash("error", "Cập nhật sản phẩm không thành công!");
-    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
+  } catch (error) {
+    req.flash("error", "Cập nhật sản phẩm thất bại!");
   }
 
+  res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
 };
 
 // GET: /admin/product/detail/:id
 module.exports.detailProduct = async (req, res) => {
+  const id = req.params.id;
   try {
     const findQuery = {
       deleted: false,
-      _id: req.params.id
+      _id: id
     };
 
     const product = await Product.findOne(findQuery).lean();
-
+    const category = await Category.findOne({_id: product.category_id })
     product.priceNew = Math.round(
       product.price * (1 - product.discountPercentage / 100) / 10000
     ) * 10000;
 
     res.render('admin/pages/product/detail', {
       pageTitle: 'Trang chi tiết sản phẩm',
-      product: product
+      product: product,
+      category: category
     });
   }
   catch (error) {

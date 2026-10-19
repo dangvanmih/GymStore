@@ -14,14 +14,14 @@ block main
       .d-flex.justify-content-between.align-items-center.mb-4
         div
           h3.page-title.mb-1 Chỉnh sửa sản phẩm
-          p.text-muted.mb-0 Nhập thông tin chi tiết để khởi tạo sản phẩm mới vào hệ thống.
+          p.text-muted.mb-0 Cập nhật thông tin chi tiết của sản phẩm trong hệ thống.
         a.btn.btn-outline-secondary.btn-sm.d-inline-flex.align-items-center(href=`${prefixAdmin}/products`)
           i.fas.fa-arrow-left.me-2.mr-2
           span Quay lại danh sách
 
-      //- Form tạo sản phẩm
+      //- Form chỉnh sửa sản phẩm
       form(
-        action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
+        action=`${prefixAdmin}/products/edit/${product._id}?_method=PATCH`
         method="POST"
         enctype="multipart/form-data"
         id="form-edit-product"
@@ -40,11 +40,12 @@ block main
                     type="text"
                     name="title"
                     id="title"
-                    placeholder="Ví dụ: Áo Sơ Mi Degrey Black Pattern..."
+                    placeholder="Ví dụ: Áo Gym Tanktop Nam..."
                     required
                     value=product.title
                   )
-                //- category
+                
+                //- Category
                 .mb-3
                   label.form-label.fw-medium(for="category_id") Danh mục cha 
                   select.form-select.form-select-dark(
@@ -54,7 +55,8 @@ block main
                   )
                     option(value="" disabled selected) -- Chọn danh mục --
                     if(category)
-                      +select-tree(category,1,product.category_id)
+                      +select-tree(category, 1, product.category_id)
+
                 //- Mô tả
                 .mb-3
                   label.form-label.fw-medium(for="desc") Mô tả sản phẩm
@@ -62,17 +64,16 @@ block main
                     name="description"
                     rows="5"
                     id="desc"
-                    placeholder="Nhập mô tả chi tiết về chất liệu, kiểu dáng, hướng dẫn bảo quản..."
-                    value=product.description
+                    placeholder="Nhập mô tả chi tiết về chất liệu, kiểu dáng..."
                   ) #{product.description}
 
-            //- Card Giá & Kho hàng
+            //- Card Giá & Dữ liệu kho
             .card.border-0.shadow-sm
               .card-header.bg-transparent.border-bottom.py-3
                 h5.card-title.mb-0.fw-semibold Giá & Dữ liệu kho
               .card-body
-                .row.g-3
-                  .col-md-4
+                .row.g-3.mb-3
+                  .col-md-6
                     label.form-label.fw-medium(for="price") Giá bán (VNĐ) #[span.text-danger *]
                     .input-group.input-group-dark
                       input#price.form-control.form-control-dark(
@@ -84,27 +85,70 @@ block main
                       )
                       span.input-group-text đ
 
-                  .col-md-4
+                  .col-md-6
                     label.form-label.fw-medium(for="discountPercentage") % Giảm giá
                     .input-group.input-group-dark
                       input#discountPercentage.form-control.form-control-dark(
                         type="number"
                         name="discountPercentage"
-                        value= product.discountPercentage
+                        value=product.discountPercentage
                         min="0"
                         max="100"
                       )
                       span.input-group-text %
 
-                  .col-md-4
-                    label.form-label.fw-medium(for="stock") Số lượng trong kho #[span.text-danger *]
+                //- Tùy chọn Phân loại Size
+                .border-top.pt-3.mt-3
+                  .form-check.form-switch.mb-3
+                    input#hasVariants.form-check-input(
+                      type="checkbox"
+                      name="hasVariants"
+                      value="true"
+                      checked=product.hasVariants
+                    )
+                    label.form-check-label.fw-medium(for="hasVariants") Sản phẩm này có phân loại Size (Áo, Quần, Đai lưng...)
+
+                  //- KHU VỰC 1: Dành cho sản phẩm KHÔNG CÓ SIZE (Free Size)
+                  #single-stock-wrapper(class=product.hasVariants ? "d-none" : "mb-3")
+                    label.form-label.fw-medium(for="stock") Số lượng tồn kho #[span.text-danger *]
                     input#stock.form-control.form-control-dark(
                       type="number"
                       name="stock"
-                      value= product.stock
-                      min="1"
-                      required
+                      value=product.stock
+                      min="0"
                     )
+
+                  //- KHU VỰC 2: Dành cho sản phẩm CÓ SIZE
+                  #variants-wrapper(class=product.hasVariants ? "" : "d-none")
+                    label.form-label.fw-medium.d-block Danh sách Size & Tồn kho
+                    #variants-list
+                      if product.hasVariants && product.variants && product.variants.length > 0
+                        each variant, index in product.variants
+                          .row.g-2.mb-2.align-items-center.variant-item
+                            .col-5
+                              input.form-control.form-control-dark(
+                                type="text"
+                                name=`variants[${index}][size]`
+                                placeholder="Kích cỡ (VD: S, M, L, XL, 40...)"
+                                required
+                                value=variant.size
+                              )
+                            .col-5
+                              input.form-control.form-control-dark(
+                                type="number"
+                                name=`variants[${index}][stock]`
+                                placeholder="Số lượng tồn kho"
+                                min="0"
+                                required
+                                value=variant.stock
+                              )
+                            .col-2.text-center
+                              button.btn.btn-outline-danger.btn-sm.btn-remove-variant(type="button" title="Xóa")
+                                i.fas.fa-trash-alt
+
+                    button#btn-add-variant.btn.btn-sm.btn-outline-primary.mt-2(type="button")
+                      i.fas.fa-plus.me-1.mr-1
+                      span Thêm Size
 
           //- Cột phải: Hình ảnh & Cấu hình xuất bản
           .col-lg-4
@@ -130,8 +174,7 @@ block main
                         class=`img-fluid rounded ${product && product.thumbnail ? "" : "d-none"}`
                         style="max-height: 200px; object-fit: contain;"
                       )
-                      //- Nút gỡ ảnh (Ban đầu ẩn đi bằng class d-none)
-                      button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2.d-none(
+                      button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2(
                         type="button"
                         upload-image-remove
                         title="Gỡ ảnh"
@@ -163,13 +206,12 @@ block main
                 //- Trạng thái
                 .mb-3
                   label.form-label.fw-medium.d-block Trạng thái hoạt động
-
                   .form-check.form-check-inline
                     input#statusActive.form-check-input.custom-radio(
                       type="radio"
                       name="status"
                       value="active"
-                      checked = product.status ? product.status === 'active' : true
+                      checked=(product.status === 'active')
                     )
                     label.form-check-label(for="statusActive") Hoạt động
                   .form-check.form-check-inline
@@ -177,7 +219,7 @@ block main
                       type="radio"
                       name="status"
                       value="inactive"
-                      checked = product.status ? product.status === 'inactive' : false
+                      checked=(product.status === 'inactive')
                     )
                     label.form-check-label(for="statusInActive") Dừng hoạt động
 

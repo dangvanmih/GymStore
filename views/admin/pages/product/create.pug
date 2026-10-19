@@ -40,19 +40,21 @@ block main
                     type="text"
                     name="title"
                     id="title"
-                    placeholder="Ví dụ: Áo Sơ Mi Degrey Black Pattern..."
+                    placeholder="Ví dụ: Áo Gym Tanktop Nam Co Giãn, Bình Lắc Shaker..."
                     required
                   )
-                  .mb-3
-                    label.form-label.fw-medium(for="category_id") Danh mục cha 
-                    select.form-select.form-select-dark(
-                      name="category_id"
-                      id="category_id"
-                      class="form-control"
-                    )
-                      option(value="" disabled selected) -- Chọn danh mục --
-                      if(category)
-                        +select-tree(category)
+                
+                //- Danh mục
+                .mb-3
+                  label.form-label.fw-medium(for="category_id") Danh mục cha 
+                  select.form-select.form-select-dark(
+                    name="category_id"
+                    id="category_id"
+                    class="form-control"
+                  )
+                    option(value="" disabled selected) -- Chọn danh mục --
+                    if(category)
+                      +select-tree(category)
 
                 //- Mô tả
                 .mb-3
@@ -64,13 +66,13 @@ block main
                     placeholder="Nhập mô tả chi tiết về chất liệu, kiểu dáng, hướng dẫn bảo quản..."
                   )
 
-            //- Card Giá & Kho hàng
+            //- Card Giá & Dữ liệu kho
             .card.border-0.shadow-sm
               .card-header.bg-transparent.border-bottom.py-3
                 h5.card-title.mb-0.fw-semibold Giá & Dữ liệu kho
               .card-body
-                .row.g-3
-                  .col-md-4
+                .row.g-3.mb-3
+                  .col-md-6
                     label.form-label.fw-medium(for="price") Giá bán (VNĐ) #[span.text-danger *]
                     .input-group.input-group-dark
                       input#price.form-control.form-control-dark(
@@ -82,7 +84,7 @@ block main
                       )
                       span.input-group-text đ
 
-                  .col-md-4
+                  .col-md-6
                     label.form-label.fw-medium(for="discountPercentage") % Giảm giá
                     .input-group.input-group-dark
                       input#discountPercentage.form-control.form-control-dark(
@@ -94,15 +96,35 @@ block main
                       )
                       span.input-group-text %
 
-                  .col-md-4
-                    label.form-label.fw-medium(for="stock") Số lượng trong kho #[span.text-danger *]
+                //- Tùy chọn Phân loại Size
+                .border-top.pt-3.mt-3
+                  .form-check.form-switch.mb-3
+                    input#hasVariants.form-check-input(
+                      type="checkbox"
+                      name="hasVariants"
+                      value="true"
+                    )
+                    label.form-check-label.fw-medium(for="hasVariants") Sản phẩm này có phân loại Size (Áo, Quần,...)
+
+                  //- KHU VỰC 1: Dành cho sản phẩm KHÔNG CÓ SIZE (Mặc định)
+                  #single-stock-wrapper.mb-3
+                    label.form-label.fw-medium(for="stock") Số lượng tồn kho #[span.text-danger *]
                     input#stock.form-control.form-control-dark(
                       type="number"
                       name="stock"
                       value="1"
-                      min="1"
-                      required
+                      min="0"
                     )
+
+                  //- KHU VỰC 2: Dành cho sản phẩm CÓ SIZE (Ban đầu ẩn)
+                  #variants-wrapper.d-none
+                    label.form-label.fw-medium.d-block Danh sách Size & Tồn kho
+                    #variants-list
+                      //- JavaScript sẽ tự động chèn các dòng nhập Size vào đây
+                    
+                    button#btn-add-variant.btn.btn-sm.btn-outline-primary.mt-2(type="button")
+                      i.fas.fa-plus.me-1.mr-1
+                      span Thêm Size
 
           //- Cột phải: Hình ảnh & Cấu hình xuất bản
           .col-lg-4
@@ -128,7 +150,6 @@ block main
                         class="img-fluid rounded d-none"
                         style="max-height: 200px; object-fit: contain;"
                       )
-                      //- Nút gỡ ảnh (Ban đầu ẩn đi bằng class d-none)
                       button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2.d-none(
                         type="button"
                         upload-image-remove
