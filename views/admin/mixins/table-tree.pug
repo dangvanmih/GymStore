@@ -37,14 +37,16 @@ mixin table-tree(category, level = 1)
             | Dừng hoạt động
       td.text-center
         .action-btn-group
-          a.btn-action.btn-action-edit(href=`${prefixAdmin}/categories/edit/${items.id}`, title="Chỉnh sửa")
-            i.fas.fa-pen
+          if(role.permissions.includes("products-category_edit"))
+            a.btn-action.btn-action-edit(href=`${prefixAdmin}/categories/edit/${items.id}`, title="Chỉnh sửa")
+              i.fas.fa-pen
           a.btn-action.btn-action-detail(
             href=`${prefixAdmin}/categories/detail/${items.id}`
             title="Xem chi tiết"
           )
             i.fas.fa-eye
-          button(class= "btn-action btn-action-delete" data-id = items.id button-delete title="Xóa danh mục")
-            i.fas.fa-trash-alt
+          if(role.permissions.includes("products-category_delete"))
+            button(class= "btn-action btn-action-delete" data-id = items.id button-delete title="Xóa danh mục")
+              i.fas.fa-trash-alt
     if items.children && items.children.length > 0
       +table-tree(items.children, level + 1)

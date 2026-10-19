@@ -25,30 +25,35 @@ aside.sider
 
     .menu-group-title MANAGEMENT
     ul.nav-menu
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/products`)
-          i.fas.fa-boxes
-          span Products
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/categories`)
-          i.fas.fa-folder
-          span Categories
+      if(role.permissions.includes("products_view"))
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/products`)
+            i.fas.fa-boxes
+            span Products
+      if(role.permissions.includes("products-category_view"))
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/categories`)
+            i.fas.fa-folder
+            span Categories
       li.nav-item
         a.nav-link(href=`${prefixAdmin}/orders`)
           i.fas.fa-shopping-cart
           span Orders
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/accounts`)
-          i.fas.fa-users
-          span Users
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/roles`)
-          i.fas.fa-shield-alt
-          span Roles
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/roles/permissions`)
-          i.fas.fa-key
-          span Permissions
+      if(role.permissions.includes("accounts-view"))
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/accounts`)
+            i.fas.fa-users
+            span Users
+      if(role.permissions.includes("roles_view"))
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/roles`)
+            i.fas.fa-shield-alt
+            span Roles
+      if(role.permissions.includes("roles_permission"))
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/roles/permissions`)
+            i.fas.fa-key
+            span Permissions
     .menu-group-title SYSTEM
     ul.nav-menu
       li.nav-item

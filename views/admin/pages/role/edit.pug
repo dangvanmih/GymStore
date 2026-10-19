@@ -3,47 +3,48 @@ include ../../mixins/alert.pug
 append style
   link(rel="stylesheet" href="/admin/css/role-create.css")
 block main
-  +alert-success(5000)
-  .roles-create-wrapper.container-fluid.py-4
-    //- Tiêu đề trang & Nút quay lại
-    .d-flex.align-items-center.justify-content-between.mb-4
-      h1.page-title.mb-0 Chỉnh sửa vai trò
-      a.btn.btn-secondary-dark(href="/admin/roles")
-        <i class="fas.fa-arrow-left.me-2"></i> Trở về danh sách
+  if(role.permissions.includes("roles_edit"))
+    +alert-success(5000)
+    .roles-create-wrapper.container-fluid.py-4
+      //- Tiêu đề trang & Nút quay lại
+      .d-flex.align-items-center.justify-content-between.mb-4
+        h1.page-title.mb-0 Chỉnh sửa vai trò
+        a.btn.btn-secondary-dark(href="/admin/roles")
+          <i class="fas.fa-arrow-left.me-2"></i> Trở về danh sách
 
-    //- Form thêm mới
-    .row.justify-content-center
-      .col-lg-8
-        .card.card-dark.border-0.shadow-sm
-          .card-body.p-4
-            form(
-              action=`${prefixAdmin}/roles/edit/${role.id}?_method=PATCH`
-              method="POST"
-            )
-              //- Tên vai trò
-              .mb-3
-                label.form-label.fw-semibold.text-light(for="title") 
-                  | Tên vai trò <span class="text-danger">*</span>
-                input.form-control.form-control-dark(
-                  type="text"
-                  id="title"
-                  name="title"
-                  value=role.title
-                  placeholder="Nhập tên vai trò (Ví dụ: Quản trị viên, Nhân viên kho...)"
-                  required
-                )
+      //- Form thêm mới
+      .row.justify-content-center
+        .col-lg-8
+          .card.card-dark.border-0.shadow-sm
+            .card-body.p-4
+              form(
+                action=`${prefixAdmin}/roles/edit/${role.id}?_method=PATCH`
+                method="POST"
+              )
+                //- Tên vai trò
+                .mb-3
+                  label.form-label.fw-semibold.text-light(for="title") 
+                    | Tên vai trò <span class="text-danger">*</span>
+                  input.form-control.form-control-dark(
+                    type="text"
+                    id="title"
+                    name="title"
+                    value=role.title
+                    placeholder="Nhập tên vai trò (Ví dụ: Quản trị viên, Nhân viên kho...)"
+                    required
+                  )
 
-              //- Mô tả ngắn
-              .mb-4
-                label.form-label.fw-semibold.text-light(for="description") Mô tả ngắn
-                textarea.form-control.form-control-dark(
-                  id="description"
-                  name="description"
-                  rows="4"
-                  placeholder="Nhập mô tả chi tiết chức năng của vai trò này..."
-                ) #{role.description}
+                //- Mô tả ngắn
+                .mb-4
+                  label.form-label.fw-semibold.text-light(for="description") Mô tả ngắn
+                  textarea.form-control.form-control-dark(
+                    id="description"
+                    name="description"
+                    rows="4"
+                    placeholder="Nhập mô tả chi tiết chức năng của vai trò này..."
+                  ) #{role.description}
 
-              //- Nút hành động
-              .text-right
-                button.btn.btn-submit-role(type="submit")
-                  <i class="fas.fa-save.me-2"></i> Cập nhật
+                //- Nút hành động
+                .text-right
+                  button.btn.btn-submit-role(type="submit")
+                    <i class="fas.fa-save.me-2"></i> Cập nhật

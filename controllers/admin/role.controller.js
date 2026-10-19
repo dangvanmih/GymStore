@@ -7,11 +7,11 @@ module.exports.index = async (req, res) => {
     deleted: false,
   };
 
-  const role = await Role.find(findQuery);
+  const roles = await Role.find(findQuery);
 
   res.render('admin/pages/role/index', {
     pageTitle: 'Trang danh sách vai trò',
-    role: role
+    roles: roles
   });
 };
 

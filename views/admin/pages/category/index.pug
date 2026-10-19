@@ -9,65 +9,67 @@ append style
   link(rel="stylesheet" href="/admin/css/product.css")
 
 block main
-  +alert-success(5000)
+  if(role.permissions.includes("products-category_view"))
+    +alert-success(5000)
 
-  .container-fluid.p-0
-    //- Header trang
-    .d-flex.justify-content-between.align-items-center.mb-2
-      div
-        h3.page-title Danh mục sản phẩm
-        p.text-muted.mb-0 Quản lý danh mục và trạng thái.
-      a.btn.btn-custom.btn-sm.d-inline-flex.align-items-center(href="/admin/categories/create")
-        i.fas.fa-plus.mr-2
-        span Thêm danh mục
+    .container-fluid.p-0
+      //- Header trang
+      .d-flex.justify-content-between.align-items-center.mb-2
+        div
+          h3.page-title Danh mục sản phẩm
+          p.text-muted.mb-0 Quản lý danh mục và trạng thái.
+        if(role.permissions.includes("products-category_create"))
+          a.btn.btn-custom.btn-sm.d-inline-flex.align-items-center(href="/admin/categories/create")
+            i.fas.fa-plus.mr-2
+            span Thêm danh mục
 
-    //- Wrapper Card cho bảng
+      //- Wrapper Card cho bảng
 
-    .card.mb-3 
-      .card-header Bộ lọc và tìm kiếm 
-      .cpn-search-filter.card-body
-        .row.align-items-center
-          .col-md-4.col-lg-3
-            //- +filter-Status(filterStatus)
-          .col-md-3.col-lg-3
-            +form-change-multi(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
-          .col-md-3.col-lg-3
-            +sort-category()
-          .col-md-2.col-lg-3
-            +search(keyword)
-    .card.border-0.shadow-sm.rounded-3
-      .card-body.p-0
-        .table-responsive
-          table(
-            class = "tabletable-hover align-middle mb-0 custom-enterprise-table"
-            checkbox-multi
-          )
-            thead
-              tr
-                th.text-center
-                  input(type="checkbox" name="checkall")
-                th.text-center(style="width: 60px;") STT
-                th Tiêu đề sản phẩm
-                th.text-center(style = "width: 140px") Vị trí
-                th.text-center(style="width: 150px;") Trạng thái
-                th.text-center(style="width: 130px;") Thao tác
-            tbody
-              if (category && category.length > 0)
-                +table-tree(category)
-              else
+      .card.mb-3 
+        .card-header Bộ lọc và tìm kiếm 
+        .cpn-search-filter.card-body
+          .row.align-items-center
+            .col-md-4.col-lg-3
+              //- +filter-Status(filterStatus)
+            .col-md-3.col-lg-3
+              +form-change-multi(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
+            .col-md-3.col-lg-3
+              +sort-category()
+            .col-md-2.col-lg-3
+              +search(keyword)
+      .card.border-0.shadow-sm.rounded-3
+        .card-body.p-0
+          .table-responsive
+            table(
+              class = "tabletable-hover align-middle mb-0 custom-enterprise-table"
+              checkbox-multi
+            )
+              thead
                 tr
-                  td.text-center.py-4(colspan="6")
-                    .text-muted Không tìm thấy sản phẩm nào.
-    form(
-      action = "",
-      method = "POST",
-      id = "form-change-status",
-      data-path = `${prefixAdmin}/categories/change-status`
-    )
-    form(
-      action = "",
-      method = "POST",
-      id = "form-delete-item",
-      data-path = `${prefixAdmin}/categories/delete`
-    )
-    script(src="/admin/js/category.js")
+                  th.text-center
+                    input(type="checkbox" name="checkall")
+                  th.text-center(style="width: 60px;") STT
+                  th Tiêu đề sản phẩm
+                  th.text-center(style = "width: 140px") Vị trí
+                  th.text-center(style="width: 150px;") Trạng thái
+                  th.text-center(style="width: 130px;") Thao tác
+              tbody
+                if (category && category.length > 0)
+                  +table-tree(category)
+                else
+                  tr
+                    td.text-center.py-4(colspan="6")
+                      .text-muted Không tìm thấy sản phẩm nào.
+      form(
+        action = "",
+        method = "POST",
+        id = "form-change-status",
+        data-path = `${prefixAdmin}/categories/change-status`
+      )
+      form(
+        action = "",
+        method = "POST",
+        id = "form-delete-item",
+        data-path = `${prefixAdmin}/categories/delete`
+      )
+      script(src="/admin/js/category.js")

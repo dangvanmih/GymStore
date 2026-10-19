@@ -5,140 +5,141 @@ append style
   link(rel="stylesheet" href="/admin/css/product-create.css")
 
 block main
-  +alert-error(5000)
-  +alert-success(5000)  
-  .container-fluid.p-0.create-product-wrapper
-    //- Header trang
-    .d-flex.justify-content-between.align-items-center.mb-4
-      div
-        h3.page-title.mb-1 Chỉnh sửa danh mục
-        p.text-muted.mb-0 Nhập thông tin chi tiết để khởi tạo sản phẩm mới vào hệ thống.
-      a.btn.btn-outline-secondary.btn-sm.d-inline-flex.align-items-center(href=`${prefixAdmin}/categories`)
-        i.fas.fa-arrow-left.me-2.mr-2
-        span Quay lại danh sách
+  if(role.permissions.includes("products-category_edit"))
+    +alert-error(5000)
+    +alert-success(5000)  
+    .container-fluid.p-0.create-product-wrapper
+      //- Header trang
+      .d-flex.justify-content-between.align-items-center.mb-4
+        div
+          h3.page-title.mb-1 Chỉnh sửa danh mục
+          p.text-muted.mb-0 Nhập thông tin chi tiết để khởi tạo sản phẩm mới vào hệ thống.
+        a.btn.btn-outline-secondary.btn-sm.d-inline-flex.align-items-center(href=`${prefixAdmin}/categories`)
+          i.fas.fa-arrow-left.me-2.mr-2
+          span Quay lại danh sách
 
-    //- Form tạo sản phẩm
-    form(
-      action=`${prefixAdmin}/categories/edit/${category.id}?_method=PATCH`
-      method="POST"
-      enctype="multipart/form-data"
-    )
-      .row.g-4
-        //- Cột trái: Thông tin chính
-        .col-lg-8
-          .card.border-0.shadow-sm.mb-4
-            .card-header.bg-transparent.border-bottom.py-3
-              h5.card-title.mb-0.fw-semibold Thông tin chung
-            .card-body
-              //- Tiêu đề
-              .mb-3
-                label.form-label.fw-medium(for="title") Tiêu đề danh mục #[span.text-danger *]
-                input.form-control.form-control-dark(
-                  type="text"
-                  name="title"
-                  id="title"
-                  required
-                  value=category.title
-                  placeholder="Áo, quần, balo, phụ kiện... "
-                )
-              .mb-3
-                label.form-label.fw-medium(for="parent_id") Danh mục cha 
-                select.form-select.form-select-dark(
-                  name="parent_id"
-                  id="parent_id"
-                  class="form-control"
-                )
-                  option(value="" disabled selected) -- Chọn danh mục --
-                  if(data)
-                    +select-tree(data, 1  ,category.parent_id)
-
-              //- Mô tả
-              .mb-3
-                label.form-label.fw-medium(for="desc") Mô tả
-                textarea.form-control.form-control-dark(
-                  name="description"
-                  rows="5"
-                  id="desc"
-                  placeholder="Nhập mô tả chi tiết về chất liệu, kiểu dáng, hướng dẫn bảo quản..."
-                ) #{category.description}
-
-        .col-lg-4
-          //- Card Ảnh đại diện
-          .card.border-0.shadow-sm.mb-4
-            .card-header.bg-transparent.border-bottom.py-3
-              h5.card-title.mb-0.fw-semibold Hình ảnh danh mục
-            .card-body
-              .upload-image-wrapper(upload-image)
-                label.form-label.fw-medium(for="thumbnail") Chọn ảnh đại diện
-                input#thumbnail.form-control-file.form-control-dark.mb-3(
-                  type="file"
-                  name="thumbnail"
-                  accept="image/*"
-                  upload-image-input
-                )
-                .upload-image-preview.text-center.p-3
-                  .position-relative.d-inline-block(upload-preview-container)
-                    img(
-                      src=category.thumbnail
-                      alt="Preview"
-                      upload-image-preview
-                      class="img-fluid rounded d-none"
-                      style="max-height: 200px; object-fit: contain;"
-                    )
-                    //- Nút gỡ ảnh (Ban đầu ẩn đi bằng class d-none)
-                    button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2.d-none(
-                      type="button"
-                      upload-image-remove
-                      title="Gỡ ảnh"
-                      style="width: 32px; height: 32px; padding: 0; line-height: 32px; z-index: 5;"
-                    )
-                      i.fas.fa-times
-                  .upload-placeholder(upload-placeholder)
-                    i.fas.fa-cloud-upload-alt.fa-2x.text-muted.mb-2
-                    p.small.text-muted.mb-0 Kéo thả hoặc bấm để chọn tệp hình ảnh
-
-          //- Card Trạng thái & Vị trí
-          .card.border-0.shadow-sm.mb-4
-            .card-header.bg-transparent.border-bottom.py-3
-              h5.card-title.mb-0.fw-semibold Thiết lập hiển thị
-            .card-body
-              //- Vị trí
-              .mb-3
-                label.form-label.fw-medium(for="position") Vị trí hiển thị
-                input#position.form-control.form-control-dark(
-                  type="number"
-                  name="position"
-                  placeholder="Tự động tăng nếu để trống"
-                  min="1"
-                  value=category.position
-                )
-                small.text-muted Tự động xếp cuối danh sách nếu không nhập.
-
-              //- Trạng thái
-              .mb-3
-                label.form-label.fw-medium.d-block Trạng thái hoạt động
-
-                .form-check.form-check-inline
-                  input#statusActive.form-check-input.custom-radio(
-                    type="radio"
-                    name="status"
-                    value="active"
-                    checked = category.status ? category.status === 'active' : true
+      //- Form tạo sản phẩm
+      form(
+        action=`${prefixAdmin}/categories/edit/${category.id}?_method=PATCH`
+        method="POST"
+        enctype="multipart/form-data"
+      )
+        .row.g-4
+          //- Cột trái: Thông tin chính
+          .col-lg-8
+            .card.border-0.shadow-sm.mb-4
+              .card-header.bg-transparent.border-bottom.py-3
+                h5.card-title.mb-0.fw-semibold Thông tin chung
+              .card-body
+                //- Tiêu đề
+                .mb-3
+                  label.form-label.fw-medium(for="title") Tiêu đề danh mục #[span.text-danger *]
+                  input.form-control.form-control-dark(
+                    type="text"
+                    name="title"
+                    id="title"
+                    required
+                    value=category.title
+                    placeholder="Áo, quần, balo, phụ kiện... "
                   )
-                  label.form-check-label(for="statusActive") Hoạt động
-                .form-check.form-check-inline
-                  input#statusInActive.form-check-input.custom-radio(
-                    type="radio"
-                    name="status"
-                    value="inactive"
-                    checked = category.status ? category.status === 'inactive' : false
+                .mb-3
+                  label.form-label.fw-medium(for="parent_id") Danh mục cha 
+                  select.form-select.form-select-dark(
+                    name="parent_id"
+                    id="parent_id"
+                    class="form-control"
                   )
-                  label.form-check-label(for="statusInActive") Dừng hoạt động
+                    option(value="" disabled selected) -- Chọn danh mục --
+                    if(data)
+                      +select-tree(data, 1  ,category.parent_id)
 
-          //- Nút Submit Form
-          .d-grid.gap-2
-            button.btn.btn-custom.btn-submit-create.btn-lg(type="submit")
-              i.fas.fa-save.me-2.mr-2
-              span Cập nhật
+                //- Mô tả
+                .mb-3
+                  label.form-label.fw-medium(for="desc") Mô tả
+                  textarea.form-control.form-control-dark(
+                    name="description"
+                    rows="5"
+                    id="desc"
+                    placeholder="Nhập mô tả chi tiết về chất liệu, kiểu dáng, hướng dẫn bảo quản..."
+                  ) #{category.description}
 
-  script(src="/admin/js/product.js")
+          .col-lg-4
+            //- Card Ảnh đại diện
+            .card.border-0.shadow-sm.mb-4
+              .card-header.bg-transparent.border-bottom.py-3
+                h5.card-title.mb-0.fw-semibold Hình ảnh danh mục
+              .card-body
+                .upload-image-wrapper(upload-image)
+                  label.form-label.fw-medium(for="thumbnail") Chọn ảnh đại diện
+                  input#thumbnail.form-control-file.form-control-dark.mb-3(
+                    type="file"
+                    name="thumbnail"
+                    accept="image/*"
+                    upload-image-input
+                  )
+                  .upload-image-preview.text-center.p-3
+                    .position-relative.d-inline-block(upload-preview-container)
+                      img(
+                        src=category.thumbnail
+                        alt="Preview"
+                        upload-image-preview
+                        class="img-fluid rounded d-none"
+                        style="max-height: 200px; object-fit: contain;"
+                      )
+                      //- Nút gỡ ảnh (Ban đầu ẩn đi bằng class d-none)
+                      button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2.d-none(
+                        type="button"
+                        upload-image-remove
+                        title="Gỡ ảnh"
+                        style="width: 32px; height: 32px; padding: 0; line-height: 32px; z-index: 5;"
+                      )
+                        i.fas.fa-times
+                    .upload-placeholder(upload-placeholder)
+                      i.fas.fa-cloud-upload-alt.fa-2x.text-muted.mb-2
+                      p.small.text-muted.mb-0 Kéo thả hoặc bấm để chọn tệp hình ảnh
+
+            //- Card Trạng thái & Vị trí
+            .card.border-0.shadow-sm.mb-4
+              .card-header.bg-transparent.border-bottom.py-3
+                h5.card-title.mb-0.fw-semibold Thiết lập hiển thị
+              .card-body
+                //- Vị trí
+                .mb-3
+                  label.form-label.fw-medium(for="position") Vị trí hiển thị
+                  input#position.form-control.form-control-dark(
+                    type="number"
+                    name="position"
+                    placeholder="Tự động tăng nếu để trống"
+                    min="1"
+                    value=category.position
+                  )
+                  small.text-muted Tự động xếp cuối danh sách nếu không nhập.
+
+                //- Trạng thái
+                .mb-3
+                  label.form-label.fw-medium.d-block Trạng thái hoạt động
+
+                  .form-check.form-check-inline
+                    input#statusActive.form-check-input.custom-radio(
+                      type="radio"
+                      name="status"
+                      value="active"
+                      checked = category.status ? category.status === 'active' : true
+                    )
+                    label.form-check-label(for="statusActive") Hoạt động
+                  .form-check.form-check-inline
+                    input#statusInActive.form-check-input.custom-radio(
+                      type="radio"
+                      name="status"
+                      value="inactive"
+                      checked = category.status ? category.status === 'inactive' : false
+                    )
+                    label.form-check-label(for="statusInActive") Dừng hoạt động
+
+            //- Nút Submit Form
+            .d-grid.gap-2
+              button.btn.btn-custom.btn-submit-create.btn-lg(type="submit")
+                i.fas.fa-save.me-2.mr-2
+                span Cập nhật
+
+    script(src="/admin/js/product.js")
