@@ -3,10 +3,37 @@ const bcrypt = require("bcrypt");
 const systemConfig = require("../../configs/system");
 
 // GET: /admin/auth/login
-module.exports.authLogin = (req, res) => {
-  res.render('admin/pages/auth/login', {
-    pageTitle: 'Đăng nhập',
-  });
+module.exports.authLogin = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+
+    // Chưa có token thì hiển thị trang đăng nhập
+    if (!token) {
+      return res.render("admin/pages/auth/login", {
+        pageTitle: "Đăng nhập",
+      });
+    }
+
+    // Tìm tài khoản có token tương ứng
+    const user = await Account.findOne({
+      token: token,
+      deleted: false,
+    });
+
+    // Token không hợp lệ hoặc không tìm thấy tài khoản
+    if (!user) {
+      return res.render("admin/pages/auth/login", {
+        pageTitle: "Đăng nhập",
+      });
+    }
+
+    // Đã đăng nhập hợp lệ
+    return res.redirect(`${systemConfig.prefixAdmin}/dashboard`);
+  } catch (error) {
+    console.error("Lỗi kiểm tra đăng nhập:", error);
+
+    return res.redirect(`${systemConfig.prefixAdmin}/auth/login`);
+  }
 };
 
 // POST: /admin/auth/login
