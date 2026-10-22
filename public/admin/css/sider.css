@@ -1,13 +1,16 @@
+/* ==========================================
+   SIDER - LIGHT THEME ENTERPRISE
+   ========================================== */
+
 /* 1. Khung Sider chính */
 .sider {
   width: 260px;
   min-width: 260px;
   height: 100vh;
-  background-color: var(--bg-card);
-  border-right: 1px solid var(--border-color);
+  background-color: #FFFFFF !important; /* Nền trắng tinh tế theo thiết kế */
+  box-shadow: 4px 0 16px rgba(113, 64, 253, 0.06) !important;
   display: flex;
   flex-direction: column;
-  /* Chuyển động kích thước chậm & mượt hơn */
   transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
     min-width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
@@ -20,7 +23,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  border-bottom: 1px solid var(--border-color);
   transition: padding 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
     justify-content 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -36,7 +38,7 @@
 .logo-icon {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background: linear-gradient(135deg, #7140FD, #C75AFD); /* Sử dụng dải màu Gradient thương hiệu */
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -48,7 +50,7 @@
 .logo-text {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-title);
+  color: var(--text-body, #242130); /* Chữ tối màu chuẩn chủ đạo */
   letter-spacing: 0.5px;
   white-space: nowrap;
 }
@@ -64,7 +66,7 @@
 .menu-group-title {
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-muted, #BCB8C7); /* Chữ phụ xám nhạt */
   letter-spacing: 1px;
   padding: 16px 12px 8px 12px;
   white-space: nowrap;
@@ -81,7 +83,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  color: var(--text-body);
+  color: var(--text-body); /* Màu chữ nội dung sáng */
   font-size: 0.875rem;
   font-weight: 500;
   border-radius: 8px;
@@ -101,24 +103,35 @@
   width: 20px;
   text-align: center;
   transition: margin 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color: var(--text-body);
 }
 
 .nav-menu .nav-link:hover {
-  color: var(--text-title);
-  background-color: var(--bg-card-hover);
+  color: var(--text-title, #242130);
+  background: linear-gradient(135deg, #c3a1fd48, #9254fd44) !important;
 }
 
+.nav-menu .nav-link:hover i {
+  color: #7140FD;
+}
+
+/* Trạng thái Active - Dùng màu Tím thương hiệu */
 .nav-menu .nav-link.active {
-  color: var(--text-title);
-  background-color: var(--primary-color);
+  color: #FFFFFF !important;
+  background: linear-gradient(135deg, #C2A1FD, #9154FD) !important;
   font-weight: 600;
+  box-shadow: 0 4px 12px rgba(113, 64, 253, 0.25);
+}
+
+.nav-menu .nav-link.active i {
+  color: #FFFFFF !important;
 }
 
 /* Nút Toggle */
 .toggle-btn {
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-body, #83808D);
   font-size: 1rem;
   cursor: pointer;
   width: 32px;
@@ -131,17 +144,16 @@
 }
 
 .toggle-btn:hover {
-  color: var(--text-title);
-  background-color: var(--bg-card-hover);
+  color: var(--text-title, #242130);
+  background-color: var(--bg-card-hover, #EFEFF4);
 }
 
-/* --- TRẠNG THÁI SIDER COLLAPSED (MỪƠT & ẨN DẦN) --- */
+/* --- TRẠNG THÁI SIDER COLLAPSED (THU GỌN) --- */
 .sider.collapsed {
   width: 80px;
   min-width: 80px;
 }
 
-/* Làm mờ các văn bản mượt mà thay vì giật display: none */
 .sider.collapsed .logo-text,
 .sider.collapsed .menu-group-title,
 .sider.collapsed .nav-link span {
@@ -171,4 +183,62 @@
 .sider.collapsed .nav-menu .nav-link i {
   margin: 0;
   font-size: 1.15rem;
+}
+
+/* ==========================================
+   SIDER RESPONSIVE CHO MÀN HÌNH NHỎ (MOBILE)
+   ========================================== */
+
+/* Mặc định trên Desktop ẩn lớp backdrop đi */
+.sider-backdrop {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  /* 1. Biến Sider thành dạng Offcanvas trượt từ trái sang trên màn hình nhỏ */
+  .sider {
+    position: fixed !important;
+    top: 0;
+    left: -280px; /* Ẩn hẳn sang bên trái màn hình */
+    width: 280px !important;
+    min-width: 280px !important;
+    height: 100vh !important;
+    z-index: 1055 !important; /* Nằm trên cùng */
+    background-color: #FFFFFF !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1) !important;
+    transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  /* 2. Khi kích hoạt mở menu trên mobile */
+  .sider.mobile-show {
+    left: 0 !important;
+  }
+
+  /* 3. Lớp nền mờ phía sau khi menu trượt ra */
+  .sider-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(36, 33, 48, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  /* Khi mở menu thì hiện lớp nền mờ */
+  .sider-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Đảm bảo nút menu 3 gạch luôn hiển thị trên thanh header ở mobile */
+  .mobile-menu-toggle, 
+  .sider-header .toggle-btn {
+    display: inline-flex !important;
+  }
 }

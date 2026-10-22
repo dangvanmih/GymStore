@@ -1,21 +1,45 @@
-// xử lý sự kiện click vào nút toggle sidebar
+// xử lý sự kiện đóng mở menu
 document.addEventListener("DOMContentLoaded", function () {
-  const sidebarToggleBtn = document.getElementById("sidebarToggle");
   const sider = document.querySelector(".sider");
+  const backdrop = document.querySelector(".sider-backdrop");
 
-  // Đọc trạng thái lưu từ localStorage
+  // 1. Đọc trạng thái lưu từ localStorage khi vừa tải trang (Chỉ áp dụng cho Desktop)
   const isCollapsed = localStorage.getItem("sidebarCollapsed") === "true";
-  if (isCollapsed && sider) {
+  if (isCollapsed && sider && window.innerWidth > 991.98) {
     sider.classList.add("collapsed");
   }
 
-  if (sidebarToggleBtn && sider) {
-    sidebarToggleBtn.addEventListener("click", function () {
-      sider.classList.toggle("collapsed");
+  // 2. Dùng cơ chế lắng nghe sự kiện toàn cục (Bắt được tất cả các nút toggle dù ở Header hay Sider)
+  document.addEventListener("click", function (e) {
+    const toggleBtn = e.target.closest("#sidebarToggle");
+    
+    if (toggleBtn) {
+      e.stopPropagation();
 
-      // Lưu trạng thái vào localStorage để giữ giao diện khi reload
-      const collapsedState = sider.classList.contains("collapsed");
-      localStorage.setItem("sidebarCollapsed", collapsedState);
+      if (window.innerWidth <= 991.98) {
+        // --- XỬ LÝ TRÊN MOBILE / TABLET ---
+        sider.classList.remove("collapsed");
+        sider.classList.toggle("mobile-show");
+        if (backdrop) backdrop.classList.toggle("show");
+      } else {
+        // --- XỬ LÝ TRÊN LAPTOP / DESKTOP ---
+        sider.classList.remove("mobile-show");
+        if (backdrop) backdrop.classList.remove("show");
+        
+        sider.classList.toggle("collapsed");
+
+        // Lưu trạng thái vào localStorage
+        const collapsedState = sider.classList.contains("collapsed");
+        localStorage.setItem("sidebarCollapsed", collapsedState);
+      }
+    }
+  });
+
+  // 3. Bấm vào lớp nền mờ trên mobile thì đóng menu lại
+  if (backdrop) {
+    backdrop.addEventListener("click", function () {
+      sider.classList.remove("mobile-show");
+      backdrop.classList.remove("show");
     });
   }
 });
@@ -26,18 +50,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll(".sider .nav-link");
 
   navLinks.forEach((link) => {
-    const linkPath = link.getAttribute("href");
+    const href = link.getAttribute("href");
 
-    // Xóa active cũ
     link.classList.remove("active");
 
-    // Kiểm tra nếu URL hiện tại chứa href của thẻ a
-    if (linkPath && currentUrl === linkPath) {
-      // Trường hợp đặc biệt cho trang Dashboard để tránh khớp với mọi đường dẫn /admin
-      if (linkPath.endsWith("/dashboard") && currentUrl !== linkPath) {
-        return;
+    if (!href) return;
+
+    const linkPath = new URL(href, window.location.origin).pathname;
+
+    // Roles: active ở danh sách, thêm mới, chỉnh sửa và xem chi tiết
+    if (linkPath === "/admin/roles") {
+      if (
+        currentUrl === linkPath ||
+        currentUrl.startsWith(linkPath + "/")
+      ) {
+        link.classList.add("active");
       }
-      link.classList.add("active");
+    }
+
+    // Roles Permissions: chỉ active đúng trang phân quyền
+    else if (linkPath === "/admin/roles/permissions") {
+      if (currentUrl === linkPath) {
+        link.classList.add("active");
+      }
+    }
+
+    // Các menu khác: active ở cả trang con
+    else {
+      if (
+        currentUrl === linkPath ||
+        currentUrl.startsWith(linkPath + "/")
+      ) {
+        link.classList.add("active");
+      }
     }
   });
 });
@@ -332,3 +377,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+

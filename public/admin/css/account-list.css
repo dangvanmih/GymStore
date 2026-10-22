@@ -1,93 +1,96 @@
 /* ==========================================
-   ENTERPRISE DESIGN SYSTEM - ACCOUNTS LIST
+   ENTERPRISE DESIGN SYSTEM - ACCOUNTS LIST (LIGHT THEME)
    ========================================== */
 
 .roles-management-wrapper .page-title {
-  color: var(--text-title, #ffffff) !important;
+  color: var(--text-title, #242130) !important;
   font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: -0.2px;
 }
 
-/* Nút Thêm mới - Vuông vắn, chuyên nghiệp */
+/* Nút Thêm mới - Vuông vắn, chuẩn màu thương hiệu */
 .roles-management-wrapper .btn-add-role {
-  background-color: var(--bg-btn, #4f46e5) !important;
-  color: var(--text-title, #ffffff) !important;
+  background-color: var(--bg-btn, #7140FD) !important;
+  color: #ffffff !important;
   font-weight: 500;
   font-size: 0.85rem;
   padding: 8px 16px;
-  border-radius: 6px !important; /* Bo góc nhẹ chuẩn Enterprise */
-  border: 1px solid var(--bg-btn, #4f46e5) !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--bg-btn, #7140FD) !important;
   transition: background-color 0.15s ease-in-out;
-  box-shadow: none !important; /* Bỏ đổ bóng rườm rà */
+  box-shadow: none !important;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
 }
 
 .roles-management-wrapper .btn-add-role:hover {
-  background-color: #4338ca !important;
-  border-color: #4338ca !important;
+  background-color: #5d2fdc !important;
+  border-color: #5d2fdc !important;
   color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(113, 64, 253, 0.3);
+  transform: translateY(-1px);
 }
 
 /* Card bao bọc bảng */
 .roles-management-wrapper .card-dark {
-  background-color: var(--bg-card, #121520) !important;
-  border: 1px solid var(--border-color, #1e2235) !important;
-  border-radius: 8px !important; /* Góc card vuông vắn hơn */
+  background-color: var(--bg-card, #FFFFFF) !important;
+  border: 1px solid var(--border-color, #D9D7DE) !important;
+  border-radius: 8px !important;
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
 }
 
 /* Bảng dữ liệu Enterprise Data Grid */
 .roles-management-wrapper .table-dark {
   background-color: transparent !important;
-  color: var(--text-body, #94a3b8) !important;
+  color: var(--text-body, #83808D) !important;
   margin-bottom: 0 !important;
 }
 
 .roles-management-wrapper .table-dark thead th {
-  background-color: #161922 !important;
-  color: var(--text-title, #ffffff) !important;
+  background-color: #F9F9FA !important;
+  color: var(--text-body, #242130) !important;
   font-weight: 600;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   padding: 12px 16px !important;
-  border-bottom: 1px solid var(--border-color, #1e2235) !important;
+  border-bottom: 1px solid var(--border-color, #D9D7DE) !important;
   border-top: none !important;
 }
 
 .roles-management-wrapper .table-dark td {
   padding: 12px 16px !important;
-  border-bottom: 1px solid var(--border-color, #1e2235) !important;
+  border-bottom: 1px solid var(--border-color, #D9D7DE) !important;
   vertical-align: middle !important;
   font-size: 0.85rem;
-  color: var(--text-body, #94a3b8) !important;
+  color: var(--text-body, #83808D) !important;
 }
 
 .roles-management-wrapper .table-hover.table-dark tbody tr:hover {
-  background-color: var(--bg-card-hover, #1a1e2d) !important;
+  background-color: var(--bg-card-hover, #EFEFF4) !important;
 }
 
-/* Avatar dạng bo góc nhẹ chuẩn doanh nghiệp (thay vì tròn xoe) */
+/* Avatar dạng bo góc nhẹ chuẩn doanh nghiệp */
 .roles-management-wrapper table img {
   width: 36px !important;
   height: 36px !important;
   object-fit: cover;
-  border-radius: 6px !important; /* Bo góc nhẹ */
-  border: 1px solid var(--border-color, #1e2235);
-  background-color: #171b2a;
+  border-radius: 6px !important;
+  border: 1px solid var(--border-color, #D9D7DE);
+  background-color: #F9F9FA;
 }
 
 /* Chữ hiển thị thông tin */
 .roles-management-wrapper .role-title {
-  color: var(--text-title, #ffffff) !important;
+  color: var(--text-body, #242130) !important;
   font-weight: 500;
 }
 
 .roles-management-wrapper .role-email {
-  color: var(--text-body, #94a3b8) !important;
+  color: var(--text-body, #83808D) !important;
 }
 
 /* Badge trạng thái kiểu Tag dữ liệu chuẩn Enterprise */
@@ -96,7 +99,7 @@
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 4px !important; /* Dạng thẻ tag vuông góc nhẹ */
+  border-radius: 4px !important;
   font-size: 0.75rem;
   font-weight: 500;
 }
@@ -107,13 +110,13 @@
 
 .roles-management-wrapper .badge-status-success {
   background-color: rgba(16, 185, 129, 0.1);
-  color: #34d399;
+  color: #059669;
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .roles-management-wrapper .badge-status-danger {
   background-color: rgba(239, 68, 68, 0.1);
-  color: #f87171;
+  color: #dc2626;
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
@@ -125,7 +128,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--text-body, #83808D);
   background-color: transparent;
   border: 1px solid transparent;
   text-decoration: none !important;
@@ -134,19 +137,19 @@
 }
 
 .btn-action-edit:hover {
-  color: #60a5fa !important;
-  background-color: rgba(59, 130, 246, 0.15) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #7140FD !important;
+  background-color: rgba(113, 64, 253, 0.1) !important;
+  border-color: rgba(113, 64, 253, 0.2) !important;
 }
 
 .btn-action-delete:hover {
-  color: #f87171 !important;
-  background-color: rgba(239, 68, 68, 0.15) !important;
-  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #dc2626 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
 }
 
 .btn-action-detail:hover {
-  color: #60a5fa !important;
-  background-color: rgba(59, 130, 246, 0.15) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #0284c7 !important;
+  background-color: rgba(2, 132, 199, 0.1) !important;
+  border-color: rgba(2, 132, 199, 0.2) !important;
 }

@@ -1,29 +1,31 @@
 /* ==========================================
-   ACCOUNTS CREATE PAGE - DESIGN SYSTEM
+   ACCOUNTS CREATE PAGE - LIGHT THEME ENTERPRISE
    ========================================== */
 
 .accounts-create-wrapper .page-title {
-  color: var(--text-title, #ffffff) !important;
+  color: var(--text-title) !important;
   font-size: 1.5rem;
   font-weight: 700;
 }
 
 /* 1. Khung card tổng bao bọc toàn bộ form */
 .accounts-create-wrapper .card-dark {
-  background-color: var(--bg-card, #121520) !important;
-  border: 1px solid var(--border-color, #1e2235) !important;
+  background-color: var(--bg-card, #FFFFFF) !important;
+  border: 1px solid var(--border-color, #D9D7DE) !important;
   border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
 }
 
 .accounts-create-wrapper .card-dark .card-body {
-  background-color: transparent !important;
+  background-color: var(--bg-card) !important;
+  border-radius: 10px;
 }
 
 /* 2. Ô nhập liệu Input & Textarea */
 .accounts-create-wrapper .form-control-dark {
-  background-color: #171b2a !important;
-  color: var(--text-title, #ffffff) !important;
-  border: 1px solid var(--border-color, #1e2235) !important;
+  background-color: #F9F9FA !important;
+  color: var(--text-body, #242130) !important;
+  border: 1px solid var(--border-color, #D9D7DE) !important;
   border-radius: 8px !important;
   padding: 11px 16px !important;
   font-size: 0.875rem !important;
@@ -31,22 +33,22 @@
 }
 
 .accounts-create-wrapper .form-control-dark:focus {
-  background-color: #171b2a !important;
-  color: var(--text-title, #ffffff) !important;
-  border-color: var(--bg-btn, #4f46e5) !important;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+  background-color: #FFFFFF !important;
+  color: var(--text-body, #242130) !important;
+  border-color: #7140FD !important;
+  box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
 
 .accounts-create-wrapper .form-control-dark::placeholder {
-  color: var(--text-muted, #64748b) !important;
+  color: #BCB8C7 !important;
 }
 
 /* 3. Ô chọn Select Nhóm quyền */
 .accounts-create-wrapper .form-select-dark {
-  background-color: #171b2a !important;
-  color: var(--text-title, #ffffff) !important;
-  border: 1px solid var(--border-color, #1e2235) !important;
+  background-color: #F9F9FA !important;
+  color: var(--text-body, #242130) !important;
+  border: 1px solid var(--border-color, #D9D7DE) !important;
   border-radius: 8px !important;
   height: 44px !important;
   font-size: 0.875rem !important;
@@ -58,81 +60,83 @@
 }
 
 .accounts-create-wrapper .form-select-dark:focus {
-  border-color: var(--bg-btn, #4f46e5) !important;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+  border-color: #7140FD !important;
+  box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
 
+.text-light {
+  color: var(--text-body) !important
+}
+
 .accounts-create-wrapper .form-select-dark option {
-  background-color: var(--bg-card, #121520) !important;
-  color: var(--text-title, #ffffff) !important;
+  background-color: #FFFFFF !important;
+  color: var(--text-title, #242130) !important;
 }
 
 /* 4. Nút Trở về */
-.accounts-create-wrapper .btn-secondary-dark {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  color: var(--text-body, #94a3b8) !important;
-  border: 1px solid var(--border-color, #1e2235) !important;
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding: 9px 18px;
+.btn-secondary {
+  background-color: var(--bg-btn) !important;
+  border: 0.5px solid #7140FD !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 5px;
   border-radius: 8px !important;
   transition: all 0.2s ease-in-out;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
+  cursor: pointer;
 }
 
-.accounts-create-wrapper .btn-secondary-dark:hover {
-  background-color: var(--bg-card-hover, #1a1e2d) !important;
-  color: var(--text-title, #ffffff) !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+.accounts-create-wrapper .btn-secondary:hover {
+  background-color: #5d2fdc !important;
+  border-color: #5d2fdc !important;
+  box-shadow: 0 4px 16px rgba(113, 64, 253, 0.3);
+  transform: translateY(-1px);
 }
 
 /* 5. Nút Submit Tạo mới tài khoản */
 .accounts-create-wrapper .btn-submit-account {
-  background-color: var(--bg-btn, #4f46e5) !important;
-  color: var(--text-title, #ffffff) !important;
+  background-color: #7140FD !important;
+  color: #ffffff !important;
   font-weight: 600;
   font-size: 0.875rem;
   padding: 10px 22px;
   border-radius: 8px !important;
-  border: 1px solid var(--bg-btn, #4f46e5) !important;
+  border: 1px solid #7140FD !important;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 12px rgba(113, 64, 253, 0.2);
 }
 
 .accounts-create-wrapper .btn-submit-account:hover {
-  background-color: #4338ca !important;
-  border-color: #4338ca !important;
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+  background-color: #5d2fdc !important;
+  border-color: #5d2fdc !important;
+  box-shadow: 0 6px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
   color: #ffffff !important;
 }
 
 /* ==========================================
-   CUSTOM UPLOAD IMAGE SECTION (MATCHING PRODUCT)
+   CUSTOM UPLOAD IMAGE SECTION (LIGHT THEME)
    ========================================== */
 
-/* Khớp hoàn toàn với cơ chế hiển thị bên trang Product */
 .accounts-create-wrapper .card {
   background-color: transparent !important;
 }
 
 /* Tùy chỉnh input chọn file */
 .accounts-create-wrapper input[upload-image-input] {
-  background-color: #171b2a !important;
-  color: var(--text-body, #94a3b8) !important;
-  border: 1px solid var(--border-color, #1e2235) !important;
+  background-color: #F9F9FA !important;
+  color: var(--text-body, #83808D) !important;
+  border: 1px solid var(--border-color, #D9D7DE) !important;
   border-radius: 8px !important;
   padding: 8px !important;
   font-size: 0.85rem !important;
 }
 
 .accounts-create-wrapper input[upload-image-input]::file-selector-button {
-  background-color: var(--primary-color, #272e44) !important;
-  color: var(--text-title, #ffffff) !important;
-  border: none !important;
+  background-color: #EFEFF4 !important;
+  color: #7140FD !important;
+  border: 1px solid rgba(113, 64, 253, 0.2) !important;
   border-radius: 6px !important;
   padding: 6px 14px !important;
   font-weight: 600;
@@ -142,36 +146,37 @@
 }
 
 .accounts-create-wrapper input[upload-image-input]::file-selector-button:hover {
-  background-color: var(--bg-btn, #4f46e5) !important;
+  background-color: #7140FD !important;
+  color: #ffffff !important;
 }
 
 /* Khung hiển thị xem trước ảnh (Preview Box) */
 .accounts-create-wrapper .upload-image-preview {
-  background-color: var(--bg-card, #121520) !important;
+  background-color: #FFFFFF !important;
   border-radius: 8px !important;
-  border: 2px dashed var(--border-color, #1e2235) !important;
+  border: 2px dashed var(--border-color, #D9D7DE) !important;
   margin-top: 10px;
 }
 
 /* Ảnh xem trước */
 .accounts-create-wrapper img[upload-image-preview] {
-  border: 2px solid var(--border-color, #1e2235);
-  background-color: var(--bg-main, #0b0d14);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--border-color, #D9D7DE);
+  background-color: #F9F9FA;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Phần chữ hướng dẫn */
 .accounts-create-wrapper .upload-placeholder p,
 .accounts-create-wrapper .upload-placeholder i {
-  color: var(--text-body, #94a3b8) !important;
+  color: var(--text-body, #83808D) !important;
 }
 
 /* Nút X gỡ ảnh */
 .accounts-create-wrapper button[upload-image-remove] {
   background-color: #ef4444 !important;
   color: #ffffff !important;
-  border: 2px solid var(--bg-card, #121520) !important;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
   transition: transform 0.2s ease;
 }
 

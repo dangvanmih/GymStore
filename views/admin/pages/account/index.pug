@@ -4,7 +4,7 @@ append style
   link(rel="stylesheet" href="/admin/css/account-list.css")
 
 block main
-  if(role.permissions.includes("accounts_view"))
+  if(role.permissions.includes("accounts-view"))
     +alert-success(5000)
     +alert-error(5000)
     .roles-management-wrapper.container-fluid.py-4
@@ -13,7 +13,7 @@ block main
         .col-md-6
           h1.page-title.mb-0 Danh sách tài khoản
         .col-md-6.text-right
-          if(role.permissions.includes("accounts_create"))
+          if(role.permissions.includes("accounts-view_create"))
             a.btn.btn-add-role(href=`${prefixAdmin}/accounts/create`)
               i.fas.fa-plus.mr-2
               | Thêm mới
@@ -71,10 +71,10 @@ block main
                         .d-flex.justify-content-center.gap-2
                           a.btn-action.btn-sm.btn-action-detail(href=`${prefixAdmin}/accounts/detail/${items.id}` title="Chi tiết")
                             i.fas.fa-eye
-                          if(role.permissions.includes("accounts_edit"))
+                          if(role.permissions.includes("accounts-view_edit"))
                             a.btn-action.btn-sm.btn-action-edit(href=`${prefixAdmin}/accounts/edit/${items.id}` title="Sửa")
                               i.fas.fa-edit
-                          if(role.permissions.includes("accounts_delete"))
+                          if(role.permissions.includes("accounts-view_delete"))
                             button.btn-action.btn-sm.btn-action-delete(
                               data-id=items.id
                               button-delete

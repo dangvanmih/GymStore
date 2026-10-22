@@ -1,18 +1,31 @@
+/* ==========================================
+   LIGHT THEME ENTERPRISE - COLOR SYSTEM
+   ========================================== */
 :root {
-  --bg-main: #0b0d14;
-  --bg-btn: #4f46e5;
-  --bg-btn-outline-active: #4f46e5;
-  --bg-card: #121520;
-  --bg-card-hover: #1a1e2d;
-  --border-color: #1e2235;
-  --primary-color: #272e44;
-  --primary-hover: #4f46e5;
-  --text-title: #ffffff;
-  --text-body: #94a3b8;
-  --text-muted: #64748b;
+  --bg-main: #F2F2F6;
+  /* Nền tổng thể trang quản trị */
+  --bg-card: #FFFF;
+  /* Nền các khối thẻ (card), bảng dữ liệu */
+  --bg-card-hover: #EFEFF4;
+  /* Màu khi rê chuột (Background 2) */
+  --border-color: #D9D7DE;
+  /* Đường viền mảnh tinh tế */
+  --bg-btn: #6E39CB;
+  /* Màu tím thương hiệu (Brand Primary) */
+  --bg-btn-outline-active: #6E39CB;
+  --primary-color: #EFEFF4;
+  --primary-hover: #7140FD;
+  --text-title: #6E39CB;
+  /* Chữ tiêu đề chính */
+  --text-body: #3A3541;
+  /* Chữ nội dung (Text Light) */
+  --text-muted: #BCB8C7;
+  --text-default: #ffff;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -20,8 +33,8 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-main);
-  color: var(--text-body);
+  background-color: var(--bg-main) !important;
+  color: var(--text-body) !important;
 }
 
 .admin-wrapper {
@@ -31,28 +44,81 @@ body {
   overflow: hidden;
 }
 
-
-
-
 /* --- MAIN CONTENT AREA --- */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--bg-main);
+}
+
 .main-content {
   flex: 1;
-  padding: 0 32px 32px 32px;
+  padding: 24px 32px;
   overflow-y: auto;
   background-color: var(--bg-main);
 }
 
 /* ==========================================
-   FLASH ALERT
+   RESPONSIVE DESIGN CHO MOBILE & TABLET
    ========================================== */
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-title);
+  cursor: pointer;
+}
 
-/* Định vị khung thông báo ở chính giữa phía trên */
+@media (max-width: 991.98px) {
+
+  .admin-sider,
+  .sider {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    z-index: 1050;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease-in-out;
+    background-color: #FFFFFF !important;
+  }
+
+  .admin-sider.sidebar-open,
+  .sider.sidebar-open {
+    left: 0;
+  }
+
+  .main-wrapper {
+    width: 100% !important;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-block !important;
+  }
+
+  .main-content {
+    padding: 16px !important;
+  }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================
+   FLASH ALERT (LIGHT THEME)
+   ========================================== */
 [show-alert] {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  /* Căn giữa màn hình */
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -64,31 +130,26 @@ body {
   border-radius: 10px;
   font-size: 0.875rem;
   font-weight: 500;
-  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
   backdrop-filter: blur(10px);
-
-  /* Chạy hiệu ứng trượt từ trên xuống */
   animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transition: all 0.4s ease-in-out;
 }
 
-/* Thông báo Thành công (Success) */
 .alert-success-custom,
 [show-alert].alert-success {
-  background-color: rgba(16, 185, 129, 0.18) !important;
-  border: 1px solid rgba(16, 185, 129, 0.45) !important;
-  color: #34d399 !important;
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #059669 !important;
 }
 
-/* Thông báo Thất bại / Lỗi (Danger/Error) */
 .alert-danger-custom,
 [show-alert].alert-danger {
-  background-color: rgba(239, 68, 68, 0.18) !important;
-  border: 1px solid rgba(239, 68, 68, 0.45) !important;
-  color: #f87171 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  color: #dc2626 !important;
 }
 
-/* Nút đóng thông báo */
 [close-alert] {
   display: inline-flex;
   align-items: center;
@@ -104,17 +165,15 @@ body {
 
 [close-alert]:hover {
   opacity: 1;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Hiệu ứng trượt ngược lên trên để ẩn đi */
 .alert-hidden {
   opacity: 0 !important;
   transform: translate(-50%, -40px) !important;
   pointer-events: none;
 }
 
-/* Keyframe hiệu ứng xuất hiện trượt từ trên xuống */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -127,8 +186,12 @@ body {
   }
 }
 
+/* ==========================================
+   SCROLLBAR
+   ========================================== */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -136,135 +199,100 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: #D9D7DE;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #999;
+  background: #BCB8C7;
 }
 
-
-/* ===== TinyMCE Dark Theme ===== */
-
-/* Khung ngoài */
+/* ==========================================
+   TINYMCE EDITOR (LIGHT THEME)
+   ========================================== */
 .tox.tox-tinymce {
   border: 1px solid var(--border-color) !important;
   border-radius: 8px;
   overflow: hidden;
-  background-color: var(--bg-main) !important;
+  background-color: var(--bg-card) !important;
 }
 
 .tox-editor-header {
-  background-color: var(--bg-card) !important;
+  background-color: var(--bg-card-hover) !important;
   border-bottom: 1px solid var(--border-color) !important;
 }
 
-/* Toolbar header */
-.tox .tox-menubar {
-  background-color: var(--bg-card) !important;
-  color: var(--text-body) !important;
-}
-
-/* Các thanh toolbar */
+.tox .tox-menubar,
 .tox .tox-toolbar,
 .tox .tox-toolbar__primary,
 .tox .tox-toolbar__overflow,
-.tox .tox-toolbar-overlord {
-  background-color: var(--bg-card) !important;
-}
-
-/* Các nhóm nút */
-.tox .tox-toolbar__group {
-  border-color: var(--border-color) !important;
-}
-
-/* Nút toolbar */
-.tox .tox-mbtn {
-  background-color: var(--bg-card) !important;
+.tox .tox-toolbar-overlord,
+.tox .tox-mbtn,
+.tox .tox-tbtn {
+  background-color: transparent !important;
   color: var(--text-body) !important;
 }
 
 .tox .tox-tbtn svg {
-  background-color: var(--bg-card) !important;
   fill: var(--text-body) !important;
-}
-
-.tox-editor-header .tox-toolbar__group {
-  background-color: var(--bg-card) !important;
 }
 
 .tox .tox-tbtn:hover {
   background-color: var(--bg-card-hover) !important;
 }
 
-.tox .tox-tbtn--disabled,
-.tox .tox-tbtn--bespoke,
-.tox .tox-tbtn,
-.tox .tox-tbtn:focus {
-  color: var(--text-body) !important;
-  background-color: var(--bg-card) !important;
-}
-
-
-/* Khu vực nội dung bên trong editor */
 .tox .tox-edit-area,
 .tox .tox-edit-area__iframe {
-  background-color: var(--bg-main) !important;
+  background-color: #fff !important;
 }
 
-/* Footer / status bar */
 .tox .tox-statusbar {
-  background-color: var(--bg-card) !important;
+  background-color: var(--bg-card-hover) !important;
   border-top: 1px solid var(--border-color) !important;
   color: var(--text-muted) !important;
 }
 
-/* Chữ và đường dẫn ở footer */
 .tox .tox-statusbar a,
 .tox .tox-statusbar__path-item,
 .tox .tox-statusbar__wordcount {
   color: var(--text-body) !important;
 }
 
-/* Nút resize footer */
-.tox .tox-statusbar__resize-handle {
-  color: var(--text-muted) !important;
-}
-
-/* Viền khi focus editor */
 .tox.tox-tinymce:focus-within {
-  border-color: var(--primary-hover) !important;
+  border-color: var(--bg-btn) !important;
 }
 
 .tox-promotion {
   display: none !important;
 }
 
-
 /* ==========================================
-   CUSTOM SWEETALERT2 COMPACT SIZE
+   SWEETALERT2 COMPACT SIZE (LIGHT THEME)
    ========================================== */
 .sw2-compact-popup {
-  width: 380px !important;       /* Thu nhỏ chiều ngang (mặc định của swal2 thường là 500px+) */
-  padding: 1.5rem !important;    /* Giảm khoảng cách đệm bên trong */
-  border-radius: 12px !important;/* Bo góc đồng bộ với card hệ thống */
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  width: 380px !important;
+  padding: 1.5rem !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--border-color) !important;
+  background-color: #FFFFFF !important;
+  color: var(--text-title) !important;
 }
 
 .sw2-compact-popup .swal2-title {
-  font-size: 1.15rem !important;   /* Thu nhỏ tiêu đề cho gọn */
+  font-size: 1.15rem !important;
   font-weight: 600 !important;
+  color: var(--text-title) !important;
 }
 
 .sw2-compact-popup .swal2-html-container {
-  font-size: 0.875rem !important;  /* Thu nhỏ cỡ chữ nội dung mô tả */
-  color: #94a3b8 !important;
+  font-size: 0.875rem !important;
+  color: var(--text-body) !important;
 }
 
 .sw2-compact-popup .swal2-actions button {
-  font-size: 0.85rem !important;   /* Thu nhỏ cỡ chữ ở nút bấm */
-  padding: 8px 18px !important;  /* Thu gọn nút bấm */
+  font-size: 0.85rem !important;
+  padding: 8px 18px !important;
   border-radius: 6px !important;
   font-weight: 600 !important;
 }
+

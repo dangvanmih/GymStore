@@ -3,7 +3,7 @@ include ../../mixins/alert.pug
 append style
   link(rel="stylesheet" href="/admin/css/account-create.css")
 block main
-  if(role.permissions.includes("accounts_edit"))
+  if(role.permissions.includes("accounts-view_edit"))
     +alert-error(5000)
     +alert-success(5000)
     if(roles)

@@ -1,77 +1,81 @@
 /* ==========================================
-    PRODUCT PAGE (DARK MODE ENTERPRISE)
+   PRODUCT PAGE - LIGHT THEME ENTERPRISE
    ========================================== */
+
 .page-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-title);
+  color: var(--text-title, #242130);
   letter-spacing: -0.01em;
 }
 
-/* Container Card & Bootstrap Override */
+/* Container Card & Soft Shadow */
 .card-table-wrapper,
 .card {
-  background-color: var(--bg-card) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 10px;
+  background-color: #FFFFFF !important;
+  border: 1px solid rgba(217, 215, 222, 0.6) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
   overflow: hidden;
 }
 
-/* Cấu trúc Bảng & Override Bootstrap White Background */
+/* Cấu trúc Bảng Mềm Mại (Không viền dọc, viền ngang siêu mỏng) */
 .custom-enterprise-table,
-.table,
-.table> :not(caption)>*>* {
-  background-color: var(--bg-card) !important;
-  color: var(--text-body) !important;
-  border-bottom-color: var(--border-color) !important;
-}
-
-.custom-enterprise-table {
+.table {
   width: 100%;
   font-size: 0.875rem;
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  color: var(--text-body, #83808D) !important;
+  background-color: #FFFFFF !important;
 }
 
-.custom-enterprise-table thead th {
-  background-color: var(--bg-card-hover) !important;
-  color: var(--text-muted) !important;
+.custom-enterprise-table thead th,
+.table thead th {
+  background-color: #FAFAFC !important;
+  color: var(--text-body, #242130) !important;
   font-weight: 600;
-  font-size: 0.725rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-color) !important;
-  border-top: none;
+  letter-spacing: 0.5px;
+  padding: 16px 20px !important;
+  border-top: none !important;
+  border-bottom: 1px solid #EFEFF4 !important;
+  border-left: none !important;
+  border-right: none !important;
+  vertical-align: middle !important;
 }
 
-.custom-enterprise-table tbody td {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border-color) !important;
+.custom-enterprise-table tbody td,
+.table tbody td {
+  padding: 16px 20px !important;
+  vertical-align: middle !important;
+  font-size: 0.875rem;
+  color: var(--text-body, #83808D) !important;
+  background-color: #FFFFFF !important;
+  border-top: none !important;
+  border-bottom: 1px solid #F2F2F6 !important;
+  border-left: none !important;
+  border-right: none !important;
   transition: background-color 0.15s ease;
 }
 
-.custom-enterprise-table tbody tr:hover td {
-  background-color: var(--bg-card-hover) !important;
-}
-
-.custom-enterprise-table tbody tr:last-child td {
-  border-bottom: none !important;
-}
-
-.custom-enterprise-table th,
-.custom-enterprise-table td {
-  vertical-align: middle !important;
-  /* Căn giữa các nội dung ở td trong bảng */
+/* Hiệu ứng Hover mượt mà cho từng hàng */
+.table-hover tbody tr:hover td,
+.custom-enterprise-table tbody tr:hover td,
+tr:hover {
+  background-color: #F9F9FB !important;
 }
 
 /* Thumbnail Sản phẩm & Typography */
 .product-img-wrapper {
-  width: 55px;
-  height: 55px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
+  width: 45px;
+  height: 45px;
+  border-radius: 6px;
+  border: 1px solid #D9D7DE;
   overflow: hidden;
-  background-color: var(--bg-main);
+  background-color: #F9F9FA;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,7 +88,8 @@
 }
 
 .product-title {
-  color: var(--text-title) !important;
+  color: var(--text-body, #242130) !important;
+  font-weight: 500;
   line-height: 1.35;
   max-width: 450px;
   white-space: nowrap;
@@ -93,7 +98,7 @@
 }
 
 .product-price {
-  color: var(--text-title) !important;
+  color: var(--text-body, #242130) !important;
   font-weight: 600;
   font-family: monospace, sans-serif;
   font-size: 0.9rem;
@@ -102,43 +107,40 @@
 /* Thiết lập kiểu dáng ô nhập vị trí */
 .input-position-dark {
   width: 60px !important;
-  margin: 0 auto; /* Căn giữa trong cột td */
+  margin: 0 auto;
   text-align: center;
   font-weight: 600;
   font-size: 0.8125rem;
-  background-color: var(--bg-main) !important;
-  border: 1px solid var(--border-color) !important;
-  color: var(--text-title) !important;
+  background-color: #F9F9FA !important;
+  border: 1px solid #D9D7DE !important;
+  color: var(--text-body, #242130) !important;
   border-radius: 6px !important;
   padding: 4px 6px !important;
   transition: all 0.2s ease-in-out;
 }
 
-/* Hiệu ứng khi rê chuột và focus */
 .input-position-dark:hover {
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: #7140FD !important;
 }
 
 .input-position-dark:focus {
-  background-color: var(--bg-card) !important;
-  border-color: #4f46e5 !important;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+  background-color: #FFFFFF !important;
+  border-color: #7140FD !important;
+  box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
-  color: #ffffff !important;
 }
 
-/* Ẩn hai mũi tên tăng giảm mặc định trên Firefox, Chrome, Safari */
+/* Ẩn mũi tên tăng giảm số */
 .input-position-dark::-webkit-outer-spin-button,
 .input-position-dark::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Ẩn mũi tên tăng giảm chuẩn W3C (bao gồm Firefox hiện đại) */
 .input-position-dark[type="number"] {
   appearance: textfield;
   -webkit-appearance: textfield;
-  -moz-appearance: textfield; /* Giữ lại nếu cần hỗ trợ các bản Firefox rất cũ */
+  -moz-appearance: textfield;
 }
 
 /* Status Badges */
@@ -147,28 +149,28 @@
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 4px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .badge-status i {
-  font-size: 0.3rem;
+  font-size: 0.45rem;
 }
 
 .badge-status-success {
-  background-color: rgba(34, 197, 94, 0.12) !important;
-  color: #4ade80 !important;
-  border: 1px solid rgba(34, 197, 94, 0.25);
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .badge-status-danger {
-  background-color: rgba(239, 68, 68, 0.12) !important;
-  color: #f87171 !important;
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 /* Action Buttons */
@@ -185,7 +187,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--text-body, #83808D);
   background-color: transparent;
   border: 1px solid transparent;
   text-decoration: none !important;
@@ -194,122 +196,106 @@
 }
 
 .btn-action-edit:hover {
-  color: #60a5fa !important;
-  background-color: rgba(59, 130, 246, 0.15) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #7140FD !important;
+  background-color: rgba(113, 64, 253, 0.1) !important;
+  border-color: rgba(113, 64, 253, 0.2) !important;
 }
 
 .btn-action-delete:hover {
-  color: #f87171 !important;
-  background-color: rgba(239, 68, 68, 0.15) !important;
-  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #dc2626 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
 }
 
 .btn-action-detail:hover {
-  color: #60a5fa !important;
-  background-color: rgba(59, 130, 246, 0.15) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #0284c7 !important;
+  background-color: rgba(2, 132, 199, 0.1) !important;
+  border-color: rgba(2, 132, 199, 0.2) !important;
 }
 
 /* ==========================================
-   Card search filter & Button Custom (DARK MODE ENTERPRISE)
+   Card search filter & Button Custom
    ========================================== */
 
-/* Card-header-custom */
 .card-header {
-  background-color: var(--bg-card-hover) !important;
+  background-color: #FAFAFC !important;
   padding: 0.7rem !important;
+  border-bottom: 1px solid #D9D7DE !important;
 }
 
-/* btn-ouline-custom */
 .cpn-search-filter.card-body {
   padding: 0.7rem !important;
 }
+
 .btn-outline-custom {
-  color: #818cf8 !important;
-  /* Chữ màu tím nhạt dịu mắt trên nền tối */
-  background-color: rgba(79, 70, 229, 0.1) !important;
-  /* Nền mờ 10% */
-  border-color: rgba(79, 70, 229, 0.4) !important;
-  /* Viền mờ 40% */
+  color: var(--text-body, #83808D) !important;
+  border-color: #D9D7DE;
   font-weight: 500;
   transition: all 0.25s ease;
 }
 
-/* Trạng thái Hover (Rê chuột) */
 .btn-outline-custom:hover {
   color: #ffffff !important;
-  background-color: var(--bg-btn-outline-active) !important;
-  border-color: var(--bg-btn-outline-active) !important;
-  box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
-  /* Hiệu ứng phát sáng nhẹ */
+  background-color: var(--bg-btn) !important;
+  border-color: #7140FD !important;
+  box-shadow: 0 0 12px rgba(113, 64, 253, 0.25);
 }
 
-/* Trạng thái Active (Đang được chọn / Được click) */
 .btn-outline-custom:active,
 .btn-outline-custom.active {
   color: #ffffff !important;
-  background-color: var(--bg-btn-outline-active) !important;
-  border-color: var(--bg-btn-outline-active) !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: var(--bg-btn) !important;
+  border-color: #7140FD !important;
 }
 
-/* Trạng thái Focus (Đang chọn bằng phím Tab/Click) */
 .btn-outline-custom:focus {
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3) !important;
+  box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.2) !important;
 }
 
-/* BTN-CUSTOM */
 .btn-custom {
   background-color: var(--bg-btn) !important;
   color: #ffffff !important;
 }
 
 .btn-custom:hover {
-  background-color: #322997 !important;
-  /* Màu tím đậm hơn khi hover */
+  background-color: #5d2fdc !important;
   transition: all 0.25s ease;
 }
 
 /* INPUT SEARCH */
 .search-form {
   margin: 0 auto;
-  max-width: 380px; /* Chiều rộng vừa vặn cho ô tìm kiếm enterprise */
+  max-width: 380px;
   width: 100%;
 }
 
-/* Thẻ input tìm kiếm */
 .search-input {
-  background-color: var(--bg-main) !important;
-  border: 1px solid var(--border-color) !important;
-  color: var(--text-title) !important;
+  background-color: #F9F9FA !important;
+  border: 1px solid #D9D7DE !important;
+  color: var(--text-body, #242130) !important;
   font-size: 0.8125rem !important;
   padding: 8px 16px !important;
   border-top-left-radius: 6px !important;
   border-bottom-left-radius: 6px !important;
   transition: all 0.2s ease !important;
-  height: 38px !important; /* Chiều cao cố định cho input */
+  height: 38px !important;
 }
 
-/* Đổi màu chữ placeholder */
 .search-input::placeholder {
-  color: var(--text-muted) !important;
+  color: #BCB8C7 !important;
   opacity: 0.8;
 }
 
-/* Hiệu ứng khi Focus (Bấm vào gõ) */
 .search-input:focus {
-  border-color: #4f46e5 !important; /* Đổi viền sang màu #4f46e5 */
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+  border-color: #7140FD !important;
+  box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
 
-/* Nút Submit Tìm kiếm */
 .btn-search {
-  background-color: var(--bg-card-hover) !important;
-  border: 1px solid var(--border-color) !important;
-  border-left: none !important;
-  color: var(--text-muted) !important;
+  background-color: var(--bg-btn) !important;
+  border: 1px solid #7140FD !important;
+  color: #ffffff !important;
   padding: 0 14px !important;
   border-top-right-radius: 6px !important;
   border-bottom-right-radius: 6px !important;
@@ -319,30 +305,29 @@
   transition: all 0.2s ease !important;
 }
 
-/* Hover vào nút tìm kiếm */
 .btn-search:hover {
-  background-color: #4f46e5 !important;
-  border-color: #4f46e5 !important;
-  color: #ffffff !important;
+  background-color: #5d2fdc !important;
+  border-color: #5d2fdc !important;
 }
 
 /* ==========================================
-   PAGINATION (DARK MODE ENTERPRISE)
+   PAGINATION
    ========================================== */
 
 .card-footer {
-  background-color: var(--bg-card) !important;
-  border-top: 1px solid var(--border-color) !important;
+  background-color: #FFFFFF !important;
+  border-top: 1px solid #D9D7DE !important;
+  border-radius: 12px;
 }
 
 .pagination {
-  gap: 6px; /* Tạo khoảng cách giữa các nút */
+  gap: 6px;
 }
 
 .pagination .page-item .page-link {
-  background-color: var(--bg-main);
-  border: 1px solid var(--border-color);
-  color: var(--text-body);
+  background-color: #F9F9FA;
+  border: 1px solid #D9D7DE;
+  color: var(--text-body, #83808D);
   border-radius: 6px !important;
   padding: 6px 12px;
   font-size: 0.8125rem;
@@ -353,41 +338,36 @@
   box-shadow: none;
 }
 
-/* Hover vào các nút phân trang */
 .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
-  background-color: var(--bg-card-hover);
-  color: var(--text-title);
-  border-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--bg-btn);
+  color: var(--text-default);
+  border-color: #BCB8C7;
 }
 
-/* Trạng thái Active (Trang hiện tại) - Chuẩn màu #4f46e5 */
 .pagination .page-item.active .page-link {
-  background-color: #4f46e5 !important;
-  border-color: #4f46e5 !important;
+  background-color: var(--bg-btn) !important;
+  border-color: #7140FD !important;
   color: #ffffff !important;
   font-weight: 600;
-  box-shadow: 0 0 10px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 0 10px rgba(113, 64, 253, 0.25);
 }
 
-/* Trạng thái Disabled (Nút bị vô hiệu hóa) */
 .pagination .page-item.disabled .page-link {
-  background-color: rgba(255, 255, 255, 0.02) !important;
-  border-color: var(--border-color) !important;
-  color: var(--text-muted) !important;
-  opacity: 0.4;
+  background-color: #F9F9FA !important;
+  border-color: #D9D7DE !important;
+  color: #BCB8C7 !important;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-
 /* ==========================================
-   FORM CHANGE MULTI (DARK MODE ENTERPRISE)
+   FORM CHANGE MULTI & SELECT
    ========================================== */
 
-/* Khung Select Dark Mode */
 .custom-select-dark {
-  background-color: var(--bg-main) !important;
-  border: 1px solid var(--border-color) !important;
-  color: var(--text-title) !important;
+  background-color: #F9F9FA !important;
+  border: 1px solid #D9D7DE !important;
+  color: var(--text-body, #242130) !important;
   font-size: 0.8125rem !important;
   padding: 6px 12px !important;
   border-top-left-radius: 6px !important;
@@ -396,23 +376,20 @@
   transition: all 0.2s ease !important;
 }
 
-/* Option dropdown styling */
 .custom-select-dark option {
-  background-color: var(--bg-card) !important;
-  color: var(--text-title) !important;
+  background-color: #FFFFFF !important;
+  color: var(--text-body, #242130) !important;
 }
 
-/* Focus state cho ô Select */
 .custom-select-dark:focus {
-  border-color: #4f46e5 !important;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+  border-color: #7140FD !important;
+  box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
 
-/* Nút Áp Dụng (ghép liền kề với Select) */
 .btn-custom-apply {
-  background-color: #4f46e5 !important;
-  border: 1px solid #4f46e5 !important;
+  background-color: var(--bg-btn) !important;
+  border: 1px solid #7140FD !important;
   color: #ffffff !important;
   font-size: 0.8125rem !important;
   font-weight: 500;
@@ -424,20 +401,14 @@
 }
 
 .btn-custom-apply:hover {
-  background-color: #4338ca !important; /* Đậm hơn khi hover */
-  border-color: #4338ca !important;
-  box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+  background-color: #5d2fdc !important;
+  border-color: #5d2fdc !important;
 }
 
-/* ==========================================
-   CUSTOM DARK MODE SORT SELECT & CLEAR BUTTON
-   ========================================== */
-
-/* Ô Chọn Sắp xếp (Select) */
 .form-select-dark {
-  background-color: #131722 !important;
-  color: #e2e8f0 !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background-color: #F9F9FA !important;
+  color: var(--text-body, #242130) !important;
+  border: 1px solid #D9D7DE;
   border-radius: 8px !important;
   height: 35px !important;
   font-size: 0.875rem !important;
@@ -445,33 +416,27 @@
   padding: 0 36px 0 14px !important;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  /* Icon mũi tên xuống màu xám trắng chuẩn Dark Mode */
   background-repeat: no-repeat !important;
   background-position: right 12px center !important;
   background-size: 14px 12px !important;
 }
 
 .form-select-dark:focus {
-  border-color: #6366f1 !important;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+  border-color: #7140FD !important;
+  box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
 
 .form-select-dark option {
-  background-color: #131722 !important;
-  color: #e2e8f0 !important;
+  background-color: #FFFFFF !important;
+  color: var(--text-body, #242130) !important;
   padding: 10px;
 }
 
-.form-select-dark option:disabled {
-  color: #6b7280 !important;
-}
-
-/* Nút Clear Sắp Xếp */
 .btn-clear-sort {
-  background-color: rgba(239, 68, 68, 0.15) !important;
-  color: #f87171 !important;
-  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  background-color: var(--bg-btn) !important;
+  color: var(--text-default, #242130) !important;
+  border: 1px solid #D9D7DE !important;
   border-radius: 8px !important;
   height: 35px !important;
   padding: 0 16px !important;
@@ -489,5 +454,5 @@
   background-color: #ef4444 !important;
   color: #ffffff !important;
   border-color: #ef4444 !important;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2) !important;
 }

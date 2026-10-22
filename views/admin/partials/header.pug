@@ -1,12 +1,15 @@
 link(rel="stylesheet", href="/admin/css/header.css")
+
 header.header-admin
-  //- Search Bar
-  .header-logo 
+  //- Left Section: Nút 3 gạch (Mobile Toggle) & Logo
+  .header-logo.d-flex.align-items-center.gap-2
+    button#sidebarToggle.mobile-menu-toggle(type="button" title="Mở/Đóng Menu")
+      i.fas.fa-bars
+    
     //- a(href="/admin/dashboard")
     //-   img(src="/admin/images/logo.png", alt="Logo" style='height:60px; object-fit: contain;')
 
-
-  //- Actions & Profile
+  //- Actions & Profile (Giữ nguyên 100% logic cũ)
   .header-actions
     button.icon-btn.position-relative(type="button", title="Notifications")
       i.far.fa-bell

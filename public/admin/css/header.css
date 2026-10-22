@@ -131,3 +131,31 @@
 .user-profile .dropdown-divider {
   border-top: 1px solid var(--border-color);
 }
+
+
+/* Nút 3 gạch trên header */
+.mobile-menu-toggle {
+  display: none !important; /* Mặc định ẩn trên Desktop */
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-title, #242130);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-menu-toggle:hover {
+  background-color: #EFEFF4;
+}
+
+/* Chỉ hiện trên màn hình di động hoặc tablet thu nhỏ (< 992px) */
+@media (max-width: 991.98px) {
+  .mobile-menu-toggle {
+    display: inline-flex !important;
+  }
+}

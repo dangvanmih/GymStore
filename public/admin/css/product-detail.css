@@ -1,6 +1,6 @@
-/* ==========================================================================
-   PRODUCT DETAIL PAGE - OPTIMIZED DARK THEME
-   ========================================================================== */
+/* ==========================================
+   PRODUCT DETAIL PAGE - LIGHT THEME ENTERPRISE
+   ========================================== */
 
 /* --- 1. Global Reset & Overrides cho Trang Detail --- */
 .card,
@@ -9,31 +9,31 @@
 .card-footer,
 .modal-content,
 .list-group-item {
-  background-color: var(--bg-card) !important;
-  color: var(--text-body) !important;
-  border-color: var(--border-color) !important;
+  background-color: #FFFFFF !important;
+  color: var(--text-body, #83808D) !important;
+  border-color: #D9D7DE !important;
 }
 
-/* Triệt hạ tận gốc các utility class làm dính nền trắng của Bootstrap */
+/* Triệt hạ tận gốc các utility class làm dính nền sáng/tối của Bootstrap */
 .bg-light,
 .bg-white,
 .bg-body,
 .bg-light-subtle {
-  background-color: var(--bg-main) !important;
-  color: var(--text-body) !important;
+  background-color: #F9F9FA !important;
+  color: var(--text-body, #83808D) !important;
 }
 
 /* --- 2. Typography & Color Tokens --- */
 .text-title {
-  color: var(--text-title) !important;
+  color: var(--text-body, #242130) !important;
 }
 
 .text-body {
-  color: var(--text-body) !important;
+  color: var(--text-body, #83808D) !important;
 }
 
 .text-muted {
-  color: var(--text-muted) !important;
+  color: var(--text-body) !important;
 }
 
 /* --- 3. Breadcrumb Header --- */
@@ -44,23 +44,23 @@
 }
 
 .breadcrumb-item a {
-  color: var(--text-muted) !important;
+  color: #BCB8C7 !important;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .breadcrumb-item a:hover {
-  color: var(--bg-btn) !important;
+  color: var(--text-body) !important;
 }
 
 .breadcrumb-item.active {
-  color: var(--text-title) !important;
+  color: var(--text-body, #242130) !important;
   font-weight: 500;
 }
 
 /* --- 4. Custom Compact Buttons --- */
 .btn-primary-custom {
-  background-color: var(--bg-btn) !important;
+  background-color: #7140FD !important;
   color: #ffffff !important;
   border: none !important;
   padding: 0.35rem 0.85rem !important;
@@ -74,14 +74,14 @@
 }
 
 .btn-primary-custom:hover {
-  background-color: var(--primary-hover) !important;
-  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.3);
+  background-color: #5d2fdc !important;
+  box-shadow: 0 3px 8px rgba(113, 64, 253, 0.25);
 }
 
 .btn-outline-custom {
   background-color: transparent !important;
-  color: var(--text-body) !important;
-  border: 1px solid var(--border-color) !important;
+  color: var(--text-body, #83808D) !important;
+  border: 1px solid #D9D7DE !important;
   padding: 0.35rem 0.85rem !important;
   font-size: 0.875rem !important;
   font-weight: 500;
@@ -93,15 +93,15 @@
 }
 
 .btn-outline-custom:hover {
-  background-color: var(--primary-color) !important;
-  color: var(--text-title) !important;
-  border-color: var(--primary-color) !important;
+  background-color: #7140FD !important;
+  color: #ffffff !important;
+  border-color: #7140FD !important;
 }
 
 /* --- 5. Container Ảnh Sản Phẩm --- */
 .product-image-container {
-  background-color: var(--bg-main) !important;
-  border: 1px dashed var(--border-color) !important;
+  background-color: #F9F9FA !important;
+  border: 1px dashed #D9D7DE !important;
   min-height: 360px;
   display: flex;
   align-items: center;
@@ -112,20 +112,20 @@
 }
 
 .product-image-container:hover {
-  border-color: var(--bg-btn) !important;
+  border-color: var(--text-body) !important;
 }
 
 .product-image-container img {
   max-height: 380px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.08));
 }
 
 /* --- 6. Khối Hiển Thị Giá & Metadata Cards --- */
 .price-box {
-  background-color: var(--bg-main) !important;
-  border: 1px solid var(--border-color) !important;
+  background-color: #F9F9FA !important;
+  border: 1px solid #D9D7DE !important;
   border-radius: 10px;
   display: flex !important;
   align-items: center !important;
@@ -134,7 +134,7 @@
 
 /* Giá mới */
 .text-price {
-  color: #f43f5e !important;
+  color: #e11d48 !important;
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1;
@@ -142,7 +142,7 @@
 
 /* Giá cũ gạch ngang */
 .old-price {
-  color: var(--text-muted) !important;
+  color: #BCB8C7 !important;
   text-decoration: line-through !important;
   font-size: 1rem;
   opacity: 0.8;
@@ -150,22 +150,22 @@
 
 /* Metadata Cards */
 .meta-card {
-  background-color: var(--bg-main) !important;
-  border: 1px solid var(--border-color) !important;
+  background-color: #F9F9FA !important;
+  border: 1px solid #D9D7DE !important;
   border-radius: 10px;
   transition: all 0.2s ease;
 }
 
 .meta-card:hover {
-  border-color: var(--primary-hover) !important;
-  background-color: var(--bg-card-hover) !important;
+  border-color: var(--text-body) !important;
+  background-color: #EFEFF4 !important;
 }
 
 /* --- 7. Status Badges --- */
 .badge-discount {
-  background-color: rgba(239, 68, 68, 0.2) !important;
-  color: #ef4444 !important;
-  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
   font-size: 0.85rem !important;
   padding: 0.35em 0.65em !important;
   border-radius: 6px;
@@ -173,18 +173,18 @@
 }
 
 .badge-success-custom {
-  background-color: rgba(16, 185, 129, 0.15) !important;
-  color: #10b981 !important;
-  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
   padding: 0.45em 0.85em;
   border-radius: 6px;
   font-weight: 500;
 }
 
 .badge-danger-custom {
-  background-color: rgba(239, 68, 68, 0.15) !important;
-  color: #ef4444 !important;
-  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
   padding: 0.45em 0.85em;
   border-radius: 6px;
   font-weight: 500;
@@ -192,15 +192,15 @@
 
 /* --- 8. Navigation Tabs & Content --- */
 .border-bottom-custom {
-  border-bottom: 1px solid var(--border-color) !important;
+  border-bottom: 1px solid #D9D7DE !important;
 }
 
 .nav-tabs {
-  border-bottom: 1px solid var(--border-color) !important;
+  border-bottom: 1px solid #D9D7DE !important;
 }
 
 .nav-tabs .nav-link {
-  color: var(--text-muted) !important;
+  color: #BCB8C7 !important;
   border: none !important;
   border-bottom: 2px solid transparent !important;
   background: transparent !important;
@@ -210,12 +210,12 @@
 }
 
 .nav-tabs .nav-link:hover {
-  color: var(--text-title) !important;
+  color: var(--text-body, #242130) !important;
 }
 
 .nav-tabs .nav-link.active {
-  color: var(--text-title) !important;
-  border-bottom: 2px solid var(--bg-btn) !important;
+  color: var(--text-body, #242130) !important;
+  border-bottom: 2px solid var(--text-body) !important;
   background: transparent !important;
   font-weight: 600;
 }
@@ -223,12 +223,12 @@
 .tab-content,
 .tab-pane {
   background-color: transparent !important;
-  color: var(--text-body) !important;
+  color: var(--text-body, #83808D) !important;
 }
 
 /* --- 9. Nội dung Mô tả HTML (Rich Text) --- */
 .product-description {
-  color: var(--text-body) !important;
+  color: var(--text-body, #83808D) !important;
   line-height: 1.7;
 }
 
@@ -236,13 +236,13 @@
 .product-description h2,
 .product-description h3,
 .product-description h4 {
-  color: var(--text-title) !important;
+  color: var(--text-title, #242130) !important;
   margin-top: 1.2rem;
   margin-bottom: 0.6rem;
 }
 
 .product-description p {
-  color: var(--text-body) !important;
+  color: var(--text-body, #83808D) !important;
   margin-bottom: 1rem;
 }
 
@@ -250,7 +250,7 @@
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* --- 10. Responsive Tweaks --- */
@@ -264,52 +264,71 @@
     font-size: 1.3rem;
   }
 }
+
 /* ==========================================
-   KHU VỰC CHI TIẾT TỒN KHO THEO SIZE (DARK / CUSTOM TONE)
+   KHU VỰC CHI TIẾT TỒN KHO THEO SIZE (LIGHT THEME)
    ========================================== */
 
 .variants-detail-box {
-  background-color: var(--bg-main); /* Tông màu nền tối cùng tone với card/form */
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: #F9F9FA !important;
+  border: 1px solid #D9D7DE !important;
   border-radius: 0.5rem;
   transition: all 0.2s ease-in-out;
 }
 
 /* Biểu tượng & Tiêu đề */
 .variants-detail-box h6 {
-  color: #e9ecef;
+  color: var(--text-title, #242130);
   font-size: 0.95rem;
   letter-spacing: 0.3px;
+  font-weight: 600;
 }
 
 .variants-detail-box h6 i {
-  color: #0d6efd;
+  color: #7140FD;
 }
 
-/* Đăng ký Bảng Size theo Tone Tối */
+/* Bảng Size theo phong cách mềm mại, hiện đại */
 .variants-detail-box table {
-  color: #dee2e6;
+  color: var(--text-body, #83808D);
+  width: 100%;
+  margin-bottom: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0;
 }
 
 .variants-detail-box table thead th {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #adb5bd;
-  background-color: #2c3036; /* Nền header bảng sẫm màu */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-body, #242130);
+  background-color: #FAFAFC !important;
+  border-top: none !important;
+  border-bottom: 1px solid #EFEFF4 !important;
+  border-left: none !important;
+  border-right: none !important;
+  padding: 12px 16px !important;
 }
 
 .variants-detail-box table tbody tr {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: background-color 0.15s ease;
 }
 
-.variants-detail-box table tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+.variants-detail-box table tbody tr td {
+  padding: 12px 16px !important;
+  border-top: none !important;
+  border-bottom: 1px solid #F2F2F6 !important;
+  border-left: none !important;
+  border-right: none !important;
+  background-color: #FFFFFF !important;
+  vertical-align: middle !important;
 }
 
-.variants-detail-box table tbody tr:last-child {
+.variants-detail-box table tbody tr:hover td {
+  background-color: #F9F9FB !important;
+}
+
+.variants-detail-box table tbody tr:last-child td {
   border-bottom: none !important;
 }
 

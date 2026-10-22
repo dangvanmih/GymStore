@@ -28,8 +28,8 @@ tinymce.init({
     input.click();
   },
   content_style: ` 
-  body { background-color: #0b0d14; color: #ffff;font-family: Arial, sans-serif; font-size: 14px; }
-   p { color: #FFFF; } 
+  body { background-color: #ffff;font-family: Arial, sans-serif; font-size: 14px; }
+   p { color: #3A3541; } 
    a { color: #818cf8; } 
    h1, h2, h3, h4, h5, h6 { color: #ffffff; } 
    blockquote { border-left: 3px solid #4f46e5; 

@@ -3,15 +3,15 @@ include ../../mixins/alert.pug
 append style
   link(rel="stylesheet" href="/admin/css/account-create.css")
 block main
-  if(role.permissions.includes("accounts_create"))
+  if(role.permissions.includes("accounts-view_create"))
     +alert-error(5000)
     .accounts-create-wrapper.container-fluid.py-4
       //- Tiêu đề trang & Nút quay lại
       .d-flex.align-items-center.justify-content-between.mb-4
         h1.page-title.mb-0 Thêm mới tài khoản
-        a.btn.btn-secondary-dark(href=`${prefixAdmin}/accounts`)
+        a.btn.btn-secondary(href=`${prefixAdmin}/accounts`)
           i.fas.fa-arrow-left.mr-2
-          | Trở về danh sách
+          | Quay lại
 
       //- Form tạo mới tài khoản
       .row.justify-content-center

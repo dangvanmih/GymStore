@@ -1,0 +1,164 @@
+/* ==========================================
+   MOBILE & TABLET RESPONSIVE FIXES
+   ========================================== */
+
+@media (max-width: 991.98px) {
+  /* 1. Xử lý khung hiển thị chung trên mobile */
+  .admin-wrapper {
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+    height: 100vh;
+  }
+
+  /* 2. Thanh Sider (Menu trái): Ẩn mặc định, trượt ra khi bấm toggle */
+  .admin-sider, .sider {
+    position: fixed !important;
+    top: 0;
+    left: -280px;
+    width: 280px !important;
+    min-width: 280px !important;
+    height: 100vh;
+    z-index: 1050;
+    background-color: #FFFFFF !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    transition: left 0.3s ease-in-out;
+  }
+
+  .admin-sider.sidebar-open, .sider.sidebar-open {
+    left: 0 !important;
+  }
+
+  /* 3. Phần nội dung chính (Main wrapper & content) chiếm full màn hình */
+  .main-wrapper {
+    width: 100% !important;
+    margin-left: 0 !important;
+    flex: 1;
+    overflow-x: hidden;
+  }
+
+  .main-content {
+    padding: 12px !important;
+    overflow-x: auto !important;
+  }
+
+  /* 4. Tối ưu hóa các bảng dữ liệu trên mobile (Cho phép lướt ngang mượt mà không vỡ khung) */
+  .table-responsive,
+  .card-body .table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+  }
+
+  /* 5. Thu nhỏ các tiêu đề và khoảng cách card cho vừa màn hình điện thoại */
+  .page-title {
+    font-size: 1.25rem !important;
+  }
+
+  .card {
+    margin-bottom: 12px !important;
+  }
+
+  /* 6. Các nút hành động hoặc form tìm kiếm xếp dọc trên mobile nếu cần */
+  .row > [class*="col-"] {
+    margin-bottom: 8px;
+  }
+}
+
+/* Xử lý riêng cho màn hình điện thoại rất nhỏ ( dưới 576px ) */
+@media (max-width: 575.98px) {
+  .main-content {
+    padding: 8px !important;
+  }
+
+  /* Thu gọn kích thước nút bấm và bảng trên màn hình nhỏ */
+  .btn, .btn-action {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Đảm bảo hình ảnh sản phẩm hoặc avatar không bị bóp méo */
+  .product-img-wrapper, table img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+/* Đảm bảo ô tìm kiếm và các ô select không bị bóp méo quá nhỏ */
+@media (max-width: 991.98px) {
+  .search-form {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  .card-header {
+    padding: 10px !important;
+  }
+}
+
+/* ==========================================
+   TỐI ƯU THANH CÔNG CỤ & MENU KHI THU GỌN
+   ========================================== */
+
+@media (max-width: 991.98px) {
+  /* 1. Ép các cụm bộ lọc (Tất cả, Hoạt động...) và tìm kiếm co giãn linh hoạt */
+  .card-header, 
+  .cpn-search-filter,
+  .card-header .card-body {
+    padding: 8px !important;
+    gap: 8px !important;
+  }
+
+  /* 2. Gom nhóm phần bộ lọc bên trái và form tìm kiếm bên phải dàn đều xuống dòng */
+  .card-header form,
+  .card-header .d-flex,
+  .cpn-search-filter form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100% !important;
+    gap: 8px !important;
+    margin: 0 !important;
+  }
+
+  /* 3. Thu nhỏ kích thước các nút bấm, select box và ô tìm kiếm cho vừa vặn */
+  .card-header .btn,
+  .card-header .form-select,
+  .card-header .search-input,
+  .btn-outline-custom,
+  .custom-select-dark,
+  .form-select-dark {
+    font-size: 0.75rem !important;
+    padding: 6px 10px !important;
+    height: 34px !important;
+  }
+
+  /* 4. Ô tìm kiếm chiếm full chiều ngang trên mobile để không bị bóp méo */
+  .search-form {
+    max-width: 100% !important;
+    flex: 1;
+  }
+
+  /* 5. Tối ưu khoảng cách bảng dữ liệu */
+  .table td, .table th {
+    padding: 10px 12px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Riêng cho màn hình điện thoại rất nhỏ (dưới 576px) */
+@media (max-width: 575.98px) {
+  .card-header .btn-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Chia đều 3 nút trạng thái thành 3 cột gọn gàng */
+    width: 100%;
+    gap: 4px;
+  }
+  
+  .card-header .btn-group .btn {
+    width: 100%;
+    text-align: center;
+    padding: 6px 4px !important;
+    font-size: 0.7rem !important;
+  }
+}
+
