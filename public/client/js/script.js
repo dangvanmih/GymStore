@@ -100,3 +100,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// trượt banner
+document.addEventListener("DOMContentLoaded", function () {
+  // Khởi tạo Swiper cho Slider Banner Trang Chủ
+  const homeBannerSwiper = new Swiper('.main-home-slider', {
+    loop: true,               // Cho phép lặp vô hạn vòng slider
+    speed: 800,               // Tốc độ chuyển slide (mili-giây)
+    autoplay: {
+      delay: 5000,            // Thời gian tự động chuyển slide (5 giây)
+      disableOnInteraction: false, // Tiếp tục chạy autoplay sau khi người dùng bấm nút chuyển
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,        // Cho phép bấm vào dấu chấm để chuyển slide
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    effect: 'slide',          // Hiệu ứng trượt ngang
+  });
+});

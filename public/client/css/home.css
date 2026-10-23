@@ -1,0 +1,56 @@
+/* ==================== CSS CHO SLIDER BANNER TRUNG TÂM ==================== */
+.main-home-slider {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Đổi màu và kích thước nút mũi tên qua lại của Swiper */
+.main-home-slider .swiper-button-next,
+.main-home-slider .swiper-button-prev {
+  color: #fff !important;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.main-home-slider .swiper-button-next:hover,
+.main-home-slider .swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.main-home-slider .swiper-button-next::after,
+.main-home-slider .swiper-button-prev::after {
+  font-size: 18px !important;
+  font-weight: bold;
+}
+
+/* Đổi màu các dấu chấm pagination bên dưới */
+.main-home-slider .swiper-pagination-bullet {
+  background: #fff !important;
+  opacity: 0.6;
+  width: 10px;
+  height: 10px;
+}
+
+.main-home-slider .swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  width: 24px;
+  border-radius: 5px;
+}
+
+/* Căn chỉnh kích thước và vị trí ảnh/video nằm chính giữa tuyệt đối */
+
+.banner-large video,
+.banner-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* Giúp lấp đầy khung mà không bị méo hình */
+  object-position: center center;   /* Đảm bảo tâm của ảnh/video luôn nằm chính giữa khung */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Căn giữa tuyệt đối khung hình */
+}
