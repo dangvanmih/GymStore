@@ -84,11 +84,14 @@ block main
                     label.form-label.fw-medium(for="price") Giá bán (VNĐ) #[span.text-danger *]
                     .input-group.input-group-dark
                       input#price.form-control.form-control-dark(
-                        type="number"
+                        type="text"
                         name="price"
                         value="0"
                         min="0"
                         required
+                        oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')"
+                        onfocus="if(this.value=='0') this.value=''"
+                        onblur="if(this.value=='') this.value='0'"
                       )
                       span.input-group-text đ
 
@@ -124,15 +127,20 @@ block main
                       min="0"
                     )
 
-                  //- KHU VỰC 2: Dành cho sản phẩm CÓ SIZE (Ban đầu ẩn)
+                  //- KHU VỰC 2: Dành cho sản phẩm CÓ PHÂN LOẠI (Size, Màu, Giá riêng)
                   #variants-wrapper.d-none
-                    label.form-label.fw-medium.d-block Danh sách Size & Tồn kho
+                    label.form-label.fw-medium.d-block Danh sách Biến thể (Size, Màu & Giá)
+                    .row.g-2.mb-1.text-muted.small.fw-bold.px-1
+                      .col-md-3 Kích cỡ (Size) #[span.text-danger *]
+                      .col-md-3 Màu sắc
+                      .col-md-2 Giá riêng (VNĐ)
+                      .col-md-3 Số lượng #[span.text-danger *]
                     #variants-list
-                      //- JavaScript sẽ tự động chèn các dòng nhập Size vào đây
+                      //- JavaScript sẽ tự động chèn các dòng nhập vào đây
                     
                     button#btn-add-variant.btn.btn-sm.btn-outline-primary.mt-2(type="button")
                       i.fas.fa-plus.me-1.mr-1
-                      span Thêm Size
+                      span Thêm biến thể
 
           //- Cột phải: Hình ảnh & Cấu hình xuất bản
           .col-lg-4

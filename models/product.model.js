@@ -10,6 +10,21 @@ const variantSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  color: {
+    type: String, // Ví dụ: "Đen", "Xám", "Trắng"
+    default: "",
+    trim: true
+  },
+  price: {
+    type: Number, 
+    default: 0,
+    min: 0
+  },
+  priceNew: {
+    type: Number, // Giá sau khi đã tính giảm giá
+    default: 0,
+    min: 0
+  },
   stock: {
     type: Number,
     required: true,

@@ -72,7 +72,9 @@ if (buttonDelete.length > 0) {
   });
 }
 
-// xử lý thêm sizeCreate
+
+
+// xử lý thêm sizeCreate & variants
 document.addEventListener("DOMContentLoaded", () => {
   const hasVariantsCheckbox = document.querySelector("#hasVariants");
   const singleStockWrapper = document.querySelector("#single-stock-wrapper");
@@ -81,27 +83,62 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnAddVariant = document.querySelector("#btn-add-variant");
 
   if (hasVariantsCheckbox) {
-    let variantIndex = 0;
+    let variantIndex = variantsList ? variantsList.children.length : 0;
 
-    // Tạo 1 dòng nhập Size & Stock
+    // Gắn sự kiện xóa cho các nút Xóa đã có sẵn từ Server (Dùng cho cả trang Edit)
+    const bindRemoveButtons = () => {
+      const removeButtons = document.querySelectorAll(".btn-remove-variant");
+      removeButtons.forEach((btn) => {
+        if (!btn.dataset.hasListener) {
+          btn.dataset.hasListener = "true";
+          btn.addEventListener("click", (e) => {
+            const itemRow = e.target.closest(".variant-item");
+            if (itemRow) {
+              itemRow.remove();
+            }
+          });
+        }
+      });
+    };
+
+    // Khởi tạo gắn listener cho các nút có sẵn (nếu có ở trang Edit)
+    bindRemoveButtons();
+
+    // Tạo 1 dòng nhập Biến thể mới (Size, Màu, Giá riêng, Tồn kho)
     const createVariantRow = (index) => {
       const div = document.createElement("div");
       div.className = "row g-2 mb-2 align-items-center variant-item";
       div.innerHTML = `
-        <div class="col-5">
-          <input type="text" name="variants[${index}][size]" class="form-control form-control-dark" placeholder="Kích cỡ (VD: S, M, L)" required>
+        <div class="col-md-3">
+          <input type="text" name="variants[${index}][size]" class="form-control form-control-dark" placeholder="Size (VD: S, M, L)" required>
         </div>
-        <div class="col-5">
-          <input type="number" name="variants[${index}][stock]" class="form-control form-control-dark" placeholder="Số lượng tồn kho" min="0" value="0" required>
+        <div class="col-md-3">
+          <input type="text" name="variants[${index}][color]" class="form-control form-control-dark" placeholder="Màu (Đen, Xám...)">
         </div>
-        <div class="col-2 text-center">
+        <div class="col-md-2">
+          <input 
+            type="text" 
+            name="variants[${index}][price]" 
+            class="form-control form-control-dark" 
+            placeholder="Giá riêng (đ)" 
+            min="0" 
+            value="0" 
+            oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')"
+            onfocus="if(this.value=='0') this.value=''"
+            onblur="if(this.value=='') this.value='0'"
+          >       
+        </div>
+        <div class="col-md-3">
+          <input type="number" name="variants[${index}][stock]" class="form-control form-control-dark" placeholder="Số lượng" min="0" value="0" required>
+        </div>
+        <div class="col-md-1 text-center">
           <button type="button" class="btn btn-outline-danger btn-sm btn-remove-variant" title="Xóa">
-            <i class="fas fa-trash-alt"></i>
+            <i class="fas.fa-trash-alt"><i class="fas fa-trash-alt"></i></i>
           </button>
         </div>
       `;
 
-      // Nút xóa dòng size
+      // Nút xóa dòng biến thể
       div.querySelector(".btn-remove-variant").addEventListener("click", () => {
         div.remove();
       });
@@ -125,10 +162,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Bấm nút "Thêm Size"
-    btnAddVariant.addEventListener("click", () => {
-      variantsList.appendChild(createVariantRow(variantIndex++));
-    });
+    // Bấm nút "Thêm biến thể"
+    if (btnAddVariant) {
+      btnAddVariant.addEventListener("click", () => {
+        variantsList.appendChild(createVariantRow(variantIndex++));
+      });
+    }
   }
 });
 

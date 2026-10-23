@@ -84,10 +84,10 @@ block main
                     label.form-label.fw-medium(for="price") Giá bán (VNĐ) #[span.text-danger *]
                     .input-group.input-group-dark
                       input#price.form-control.form-control-dark(
-                        type="number"
+                        type="text"
                         name="price"
                         min="0"
-                        required
+                        oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')"
                         value=product.price
                       )
                       span.input-group-text đ
@@ -125,37 +125,61 @@ block main
                       min="0"
                     )
 
-                  //- KHU VỰC 2: Dành cho sản phẩm CÓ SIZE
+                  //- KHU VỰC 2: Dành cho sản phẩm CÓ BIẾN THỂ (Size, Màu, Giá riêng)
                   #variants-wrapper(class=product.hasVariants ? "" : "d-none")
-                    label.form-label.fw-medium.d-block Danh sách Size & Tồn kho
+                    label.form-label.fw-medium.d-block Danh sách Biến thể (Size, Màu & Giá)
+                    
+                    //- Dòng tiêu đề cột (Header) giúp quản lý trực quan
+                    .row.g-2.mb-1.text-muted.small.fw-bold.px-1
+                      .col-md-3 Kích cỡ (Size) #[span.text-danger *]
+                      .col-md-3 Màu sắc
+                      .col-md-2 Giá riêng (VNĐ)
+                      .col-md-3 Số lượng #[span.text-danger *]
+                      .col-md-1 Xóa
+
                     #variants-list
                       if product.hasVariants && product.variants && product.variants.length > 0
                         each variant, index in product.variants
                           .row.g-2.mb-2.align-items-center.variant-item
-                            .col-5
+                            .col-md-3
                               input.form-control.form-control-dark(
                                 type="text"
                                 name=`variants[${index}][size]`
-                                placeholder="Kích cỡ (VD: S, M, L, XL, 40...)"
+                                placeholder="VD: S, M, L"
                                 required
                                 value=variant.size
                               )
-                            .col-5
+                            .col-md-3
+                              input.form-control.form-control-dark(
+                                type="text"
+                                name=`variants[${index}][color]`
+                                placeholder="VD: Đen, Xám"
+                                value=variant.color || ""
+                              )
+                            .col-md-2
+                              input.form-control.form-control-dark(
+                                type="number"
+                                name=`variants[${index}][price]`
+                                placeholder="0"
+                                min="0"
+                                value=variant.price || 0
+                              )
+                            .col-md-3
                               input.form-control.form-control-dark(
                                 type="number"
                                 name=`variants[${index}][stock]`
-                                placeholder="Số lượng tồn kho"
+                                placeholder="0"
                                 min="0"
                                 required
                                 value=variant.stock
                               )
-                            .col-2.text-center
+                            .col-md-1.text-center
                               button.btn.btn-outline-danger.btn-sm.btn-remove-variant(type="button" title="Xóa")
                                 i.fas.fa-trash-alt
 
                     button#btn-add-variant.btn.btn-sm.btn-outline-primary.mt-2(type="button")
                       i.fas.fa-plus.me-1.mr-1
-                      span Thêm Size
+                      span Thêm biến thể
 
           //- Cột phải: Hình ảnh & Cấu hình xuất bản
           .col-lg-4

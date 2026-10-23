@@ -5,7 +5,8 @@ const paginationHelper = require('../../helpers/pagination');
 const systemConfig = require('../../configs/system');
 const createTreeHelper = require("../../helpers/createTree");
 const Category = require('../../models/category.model');
-const Account = require('../../models/account.model')
+const Account = require('../../models/account.model');
+const {calculatePriceNew}= require('../../helpers/calculatePrice')
 // GET: /admin/product
 module.exports.index = async (req, res) => {
 
@@ -159,32 +160,54 @@ module.exports.createProduct = async (req, res) => {
 
 // POST: /admin/product/create
 module.exports.createPostProduct = async (req, res) => {
-  req.body.price = parseInt(req.body.price) || 0;
-  req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0;
+  // 1. Xử lý giá chung và phần trăm giảm giá chung (Xử lý bỏ dấu chấm nếu có)
+  const rawPrice = req.body.price ? req.body.price.toString().replace(/\./g, "") : "0";
+  const price = parseInt(rawPrice) || 0;
+  const discountPercentage = parseInt(req.body.discountPercentage) || 0;
 
-  // Kiểm tra cờ phân loại Size
+  req.body.price = price;
+  req.body.discountPercentage = discountPercentage;
+
+  // Tính giá mới chung của sản phẩm (có làm tròn đẹp)
+  req.body.priceNew = calculatePriceNew(price, discountPercentage);
+
+  // 2. Xử lý cờ phân loại Size/Màu (hasVariants)
   if (req.body.hasVariants === "true" || req.body.hasVariants === true) {
     req.body.hasVariants = true;
-    req.body.stock = 0; // Đặt stock chung = 0
+    req.body.stock = 0; // Đặt stock chung = 0 khi dùng biến thể
 
-    // Ép kiểu mảng variants gửi lên
+    // Ép kiểu mảng variants gửi lên từ form
     if (Array.isArray(req.body.variants)) {
       req.body.variants = req.body.variants
-        .filter((item) => item.size && item.size.trim() !== "") // Loại bỏ dòng rỗng
-        .map((item) => ({
-          size: item.size.trim(),
-          stock: parseInt(item.stock) || 0
-        }));
+        .filter((item) => item.size && item.size.trim() !== "") // Lọc bỏ dòng trống size
+        .map((item) => {
+          // Xử lý bỏ dấu chấm cho giá riêng của biến thể
+          const rawVariantPrice = item.price ? item.price.toString().replace(/\./g, "") : "0";
+          // Nếu không nhập giá riêng hoặc để 0 thì lấy giá chung của sản phẩm
+          const variantPrice = parseInt(rawVariantPrice) > 0 ? parseInt(rawVariantPrice) : price;
+
+          // Tính giá sau giảm cho riêng biến thể này (có làm tròn đẹp)
+          const variantPriceNew = calculatePriceNew(variantPrice, discountPercentage);
+
+          return {
+            size: item.size.trim().toUpperCase(), // Tự động ép size thành chữ hoa (S, M, L...)
+            color: item.color ? item.color.trim() : "",
+            price: variantPrice,
+            priceNew: variantPriceNew,
+            stock: parseInt(item.stock) || 0
+          };
+        });
     } else {
       req.body.variants = [];
     }
   } else {
+    // Trường hợp sản phẩm đơn lẻ (Không có biến thể)
     req.body.hasVariants = false;
     req.body.stock = parseInt(req.body.stock) || 0;
     req.body.variants = [];
   }
 
-  // Xử lý vị trí position
+  // 3. Xử lý vị trí hiển thị (position)
   if (!req.body.position || req.body.position === "") {
     const countProducts = await Product.countDocuments();
     req.body.position = countProducts + 1;
@@ -192,16 +215,26 @@ module.exports.createPostProduct = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
-  req.body.createdBy = {
-    account_id: res.locals.user.id,
-    createdAt: new Date()
-  };
+  // 4. Lưu thông tin người tạo
+  if (res.locals && res.locals.user) {
+    req.body.createdBy = {
+      account_id: res.locals.user.id,
+      createdAt: new Date()
+    };
+  }
 
-  const product = new Product(req.body);
-  await product.save();
+  // 5. Lưu vào Database
+  try {
+    const product = new Product(req.body);
+    await product.save();
 
-  req.flash("success", "Đã thêm sản phẩm thành công!");
-  res.redirect(`${systemConfig.prefixAdmin}/products`);
+    req.flash("success", "Đã thêm sản phẩm thành công!");
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
+  } catch (error) {
+    console.error("Lỗi khi thêm sản phẩm:", error);
+    req.flash("error", "Thêm sản phẩm thất bại, vui lòng thử lại!");
+    res.redirect(req.get("Referer"));
+  }
 };
 
 // GET: /admin/product/edit/:id
@@ -235,22 +268,43 @@ module.exports.editProduct = async (req, res) => {
 module.exports.editPatchProduct = async (req, res) => {
   const id = req.params.id;
 
-  req.body.price = parseInt(req.body.price) || 0;
-  req.body.discountPercentage = parseInt(req.body.discountPercentage) || 0;
+  // 1. Xử lý giá chung và phần trăm giảm giá chung (Xử lý bỏ dấu chấm nếu có)
+  const rawPrice = req.body.price ? req.body.price.toString().replace(/\./g, "") : "0";
+  const price = parseInt(rawPrice) || 0;
+  const discountPercentage = parseInt(req.body.discountPercentage) || 0;
+
+  req.body.price = price;
+  req.body.discountPercentage = discountPercentage;
   req.body.position = parseInt(req.body.position) || 0;
 
-  // Xử lý phân loại Size & Stock
+  // Tính giá mới chung của sản phẩm (có làm tròn đẹp)
+  req.body.priceNew = calculatePriceNew(price, discountPercentage);
+
+  // 2. Xử lý phân loại Size, Màu & Giá riêng
   if (req.body.hasVariants === "true" || req.body.hasVariants === true) {
     req.body.hasVariants = true;
-    req.body.stock = 0; // Đưa stock chung về 0 khi dùng phân loại size
+    req.body.stock = 0; // Đưa stock chung về 0 khi dùng phân loại
 
     if (Array.isArray(req.body.variants)) {
       req.body.variants = req.body.variants
         .filter((item) => item.size && item.size.trim() !== "")
-        .map((item) => ({
-          size: item.size.trim(),
-          stock: parseInt(item.stock) || 0
-        }));
+        .map((item) => {
+          // Xử lý bỏ dấu chấm cho giá riêng của biến thể
+          const rawVariantPrice = item.price ? item.price.toString().replace(/\./g, "") : "0";
+          // Nếu không nhập giá riêng hoặc để 0 thì lấy giá chung của sản phẩm
+          const variantPrice = parseInt(rawVariantPrice) > 0 ? parseInt(rawVariantPrice) : price;
+          
+          // Tính giá sau giảm cho riêng biến thể này (có làm tròn đẹp)
+          const variantPriceNew = calculatePriceNew(variantPrice, discountPercentage);
+
+          return {
+            size: item.size.trim().toUpperCase(), // Tự động ép size thành chữ hoa (S, M, L...)
+            color: item.color ? item.color.trim() : "",
+            price: variantPrice,
+            priceNew: variantPriceNew,
+            stock: parseInt(item.stock) || 0
+          };
+        });
     } else {
       req.body.variants = [];
     }
@@ -260,10 +314,11 @@ module.exports.editPatchProduct = async (req, res) => {
     req.body.variants = []; // Xóa mảng variants nếu chuyển sản phẩm về Free Size
   }
 
+  // 3. Thực hiện cập nhật vào Database
   try {
     const updateData = { ...req.body };
 
-    // Không cập nhật updatedBy bằng $set
+    // Không cập nhật updatedBy bằng $set trực tiếp
     delete updateData.updatedBy;
 
     await Product.updateOne(

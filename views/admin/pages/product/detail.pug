@@ -47,19 +47,30 @@ block main
           .card-body.p-4
             h4.fw-bold.text-title.mb-3= product.title
 
-            //- Khối hiển thị giá đã fix format & khoảng cách
+            //- Khối hiển thị giá  (Hỗ trợ cả sản phẩm đơn lẻ lẫn sản phẩm có biến thể)
             .price-box.p-3.rounded.mb-4.d-flex.align-items-center.gap-3
-              if product.discountPercentage > 0
-                //- Giá mới (Sau giảm giá)
-                span.fs-3.fw-bold.text-price= `${Number(product.priceNew).toLocaleString('vi-VN')}đ`
+              if product.hasVariants && product.variants && product.variants.length > 0
+                - 
+                  // Lấy danh sách các giá mới của các biến thể
+                  var variantPricesNew = product.variants.map(v => v.priceNew || v.price || 0);
+                  var minPrice = Math.min(...variantPricesNew);
+                  var maxPrice = Math.max(...variantPricesNew);
                 
-                //- Giá cũ (Gạch ngang)
-                span.old-price= `${Number(product.price).toLocaleString('vi-VN')}đ`
+                if minPrice === maxPrice
+                  span.fs-3.fw-bold.text-price= `${Number(minPrice).toLocaleString('vi-VN')}đ`
+                else
+                  span.fs-3.fw-bold.text-price= `${Number(minPrice).toLocaleString('vi-VN')}đ - ${Number(maxPrice).toLocaleString('vi-VN')}đ`
                 
-                //- Phần trăm giảm
-                span.badge.badge-discount= `-${product.discountPercentage}%`
+                span.badge.bg-secondary.text-white Phân loại theo biến thể
+              
               else
-                span.fs-3.fw-bold.text-price= `${Number(product.price).toLocaleString('vi-VN')}đ`
+                //- Sản phẩm đơn lẻ (Không có biến thể)
+                if product.discountPercentage > 0
+                  span.fs-3.fw-bold.text-price= `${Number(product.priceNew || 0).toLocaleString('vi-VN')}đ`
+                  span.old-price= `${Number(product.price || 0).toLocaleString('vi-VN')}đ`
+                  span.badge.badge-discount= `-${product.discountPercentage}%`
+                else
+                  span.fs-3.fw-bold.text-price= `${Number(product.price || 0).toLocaleString('vi-VN')}đ`
 
             //- Tính tổng số lượng kho (Nếu có variants thì cộng tổng, ngược lại lấy product.stock)
             - 
@@ -109,30 +120,52 @@ block main
                 else
                   span.badge.badge-danger-custom Dừng hoạt động
 
-            //- KHU VỰC HIỂN THỊ DANH SÁCH SIZE & TỒN KHO
+            //- KHU VỰC HIỂN THỊ DANH SÁCH BIẾN THỂ (MÀU SẮC, SIZE, GIÁ RIÊNG & TỒN KHO)
             if product.hasVariants && product.variants && product.variants.length > 0
-              .variants-detail-box.p-3.rounded.border
+              .variants-detail-box.p-3.rounded.border.mb-4
                 h6.fw-bold.text-title.mb-3
                   i.fas.fa-boxes.me-2.mr-2
-                  | Chi tiết tồn kho theo Size
+                  | Chi tiết phân loại biến thể (Size, Màu sắc & Giá)
                 .table-responsive
                   table.table.table-sm.table-borderless.align-middle.mb-0
                     thead.table-light
                       tr
                         th.py-2 Kích cỡ (Size)
+                        th.py-2 Màu sắc
+                        th.py-2 Giá bán riêng
                         th.py-2.text-center Số lượng kho
                         th.py-2.text-end Trạng thái
                     tbody
                       each variant in product.variants
                         tr.border-bottom-custom
+                          //- Cột Size
                           td.py-2.fw-bold.text-title= variant.size
-                          td.py-2.text-center.fw-semibold= `${variant.stock} sản phẩm`
+                          
+                          //- Cột Màu sắc
+                          td.py-2
+                            if variant.color && variant.color.trim() !== ""
+                              span.badge.bg-light.text-dark.border= variant.color
+                            else
+                              span.text-muted.fst-italic Mặc định
+
+                          //- Cột Giá riêng (Hiển thị giá sau giảm và giá gốc nếu có giảm giá)
+                          td.py-2
+                            if variant.priceNew && variant.priceNew < variant.price
+                              div.d-flex.align-items-center.gap-2
+                                span.fw-bold.text-danger= `${Number(variant.priceNew).toLocaleString('vi-VN')}đ`
+                                span.text-muted.text-decoration-line-through.small= `${Number(variant.price).toLocaleString('vi-VN')}đ`
+                            else
+                              span.fw-semibold.text-title= `${Number(variant.price || product.price).toLocaleString('vi-VN')}đ`
+
+                          //- Cột Tồn kho
+                          td.py-2.text-center.fw-semibold= `${variant.stock || 0} sản phẩm`
+                          
+                          //- Cột Trạng thái
                           td.py-2.text-end
-                            if variant.stock > 0
+                            if (variant.stock || 0) > 0
                               span.badge.bg-success Còn hàng
                             else
                               span.badge.bg-danger Hết hàng
-
     //- Khối Tabs bên dưới
     .card.border-0.shadow-sm.mt-4
       .card-header.bg-transparent.border-bottom-custom.pt-3.px-4

@@ -73,7 +73,15 @@ block main
                         .fw-semibold.text-dark.product-title #{items.title}
                         small.text-muted.d-block ID: #{items._id || 'PROD-' + (index + 1)}
                       td.text-end
-                        span.fw-bold #{items.price.toLocaleString('vi-VN')} đ
+                        span.fw-bold
+                          if items.hasVariants && items.variants && items.variants.length > 0
+                            //- Lấy giá của biến thể đầu tiên (hoặc giá của size S nếu nó nằm đầu)
+                            - var displayPrice = items.variants[0].priceNew > 0 ? items.variants[0].priceNew : items.variants[0].price;
+                            = `${Number(displayPrice).toLocaleString('vi-VN')} đ`
+                          else
+                            //- Nếu không có biến thể thì hiển thị giá chung của sản phẩm
+                            - var defaultPrice = items.priceNew > 0 ? items.priceNew : items.price;
+                            = `${Number(defaultPrice).toLocaleString('vi-VN')} đ`
                       td.text-center 
                         input.form-control.form-control-sm.input-position-dark(
                           type="number"
