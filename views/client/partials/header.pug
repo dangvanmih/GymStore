@@ -1,3 +1,4 @@
+link(rel="stylesheet", href="/client/css/header.css")
 header.header.border-bottom.bg-white.sticky-top
   .container
     .row.align-items-center.py-2
@@ -7,17 +8,34 @@ header.header.border-bottom.bg-white.sticky-top
           img(src='/client/images/logo.webp', alt='Logo', style='height:60px; object-fit: contain;')
 
       //- Navigation Links
-      .col-lg-6.d-none.d-lg-block
+      .col-lg-7.d-none.d-lg-block
         nav.navbar.navbar-expand-lg.p-0
           ul.navbar-nav.mx-auto.align-items-center
-            li.nav-item: a.nav-link.custom-nav-link(href='/ao') Áo
-            li.nav-item: a.nav-link.custom-nav-link(href='/quan') Quần
-            li.nav-item: a.nav-link.custom-nav-link(href='/phu-kien') Phụ kiện
+            if (layoutCategories)
+              each item in layoutCategories
+                if (item.children && item.children.length > 0)
+                  //- Danh mục cha có danh mục con (Hiển thị Dropdown hover)
+                  li.nav-item.dropdown.custom-dropdown
+                    //- Dùng span kết hợp sự kiện click trỏ thẳng qua JS, không sợ bị thư viện thẻ a chặn nữa
+                    span.nav-link.custom-nav-link.d-flex.align-items-center(
+                      style="cursor: pointer;",
+                      onclick=`window.location.href='/products/${item.slug}'`
+                    ) #{item.title}
+                      i.fa-solid.fa-chevron-down.custom-arrow.ml-2
+                    ul.dropdown-menu.custom-dropdown-menu
+                      each sub in item.children
+                        li: a.dropdown-item(href=`/products/${sub.slug}`) #{sub.title}
+                else
+                  //- Danh mục độc lập không có con
+                  li.nav-item
+                    a.nav-link.custom-nav-link(href=`/products/${item.slug}`) #{item.title}
+
+            //- Các link tĩnh
             li.nav-item: a.nav-link.custom-nav-link(href='/cua-hang') Cửa hàng
             li.nav-item: a.nav-link.custom-nav-link(href='/kiem-tra-don-hang') Tra cứu đơn
 
       //- Action Utilities
-      .col-lg-4.col-6.d-flex.align-items-center.justify-content-end
+      .col-lg-3.col-6.d-flex.align-items-center.justify-content-end
         //- Nút kính hiển vi kích hoạt Search Overlay
         button#btnOpenSearch.icon-link.btn.btn-link.mr-3(type='button', title='Tìm kiếm')
           i.fas.fa-search
@@ -52,9 +70,8 @@ header.header.border-bottom.bg-white.sticky-top
               img.flag-icon.mr-2(src='https://flagcdn.com/w40/gb.png', alt='EN')
               span.small.font-weight-bold EN
 
-//- ==========================================
+
 //- SEARCH OVERLAY (Khung tìm kiếm phủ toàn màn hình)
-//- ==========================================
 #searchOverlay.search-overlay
   .search-overlay-content.bg-white.py-4
     .container.position-relative

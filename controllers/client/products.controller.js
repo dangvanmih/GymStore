@@ -1,4 +1,6 @@
 const Product = require("../../models/product.model");
+const Category = require("../../models/category.model");
+
 // GET: /products
 module.exports.index = async (req, res) => {
 
@@ -20,7 +22,7 @@ module.exports.index = async (req, res) => {
   });
 };
 
-// GET: /products/:slug
+// // GET: /products/:slug/detail
 module.exports.detailProduct = async (req, res) => {
   try {
     const slug = req.params.slug;
@@ -44,3 +46,40 @@ module.exports.detailProduct = async (req, res) => {
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
   }
 }
+
+
+
+// [GET] /products/:slug
+module.exports.category = async (req, res) => {
+  try {
+    const slug = req.params.slug;
+
+    // 1. Tìm danh mục hiện tại theo slug
+    const category = await Category.findOne({
+      slug: slug,
+      deleted: false,
+      status: "active"
+    });
+
+    if (!category) {
+      req.flash("error", "Không tìm thấy danh mục!");
+      return res.redirect("/");
+    }
+
+    // 2. Lấy danh sách sản phẩm thuộc danh mục này (bao gồm cả danh mục con nếu có)
+    // (Hoặc đơn giản lấy các sản phẩm có product_category_id = category.id)
+    const products = await Product.find({
+      product_category_id: category.id,
+      deleted: false,
+      status: "active"
+    });
+
+    // 3. Render ra trang danh sách sản phẩm theo danh mục
+    res.render("client/pages/products/index", {
+      pageTitle: category.title,
+      products: products
+    });
+  } catch (error) {
+    res.redirect("/");
+  }
+};

@@ -17,7 +17,7 @@ block main
                 img(src=item.thumbnail, alt=item.title)
             .inner-content
               h3.inner-title
-                a(href=`/products/${item.slug}`) #{item.title}
+                a(href=`/products/detail/${item.slug}`) #{item.title}
                 | #{item.title} - #{item.slug}
               .inner-price
                 span.inner-price-new #{item.priceNew}₫
