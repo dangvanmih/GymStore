@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 2. Dùng cơ chế lắng nghe sự kiện toàn cục (Bắt được tất cả các nút toggle dù ở Header hay Sider)
   document.addEventListener("click", function (e) {
     const toggleBtn = e.target.closest("#sidebarToggle");
-    
+
     if (toggleBtn) {
       e.stopPropagation();
 
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // --- XỬ LÝ TRÊN LAPTOP / DESKTOP ---
         sider.classList.remove("mobile-show");
         if (backdrop) backdrop.classList.remove("show");
-        
+
         sider.classList.toggle("collapsed");
 
         // Lưu trạng thái vào localStorage
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const uploadImagePreview = uploadImageWrapper.querySelector("[upload-image-preview]");
     const uploadPlaceholder = uploadImageWrapper.querySelector("[upload-placeholder]");
     const uploadImageRemove = uploadImageWrapper.querySelector("[upload-image-remove]");
-    
+
     // Khối preview chứa placeholder & img
     const uploadPreviewWrapper = uploadImageWrapper.querySelector(".upload-image-preview");
 
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const files = e.dataTransfer.files;
         if (files && files.length > 0) {
           const file = files[0];
-          
+
           // Gán file vừa thả vào input file để gửi đi khi submit form
           uploadImageInput.files = files;
 
@@ -377,5 +377,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-

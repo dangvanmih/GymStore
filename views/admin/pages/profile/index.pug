@@ -1,24 +1,26 @@
 extends ../../layouts/default.pug
 include ../../mixins/breadcrumb.pug
+include ../../mixins/alert.pug
 block main
   link(rel="stylesheet", href="/admin/css/profile.css")
-
+  +alert-success(5000)
+  +alert-error(5000)
   .container-fluid.px-4.py-3
-    //- Tiêu đề trang
-    .d-flex.justify-content-between.align-items-center.mb-4
-      +breadcrumb("Thông tin cá nhân", [
+    //- Thanh tiêu đề và Breadcrumb
+    +breadcrumb("Thông tin cá nhân", [
       { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
       { title: "Thông tin cá nhân", link: "#" }
-      ])
+    ])
+      
     .row
-      //- Cột trái: Hiển thị tóm tắt thông tin & Avatar
+      //- Cột trái: Hiển thị tóm tắt thông tin & Avatar hiện tại
       .col-xl-4.col-lg-5.mb-4
         .card.shadow-sm.border-0.text-center.p-4
           .profile-avatar-wrapper.position-relative.mx-auto.mb-3
             img.rounded-circle.img-thumbnail(src=user.avatar || "https://ui-avatars.com/api/?name=Spencer&background=6366f1&color=fff&size=120", alt="Avatar", style="width: 120px; height: 120px; object-fit: cover;")
           
-          h4.mb-1 #{user.fullName}
-          p.text-muted.mb-3 #{user.role ? user.role.title : "Chưa phân quyền"}
+          h4.mb-1 #{user.fullName || "NAN"}
+          p.text-muted.mb-3 #{role ? role.title : "Chưa phân quyền"}
           
           .badge.badge-success.p-2.mb-3 Hoạt động
           
@@ -26,7 +28,7 @@ block main
           
           .text-left.px-2
             p.mb-2.small.text-muted 
-              i.fas.fas.fa-envelope.mr-2.text-primary
+              i.fas.fa-envelope.mr-2.text-primary
               strong Email: 
               | #{user.email || "admin@example.com"}
             p.mb-2.small.text-muted 
@@ -34,16 +36,19 @@ block main
               strong Số điện thoại: 
               | #{user.phone || "Chưa cập nhật"}
 
-      //- Cột phải: Form cập nhật thông tin và Đổi mật khẩu
+      //- Cột phải: Gộp chung thành một form duy nhất
       .col-xl-8.col-lg-7
-        //- Form cập nhật thông tin cơ bản
         .card.shadow-sm.border-0.mb-4
           .card-header.bg-white.py-3
             h5.mb-0.text-primary 
               i.fas.fa-user-edit.mr-2
-              | Chỉnh sửa thông tin
+              | Quản lý thông tin tài khoản & Bảo mật
           .card-body
+            //- Form duy nhất gửi dữ liệu lên server
             form(action=`${prefixAdmin}/profile/edit?_method=PATCH`, method="POST", enctype="multipart/form-data")
+              
+              //- Phần 1: Thông tin cơ bản
+              h6.text-muted.font-weight-bold.mb-3 Thông tin cá nhân
               .form-row
                 .form-group.col-md-6
                   label(for="fullName") Họ và tên
@@ -56,10 +61,59 @@ block main
                 .form-group.col-md-6
                   label(for="phone") Số điện thoại
                   input.form-control(type="text", id="phone", name="phone", value=user.phone || "")
-                .form-group.col-md-6
-                  label(for="avatar") Đổi ảnh đại diện
-                  input.form-control-file(type="file", id="avatar", name="avatar", accept="image/*")
 
-              button.btn.btn-primary(type="submit") 
-                i.fas.fa-save.mr-2
-                | Lưu thay đổi
+              //- Phần 2: Ảnh đại diện
+              .form-group
+                label.form-label.fw-medium.text-dark Ảnh đại diện
+                .card.bg-light.border-0.shadow-sm.mb-3
+                  .card-body.p-3
+                    .upload-image-wrapper(upload-image)
+                      input#thumbnail.form-control-file.mb-3(
+                        type="file"
+                        name="avatar"
+                        accept="image/*"
+                        upload-image-input
+                      )
+                      .upload-image-preview.text-center.p-3.position-relative(upload-preview-container)
+                        img(
+                          src=user.avatar || ""
+                          alt="Preview"
+                          upload-image-preview
+                          class=`img-fluid rounded ${user.avatar ? '' : 'd-none'}`
+                          style="max-height: 200px; object-fit: contain;"
+                        )
+                        button.btn.btn-sm.btn-danger.rounded-circle.position-absolute.top-0.end-0.m-2(
+                          type="button"
+                          upload-image-remove
+                          title="Gỡ ảnh"
+                          style=`${user.avatar ? '' : 'display: none;'}`
+                        )
+                          i.fas.fa-times
+                        .upload-placeholder(upload-placeholder, style=`${user.avatar ? 'display: none;' : ''}`)
+                          i.fas.fa-cloud-upload-alt.fa-2x.text-muted.mb-2
+                          p.small.text-muted.mb-0 Kéo thả hoặc bấm để chọn tệp hình ảnh
+
+              hr.my-4
+
+              //- Phần 3: Đổi mật khẩu (Không bắt buộc nhập nếu không muốn đổi)
+              h6.text-danger.font-weight-bold.mb-3 
+                i.fas.fa-key.mr-2
+                | Đổi mật khẩu (Bỏ trống nếu không muốn thay đổi)
+              
+              .form-group
+                label(for="oldPassword") Mật khẩu hiện tại
+                input.form-control(type="password", id="oldPassword", name="oldPassword", placeholder="Nhập mật khẩu hiện tại nếu muốn đổi mật khẩu mới")
+              
+              .form-row
+                .form-group.col-md-6
+                  label(for="newPassword") Mật khẩu mới
+                  input.form-control(type="password", id="newPassword", name="newPassword", placeholder="Mật khẩu mới")
+                .form-group.col-md-6
+                  label(for="confirmPassword") Xác nhận mật khẩu mới
+                  input.form-control(type="password", id="confirmPassword", name="confirmPassword", placeholder="Nhập lại mật khẩu mới")
+
+              //- Nút lưu chung cho cả form
+              .mt-4
+                button.btn.btn-primary.btn-lg.btn-block(type="submit") 
+                  i.fas.fa-save.mr-2
+                  | Lưu tất cả thay đổi
