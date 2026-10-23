@@ -1,11 +1,10 @@
 extends ../../layouts/default.pug
 
-//- Sửa lại đường dẫn CSS thêm ?v=1.0 để xóa Cache
 block style
   link(rel="stylesheet" href="/client/css/detailProduct.css?v=1.0")
 
 block main
-  .product-detail-page.py-4
+  .product-detail-page.py-4(data-variants=JSON.stringify(product.variants || []))
     .container
       //- Breadcrumb
       nav.custom-breadcrumb.mb-4(aria-label="breadcrumb")
@@ -33,17 +32,49 @@ block main
           .product-info-wrapper.ps-lg-3
             h1.product-title.mb-3= product.title
 
-            //- Giá bán - Sử dụng class tách biệt hoàn toàn để chống dính chữ
+            //- Giá bán
             .product-price-box.d-flex.align-items-center.mb-4
               if product.discountPercentage > 0
                 span.badge-discount-text.mr-2 -#{product.discountPercentage}%
                 if product.price
-                  span.price-old.mr-2 #{product.price.toLocaleString('vi-VN')}đ
+                  span.price-old.mr-2#product-price-old #{product.price.toLocaleString('vi-VN')}đ
                 if product.priceNew
-                  span.price-new #{product.priceNew.toLocaleString('vi-VN')}đ
+                  span.price-new#product-price-new #{product.priceNew.toLocaleString('vi-VN')}đ
               else
-                if product.price
-                  span.price-new #{product.price.toLocaleString('vi-VN')}đ
+                if product.priceNew
+                  span.price-new#product-price-new #{product.priceNew.toLocaleString('vi-VN')}đ
+                else if product.price
+                  span.price-new#product-price-new #{product.price.toLocaleString('vi-VN')}đ
+
+            //- KIỂM TRA NẾU SẢN PHẨM CÓ BIẾN THỂ THÌ HIỂN THỊ MÀU VÀ SIZE TÁCH BIỆT
+            if product.hasVariants && product.variants && product.variants.length > 0
+              //- 1. Chọn Màu sắc
+              - 
+                const colors = [...new Set(product.variants.map(v => v.color).filter(c => c))];
+              if colors.length > 0
+                .product-variant-group.mb-3
+                  label.fw-semibold.mb-2 Màu sắc:
+                  .d-flex.flex-wrap.gap-2.color-list
+                    each color, index in colors
+                      button.btn.btn-outline-dark.color-item(
+                        type="button"
+                        data-color=color
+                        class=(index === 0 ? "active btn-dark text-white" : "")
+                      )= color
+
+              //- 2. Chọn Kích thước (Size)
+              - 
+                const sizes = [...new Set(product.variants.map(v => v.size).filter(s => s))];
+              if sizes.length > 0
+                .product-variant-group.mb-4
+                  label.fw-semibold.mb-2 Kích thước (Size):
+                  .d-flex.flex-wrap.gap-2.size-list
+                    each size, index in sizes
+                      button.btn.btn-outline-dark.size-item(
+                        type="button"
+                        data-size=size
+                        class=(index === 0 ? "active btn-dark text-white" : "")
+                      )= size
 
             //- Số lượng & Nút
             form(
@@ -51,6 +82,10 @@ block main
               method="POST"
               class="mb-4"
             )
+              //- Input ẩn để lưu thông tin màu và size người dùng chọn gửi lên giỏ hàng
+              input(type="hidden" name="size" id="input-selected-size" value=product.hasVariants && product.variants[0] ? product.variants[0].size : "")
+              input(type="hidden" name="color" id="input-selected-color" value=product.hasVariants && product.variants[0] ? product.variants[0].color : "")
+
               .d-flex.align-items-center.mr-3.mb-4
                 .quantity-input-group.d-flex.align-items-center.mr-3
                   button.btn-qty(type="button" action-qty="minus") -
@@ -59,7 +94,7 @@ block main
                     name="quantity"
                     value="1"
                     min="1"
-                    max=product.stock
+                    max=product.stock || 99
                   )
                   button.btn-qty(type="button" action-qty="plus") +
 
@@ -78,6 +113,7 @@ block main
               .col-6
                 .policy-box.text-center.p-3
                   p.mb-0 Đổi hàng chưa qua sử dụng trong vòng 30 ngày
+
             //- Accordion Thông tin thêm
             .product-accordion.accordion#productAccordion
               .accordion-item
@@ -112,3 +148,5 @@ block main
                 #collapseShipping.accordion-collapse.collapse(aria-labelledby="headingShipping" data-bs-parent="#productAccordion")
                   .accordion-body
                     p Đơn hàng được giao hàng COD toàn quốc. Thời gian nhận hàng từ 2 - 4 ngày làm việc.
+
+  script(src="/client/js/product.js")

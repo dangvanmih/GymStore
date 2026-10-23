@@ -42,28 +42,36 @@ module.exports.index = async (req, res) => {
       products.forEach(item => {
         let displayPrice = 0;
         let displayPriceNew = 0;
+        let discount = Number(item.discountPercentage) || 0;
 
-        // Kiểm tra nếu sản phẩm có phân loại (variants) và có phần tử bên trong
+        // 1. Nếu sản phẩm có phân loại (variants)
         if (item.hasVariants && item.variants && Array.isArray(item.variants) && item.variants.length > 0) {
-          // Lọc ra các biến thể có giá mới hợp lệ (> 0)
           const validVariants = item.variants.filter(v => v.priceNew && v.priceNew > 0);
 
           if (validVariants.length > 0) {
-            // Tìm biến thể có giá mới (priceNew) nhỏ nhất (size bé nhất hoặc giá rẻ nhất)
+            // Lấy biến thể có giá mới nhỏ nhất (size bé nhất)
             const minVariant = validVariants.reduce((min, current) => current.priceNew < min.priceNew ? current : min);
 
             displayPriceNew = minVariant.priceNew;
-            displayPrice = minVariant.price;
+            displayPrice = minVariant.price || Number(item.price) || 0;
           }
         }
 
-        // Nếu không có variants hoặc variants bị trống thì lấy giá chung của sản phẩm
+        // 2. Nếu sản phẩm KHÔNG CÓ SIZE (Sản phẩm thường / Giá chung)
         if (displayPriceNew === 0) {
-          displayPriceNew = item.priceNew || item.price || 0;
-          displayPrice = item.price || 0;
+          const basePrice = Number(item.price) || 0;
+
+          // Tính toán giá mới dựa trên % giảm giá chung của sản phẩm
+          if (basePrice > 0 && discount > 0) {
+            displayPriceNew = Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000;
+            displayPrice = basePrice; // Lưu giá gốc để hiện gạch ngang
+          } else {
+            displayPriceNew = basePrice;
+            displayPrice = basePrice; // Không giảm giá thì giá mới = giá gốc
+          }
         }
 
-        // Gán lại vào item để view Pug hiển thị chính xác
+        // Gán ngược lại cho item để file Pug ở trang chủ hiển thị
         item.priceNew = displayPriceNew;
         item.price = displayPrice;
       });

@@ -21,8 +21,7 @@ module.exports.index = async (req, res) => {
     products: newProducts
   });
 };
-
-// // GET: /products/:slug/detail
+// GET: /products/:slug/detail
 module.exports.detailProduct = async (req, res) => {
   try {
     const slug = req.params.slug;
@@ -32,21 +31,50 @@ module.exports.detailProduct = async (req, res) => {
       deleted: false
     }).lean();
 
-    product.priceNew = Math.round(
-      product.price * (1 - (product.discountPercentage || 0) / 100) / 10000
-    ) * 10000;
+    if (!product) {
+      req.flash("error", "Sản phẩm không tồn tại!");
+      return res.redirect("/");
+    }
+
+    const discount = Number(product.discountPercentage) || 0;
+
+    // 1. Xử lý logic giá cho sản phẩm CÓ phân loại (Variants) hoặc KHÔNG có phân loại
+    if (product.hasVariants && product.variants && Array.isArray(product.variants) && product.variants.length > 0) {
+      // Chuẩn hóa và tính lại priceNew cho từng variant nếu cần, hoặc lấy trực tiếp
+      product.variants = product.variants.map(v => {
+        const vPrice = Number(v.price) || Number(product.price) || 0;
+        const vPriceNew = discount > 0 
+          ? Math.round((vPrice * (100 - discount) / 100) / 10000) * 10000 
+          : vPrice;
+        return {
+          ...v,
+          price: vPrice,
+          priceNew: v.priceNew || vPriceNew
+        };
+      });
+
+      // Mặc định lấy giá của size đầu tiên làm giá hiển thị ban đầu khi load trang
+      product.price = product.variants[0].price;
+      product.priceNew = product.variants[0].priceNew;
+    } else {
+      // Sản phẩm không có phân loại (Free size / Giá chung)
+      const basePrice = Number(product.price) || 0;
+      product.priceNew = discount > 0 
+        ? Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000 
+        : basePrice;
+      product.price = basePrice;
+      product.variants = []; // Đảm bảo mảng rỗng để file Pug tự động ẩn phần chọn size
+    }
 
     res.render("client/pages/products/detail", {
       pageTitle: product.title,
       product: product
     });
+  } catch (error) {
+    console.log("Lỗi chi tiết sản phẩm:", error);
+    res.redirect("/");
   }
-  catch (error) {
-    console.log(error);
-    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
-  }
-}
-
+};
 
 
 // [GET] /products/:slug
