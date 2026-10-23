@@ -1,5 +1,4 @@
 // searchOverlay
-
 document.addEventListener('DOMContentLoaded', function () {
   const btnOpenSearch = document.getElementById('btnOpenSearch');
   const btnCloseSearch = document.getElementById('btnCloseSearch');
@@ -75,7 +74,6 @@ window.addEventListener("scroll", () => {
 });
 
 //end-scrol-header
-
 
 
 // tăng giảm số lượng sản phẩm

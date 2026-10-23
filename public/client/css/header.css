@@ -1,8 +1,21 @@
-/* Header Container */
+/* ==========================================
+   1. HEADER CONTAINER & NAVIGATION
+   ========================================== */
 .header {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   font-family: inherit;
   border: none;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Class được JS thêm vào khi cuộn xuống để ẩn header */
+.header.hide {
+  transform: translateY(-100%);
 }
 
 /* Nav Links */
@@ -17,55 +30,77 @@
 }
 
 .header .custom-nav-link:hover {
-  color: #ff4500 !important; /* Màu Accent cam/đỏ thể thao */
+  color: #ff4500 !important;
 }
 
-/* Search Input Bo Tròn (Dùng cho Header thanh nhỏ nếu có) */
-.header .search-box {
-  position: relative;
+/* ==========================================
+   2. DROPDOWN MENU CHUYÊN NGÂN HÀNG
+   ========================================== */
+.custom-dropdown {
+  position: relative !important;
 }
 
-.header .input-group-rounded {
-  background-color: #f4f4f5;
-  border-radius: 20px;
-  padding: 2px 4px;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.header .input-group-rounded:focus-within {
-  background-color: #fff;
-  border-color: #000;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
-}
-
-.header .search-input {
+.custom-dropdown .custom-dropdown-menu {
+  display: block !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+  transition: all 0.25s ease-in-out !important;
+  background-color: rgba(33, 37, 41, 0.85) !important; 
   border: none !important;
-  background: transparent !important;
-  font-size: 0.85rem;
-  padding-left: 12px;
-  box-shadow: none !important;
-  width: 140px;
-  transition: width 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+  border-radius: 0px !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
+  min-width: 220px !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 100% !important;
+  z-index: 9999 !important;
+  overflow: hidden;
 }
 
-.header .search-input:focus {
-  width: 180px;
+.custom-dropdown:hover .custom-dropdown-menu {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
-.header .btn-search {
-  border: none !important;
-  background: transparent !important;
-  color: #666;
-  font-size: 0.85rem;
-  padding: 4px 10px;
+.custom-dropdown-menu .dropdown-item {
+  display: block !important;
+  width: 100% !important;
+  padding: 12px 20px !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  background-color: rgba(33, 37, 41, 0.48) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.267) !important;
+  white-space: nowrap !important;
+  transition: background-color 0.2s ease;
 }
 
-.header .btn-search:hover {
-  color: #000;
+.custom-dropdown-menu li:last-child .dropdown-item {
+  border-bottom: none !important;
 }
 
-/* Icon Links */
+.custom-dropdown-menu .dropdown-item:hover {
+  background-color: rgba(52, 58, 64, 0.7) !important;
+  color: #ffffff !important;
+}
+
+.custom-arrow {
+  font-size: 10px !important;
+  transition: transform 0.3s ease-in-out !important;
+  display: inline-block;
+}
+
+.custom-dropdown:hover .custom-arrow {
+  transform: rotate(180deg) !important;
+}
+
+
+/* ==========================================
+   3. ICON LINKS & BADGES
+   ========================================== */
 .header .icon-link {
   color: #111;
   font-size: 1.15rem;
@@ -84,7 +119,6 @@
   color: #000;
 }
 
-/* Badge Giỏ Hàng */
 .header .cart-link {
   position: relative;
 }
@@ -105,7 +139,6 @@
   justify-content: center;
 }
 
-/* Flag Icon */
 .header .flag-icon {
   width: 20px;
   height: 14px;
@@ -118,7 +151,7 @@
   display: none !important;
 }
 
-/* Hover Mượt & Animation Dropdown Trong Header */
+/* User & Lang Dropdown Animation */
 .header .user-dropdown:hover .dropdown-menu,
 .header .lang-dropdown:hover .dropdown-menu {
   display: block;
@@ -141,17 +174,10 @@
   transition: background-color 0.15s ease;
 }
 
-.header .dropdown-item:active {
-  background-color: #f4f4f5;
-  color: #000;
-}
-
 
 /* ==========================================
-   SEARCH OVERLAY SCOPED CSS (#searchOverlay)
+   4. SEARCH OVERLAY & LIVE SEARCH DROPDOWN
    ========================================== */
-
-/* Khung Phủ Tìm Kiếm */
 #searchOverlay.search-overlay {
   position: fixed;
   top: 0;
@@ -165,13 +191,11 @@
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Trạng thái hiển thị Overlay */
 #searchOverlay.search-overlay.active {
   opacity: 1;
   visibility: visible;
 }
 
-/* Hộp nội dung phía trên */
 #searchOverlay .search-overlay-content {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-20px);
@@ -182,7 +206,6 @@
   transform: translateY(0);
 }
 
-/* Input Tìm kiếm Bo Tròn trong Overlay */
 #searchOverlay .search-input-wrapper {
   position: relative;
   width: 100%;
@@ -212,7 +235,6 @@
   box-shadow: 0 0 0 1px #000;
 }
 
-/* Nút Đóng */
 #searchOverlay .btn-close-search {
   position: absolute;
   top: -10px;
@@ -257,91 +279,40 @@
   margin: 0 4px;
 }
 
-/* --- Hiệu ứng Ẩn/Hiện Header khi Scroll --- */
-.header {
-  position: sticky;
-  top: 0;
+/* Results span the viewport and scroll independently from the page. */
+.search-results-container {
+  position: fixed;
+  top: auto;
   left: 0;
   right: 0;
-  z-index: 1000;
-  transition: transform 0.3s ease-in-out; /* Tạo chuyển động trượt mượt mà */
+  width: 100%;
+  z-index: 10000;
+  background: #fff;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border-radius: 0 0 8px 8px;
+  max-height: calc(100vh - 12px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Class được JS thêm vào khi cuộn xuống */
-.header.hide {
-  transform: translateY(-100%); /* Đẩy toàn bộ header lên trên màn hình */
-}
-
-
-
-/* 1. Khung tổng thể Dropdown Menu*/
-.custom-dropdown {
-  position: relative !important;
-}
-
-.custom-dropdown .custom-dropdown-menu {
-  display: block !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  transform: translateY(10px) !important;
-  transition: all 0.25s ease-in-out !important;
-  
-  /* Màu nền tối và đổ bóng y hệt mẫu */
-  background-color: #21252985 !important; 
-  border: none !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
-  border-radius: 0px !important; /* Giữ khung vuông sắc nét giống ảnh mẫu */
-  padding: 0 !important;
-  margin-top: 0 !important;
-  min-width: 220px !important;
-  position: absolute !important;
-  left: 0 !important;
-  top: 100% !important;
-  z-index: 9999 !important;
-  overflow: hidden;
-}
-
-/* Hiệu ứng hover hiện menu */
-.custom-dropdown:hover .custom-dropdown-menu {
-  visibility: visible !important;
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* 2. Định dạng từng mục item bên trong */
-.custom-dropdown-menu .dropdown-item {
-  display: block !important;
+/* Đảm bảo danh sách hiển thị chuẩn */
+.search-results-container .list-group {
   width: 100% !important;
-  padding: 12px 20px !important;
-  font-size: 14px !important;
-  color: #ffffff !important; /* Chữ màu trắng */
-  background-color: #2125297a !important; /* Nền tối đồng bộ */
-  
-  /* Đường kẻ ngang màu trắng mờ phân cách giữa các mục y hệt ảnh mẫu */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.267) !important; 
-  white-space: nowrap !important;
+  margin-bottom: 0 !important;
+}
+
+.search-results-container .list-group-item {
+  padding: 14px 18px !important;
+  border-bottom: 1px solid #eee !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background-color: #fff !important;
   transition: background-color 0.2s ease;
 }
 
-/* Xóa đường kẻ ngang ở mục cuối cùng */
-.custom-dropdown-menu li:last-child .dropdown-item {
-  border-bottom: none !important;
+.search-results-container .list-group-item:hover {
+  background-color: #f8f9fa !important;
 }
 
-/* Hiệu ứng khi rê chuột vào từng dòng danh mục con */
-.custom-dropdown-menu .dropdown-item:hover {
-  background-color: #343a40b4 !important; /* Sáng lên một chút khi hover */
-  color: #ffffff !important;
-}
-
-/* Tùy chỉnh icon mũi tên đi kèm danh mục cha */
-.custom-arrow {
-  font-size: 10px !important;
-  transition: transform 0.3s ease-in-out !important;
-  display: inline-block;
-}
-
-/* Khi rê chuột vào mục cha (.custom-dropdown), mũi tên sẽ xoay ngược lên trên */
-.custom-dropdown:hover .custom-arrow {
-  transform: rotate(180deg) !important;
-}

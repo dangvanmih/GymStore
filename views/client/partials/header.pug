@@ -79,22 +79,22 @@ header.header.border-bottom.bg-white.sticky-top
       button#btnCloseSearch.btn-close-search(type='button')
         i.fas.fa-times
 
-      //- Hàng Logo & Ô Input Tìm kiếm
-      .row.justify-content-center.align-items-center.mb-3
+      .row.justify-content-center.align-items-center.mb-2
         .col-md-2.text-center.text-md-left.mb-3.mb-md-0
           a(href='/')
             img(src='/client/images/logo.webp', alt='Logo', style='height: 60px; object-fit: contain;')
         
-        .col-md-8
+        .col-md-8.position-relative
           form(action='/search', method='GET')
             .search-input-wrapper
               i.fas.fa-search.search-icon-inside
               input#searchInput.search-input-overlay(type='text', name='q', placeholder='Tìm kiếm sản phẩm...', autocomplete='off')
 
-      //- Hàng Gợi ý từ khóa
-      .row.justify-content-center
-        .col-md-8.offset-md-2
-          .search-suggestions
+          //- Đặt khung kết quả ở đây để nó có cùng độ rộng với col-md-8
+          #search-results.search-results-container(data-lenis-prevent, style="display: none;")
+          
+          //- Khối Gợi ý từ khóa
+          #searchSuggestionsBlock.search-suggestions.mt-3
             span.text-muted.small.mr-2 Gợi ý cho bạn:
             a.suggestion-link(href='/search?q=quan-ao') QUẦN ÁO
             span.divider |

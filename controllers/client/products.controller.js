@@ -111,3 +111,40 @@ module.exports.category = async (req, res) => {
     res.redirect("/");
   }
 };
+
+// GET: /api/search
+module.exports.searchSuggestion = async (req, res) => {
+  try {
+    const keyword = req.query.keyword || "";
+    
+    if (!keyword.trim()) {
+      return res.json({ products: [], total: 0 });
+    }
+
+    // Tạo biểu thức chính quy (regex) không phân biệt hoa thường để tìm kiếm gần đúng
+    const regex = new RegExp(keyword, "i");
+
+    // Tìm kiếm các sản phẩm khớp với tiêu đề và chưa bị xóa, đang active
+    const products = await Product.find({
+      title: regex,
+      status: "active",
+      deleted: false
+    }).limit(5).lean(); // Lấy tối đa 5 sản phẩm
+
+    // Đếm tổng số lượng sản phẩm khớp từ khóa (để hiển thị "Xem thêm X sản phẩm")
+    const total = await Product.countDocuments({
+      title: regex,
+      status: "active",
+      deleted: false
+    });
+
+    res.json({
+      products: products,
+      total: total,
+      keyword: keyword
+    });
+  } catch (error) {
+    console.log("Lỗi Live Search:", error);
+    res.json({ products: [], total: 0 });
+  }
+};
