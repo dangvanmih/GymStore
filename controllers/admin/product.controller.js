@@ -94,7 +94,15 @@ module.exports.changeMulti = async (req, res) => {
       req.flash("success", `Đã cập nhật trạng thái ${ids.length} sản phẩm!`)
       break;
     case "delete-all":
-      await Product.updateMany({ _id: { $in: ids } }, { deleted: true }, { deletedAt: new Date() });
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        {
+          deleted: true,
+          deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date()
+          }
+        });
       req.flash("success", `Đã xóa ${ids.length} sản phẩm!`)
       break;
     case "change-position":
@@ -120,8 +128,13 @@ module.exports.deleteProduct = async (req, res) => {
 
   await Product.updateOne(
     { _id: id },
-    { deleted: true },
-    { deletedAt: new Date() },
+    {
+      deleted: true,
+      deletedBy: {
+        account_id: res.locals.user.id,
+        deletedAt: new Date()
+      }
+    },
   );
   req.flash("success", "Đã xóa thành công!");
   res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
@@ -248,15 +261,27 @@ module.exports.editPatchProduct = async (req, res) => {
   }
 
   try {
-    req.body.updatedBy = {
-      account_id: res.locals.user.id,
-      updatedAt: new Date()
-    };
+    const updateData = { ...req.body };
 
-    await Product.updateOne({ _id: id }, req.body);
+    // Không cập nhật updatedBy bằng $set
+    delete updateData.updatedBy;
+
+    await Product.updateOne(
+      { _id: id, deleted: false },
+      {
+        $set: updateData,
+        $push: {
+          updatedBy: {
+            account_id: res.locals.user.id,
+            updatedAt: new Date()
+          }
+        }
+      }
+    );
     req.flash("success", "Cập nhật sản phẩm thành công!");
   } catch (error) {
     req.flash("error", "Cập nhật sản phẩm thất bại!");
+    console.error("Lỗi cập nhật sản phẩm:", error);
   }
 
   res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products`);
@@ -277,9 +302,15 @@ module.exports.detailProduct = async (req, res) => {
       _id: product.createdBy.account_id
     }).select("fullName");
 
-    const updatedByUser = await Account.findOne({
-      _id: product.updatedBy.account_id
-    }).select("fullName");
+    const latestUpdate = product.updatedBy?.length
+      ? product.updatedBy[product.updatedBy.length - 1]
+      : null;
+
+    const updatedByUser = latestUpdate
+      ? await Account.findOne({
+        _id: latestUpdate.account_id
+      }).select("fullName")
+      : null;
 
     product.priceNew = Math.round(
       product.price * (1 - product.discountPercentage / 100) / 10000
@@ -290,7 +321,8 @@ module.exports.detailProduct = async (req, res) => {
       product: product,
       category: category,
       createByUser: createByUser,
-      updatedByUser:updatedByUser
+      updatedByUser: updatedByUser,
+      latestUpdate: latestUpdate
     });
   }
   catch (error) {

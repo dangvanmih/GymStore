@@ -175,8 +175,8 @@ block main
                 .meta-card.p-3.rounded
                   h6.fw-bold.text-title.mb-2 Cập nhật gần nhất
                   p.mb-1.small.text-body
-                    strong Người sửa: 
-                    span= product.updatedBy ? updatedByUser.fullName : "N/A"
+                    strong Người sửa gần nhất: 
+                    span= updatedByUser ? updatedByUser.fullName : "N/A"
                   p.mb-0.small.text-body
                     strong Thời gian sửa: 
-                    span= product.updatedBy && product.updatedBy.updatedAt ? new Date(product.updatedBy.updatedAt).toLocaleString('vi-VN', { hour12: false }) : "N/A"
+                    span= latestUpdate && latestUpdate.updatedAt ? new Date(latestUpdate.updatedAt).toLocaleString('vi-VN', { hour12: false }) : "N/A"
