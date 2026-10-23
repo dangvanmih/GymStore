@@ -55,12 +55,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
               html += `
                 <div class="text-center py-2 bg-light">
-                  <a href="/search?q=${encodeURIComponent(data.keyword)}" class="text-dark font-weight-bold small text-decoration-none">
+                  <a href="/products/search?q=${encodeURIComponent(data.keyword)}" 
+                     onclick="event.preventDefault(); window.location.href=this.href;" 
+                     class="text-dark font-weight-bold small text-decoration-none d-block">
                     Xem thêm ${data.total} sản phẩm &rarr;
                   </a>
                 </div>
               `;
-
+              
               html += '</div>';
               searchResultsContainer.innerHTML = html;
               showSearchResults();

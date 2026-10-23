@@ -148,3 +148,42 @@ module.exports.searchSuggestion = async (req, res) => {
     res.json({ products: [], total: 0 });
   }
 };
+
+// GET: /search
+module.exports.search = async (req, res) => {
+  try {
+    const keyword = req.query.q || "";
+    let products = [];
+
+    if (keyword.trim()) {
+      // Dùng biểu thức chính quy (regex) để tìm kiếm gần đúng, không phân biệt hoa thường
+      const regex = new RegExp(keyword, "i");
+
+      products = await Product.find({
+        title: regex,
+        status: "active",
+        deleted: false
+      }).lean();
+
+      // (Tùy chọn) Chuẩn hóa lại giá mới và giá cũ cho từng sản phẩm giống trang chủ
+      products.forEach(item => {
+        let discount = Number(item.discountPercentage) || 0;
+        let basePrice = Number(item.price) || 0;
+        if (discount > 0 && basePrice > 0) {
+          item.priceNew = Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000;
+        } else {
+          item.priceNew = basePrice;
+        }
+      });
+    }
+
+    res.render("client/pages/products/search", {
+      pageTitle: `Kết quả tìm kiếm: ${keyword}`,
+      keyword: keyword,
+      products: products
+    });
+  } catch (error) {
+    console.log("Lỗi trang tìm kiếm:", error);
+    res.redirect("/");
+  }
+};

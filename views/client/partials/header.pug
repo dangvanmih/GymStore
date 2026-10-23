@@ -21,7 +21,7 @@ header.header.border-bottom.bg-white.sticky-top
                       style="cursor: pointer;",
                       onclick=`window.location.href='/products/${item.slug}'`
                     ) #{item.title}
-                      i.fa-solid.fa-chevron-down.custom-arrow.ml-2
+                      i.fa-solid.fa-chevron-down.custom-arrow.ms-2
                     ul.dropdown-menu.custom-dropdown-menu
                       each sub in item.children
                         li: a.dropdown-item(href=`/products/${sub.slug}`) #{sub.title}
@@ -85,7 +85,7 @@ header.header.border-bottom.bg-white.sticky-top
             img(src='/client/images/logo.webp', alt='Logo', style='height: 60px; object-fit: contain;')
         
         .col-md-8.position-relative
-          form(action='/search', method='GET')
+          form(action='/products/search', method='GET')
             .search-input-wrapper
               i.fas.fa-search.search-icon-inside
               input#searchInput.search-input-overlay(type='text', name='q', placeholder='Tìm kiếm sản phẩm...', autocomplete='off')
@@ -96,8 +96,8 @@ header.header.border-bottom.bg-white.sticky-top
           //- Khối Gợi ý từ khóa
           #searchSuggestionsBlock.search-suggestions.mt-3
             span.text-muted.small.mr-2 Gợi ý cho bạn:
-            a.suggestion-link(href='/search?q=quan-ao') QUẦN ÁO
+            a.suggestion-link(href='/products/search?q=quan-ao') QUẦN ÁO
             span.divider |
-            a.suggestion-link(href='/search?q=accessories') ACCESSORIES
+            a.suggestion-link(href='/products/search?q=accessories') ACCESSORIES
             span.divider |
-            a.suggestion-link(href='/search?q=phu-kien') PHỤ KIỆN
+            a.suggestion-link(href='/products/search?q=phu-kien') PHỤ KIỆN

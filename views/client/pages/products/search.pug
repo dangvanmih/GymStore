@@ -1,0 +1,27 @@
+extends ../../layouts/default.pug
+include ../../mixins/product-item.pug
+
+
+block main
+  .container.my-4
+    .row.mb-4
+      .col-12
+        h1.h3.font-weight-bold Kết quả tìm kiếm
+        p.text-muted 
+          | Tìm thấy 
+          span.font-weight-bold.text-dark #{products.length} 
+          | sản phẩm cho từ khóa "
+          span.font-weight-bold.text-dark #{keyword}
+          | "
+
+    if products.length > 0
+      .row.g-3
+        each item in products
+          .col-6.col-md-3.mb-4
+            //- Gọi lại mixin hiển thị thẻ sản phẩm quen thuộc của bạn
+            +product-item(item)
+    else
+      .text-center.py-5
+        img(src="/client/images/no-result.svg", alt="Không tìm thấy", style="width: 120px; opacity: 0.5; margin-bottom: 20px;")
+        h5.text-muted Không tìm thấy sản phẩm nào phù hợp với từ khóa của bạn.
+        a.btn.btn-dark.mt-3(href="/") Về trang chủ
