@@ -6,7 +6,7 @@ mongoose.plugin(slug);
 // Schema cho từng Size & Tồn kho
 const variantSchema = new mongoose.Schema({
   size: {
-    type: String, // Ví dụ: "S", "M", "L", "XL", "40", "41"
+    type: String, // Ví dụ: "S", "M", "L", "XL",
     required: true,
     trim: true
   },
@@ -49,6 +49,27 @@ const productSchema = new mongoose.Schema(
       type: String,
       slug: "title",
       unique: true
+    },
+    createdBy: {
+      account_id: String,
+      createdAt: {
+        type: String,
+        default: Date
+      }
+    },
+    updatedBy: {
+      account_id: String,
+      updatedAt: {
+        type: String,
+        default: Date
+      }
+    },
+    deletedBy: {
+      account_id: String,
+      deletedAt: {
+        type: String,
+        default: Date
+      }
     },
     deleted: {
       type: Boolean,

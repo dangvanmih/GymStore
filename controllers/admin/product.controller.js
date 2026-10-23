@@ -4,7 +4,8 @@ const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
 const systemConfig = require('../../configs/system');
 const createTreeHelper = require("../../helpers/createTree");
-const Category = require('../../models/category.model')
+const Category = require('../../models/category.model');
+const Account = require('../../models/account.model')
 // GET: /admin/product
 module.exports.index = async (req, res) => {
 
@@ -178,6 +179,11 @@ module.exports.createPostProduct = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
+  req.body.createdBy = {
+    account_id: res.locals.user.id,
+    createdAt: new Date()
+  };
+
   const product = new Product(req.body);
   await product.save();
 
@@ -192,7 +198,7 @@ module.exports.editProduct = async (req, res) => {
       deleted: false,
       _id: req.params.id
     };
-    
+
     const product = await Product.findOne(findQuery);
 
     const category = await Category.find({ deleted: false });
@@ -242,6 +248,11 @@ module.exports.editPatchProduct = async (req, res) => {
   }
 
   try {
+    req.body.updatedBy = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date()
+    };
+
     await Product.updateOne({ _id: id }, req.body);
     req.flash("success", "Cập nhật sản phẩm thành công!");
   } catch (error) {
@@ -261,7 +272,15 @@ module.exports.detailProduct = async (req, res) => {
     };
 
     const product = await Product.findOne(findQuery).lean();
-    const category = await Category.findOne({_id: product.category_id })
+    const category = await Category.findOne({ _id: product.category_id });
+    const createByUser = await Account.findOne({
+      _id: product.createdBy.account_id
+    }).select("fullName");
+
+    const updatedByUser = await Account.findOne({
+      _id: product.updatedBy.account_id
+    }).select("fullName");
+
     product.priceNew = Math.round(
       product.price * (1 - product.discountPercentage / 100) / 10000
     ) * 10000;
@@ -269,7 +288,9 @@ module.exports.detailProduct = async (req, res) => {
     res.render('admin/pages/product/detail', {
       pageTitle: 'Trang chi tiết sản phẩm',
       product: product,
-      category: category
+      category: category,
+      createByUser: createByUser,
+      updatedByUser:updatedByUser
     });
   }
   catch (error) {

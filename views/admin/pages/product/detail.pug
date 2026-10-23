@@ -167,16 +167,16 @@ block main
                   h6.fw-bold.text-title.mb-2 Khởi tạo dữ liệu
                   p.mb-1.small.text-body
                     strong Người tạo: 
-                    span= product.createdBy ? product.createdBy.accountFullName : "Hệ thống"
+                    span= product.createdBy ? createByUser.fullName : "Hệ thống"
                   p.mb-0.small.text-body
                     strong Thời gian tạo: 
-                    span= product.createdAt ? product.createdAt.toLocaleString('vi-VN') : "N/A"
+                    span= product.createdBy ? product.createdAt.toLocaleString('vi-VN') : "N/A"
               .col-md-6.pe-0
                 .meta-card.p-3.rounded
                   h6.fw-bold.text-title.mb-2 Cập nhật gần nhất
                   p.mb-1.small.text-body
                     strong Người sửa: 
-                    span= product.updatedBy && product.updatedBy.length > 0 ? product.updatedBy[product.updatedBy.length - 1].accountFullName : "N/A"
+                    span= product.updatedBy ? updatedByUser.fullName : "N/A"
                   p.mb-0.small.text-body
                     strong Thời gian sửa: 
-                    span= product.updatedAt ? product.updatedAt.toLocaleString('vi-VN') : "N/A"
+                    span= product.updatedBy && product.updatedBy.updatedAt ? new Date(product.updatedBy.updatedAt).toLocaleString('vi-VN', { hour12: false }) : "N/A"
