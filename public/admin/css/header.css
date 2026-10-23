@@ -92,6 +92,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .user-profile .user-info {
@@ -100,7 +101,7 @@
 }
 
 .user-profile .name {
-  color: var(--text-title);
+  color: var(--text-body);
   font-size: 0.85rem;
   font-weight: 600;
   line-height: 1.2;

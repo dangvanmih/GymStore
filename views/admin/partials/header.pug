@@ -4,12 +4,9 @@ header.header-admin
   //- Left Section: Nút 3 gạch (Mobile Toggle) & Logo
   .header-logo.d-flex.align-items-center.gap-2
     button#sidebarToggle.mobile-menu-toggle(type="button" title="Mở/Đóng Menu")
-      i.fas.fa-bars
-    
-    //- a(href="/admin/dashboard")
-    //-   img(src="/admin/images/logo.png", alt="Logo" style='height:60px; object-fit: contain;')
+      i.fas.fa-bar
 
-  //- Actions & Profile (Giữ nguyên 100% logic cũ)
+  //- Actions & Profile
   .header-actions
     button.icon-btn.position-relative(type="button", title="Notifications")
       i.far.fa-bell
@@ -17,18 +14,15 @@ header.header-admin
 
     .user-profile.dropdown
       a.dropdown-toggle(href="#", id="userDropdown", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
-        img.avatar(src="https://ui-avatars.com/api/?name=Spencer&background=6366f1&color=fff", alt="Spencer")
+        img.avatar(src=user.avatar, alt="Spencer")
         .user-info
-          span.name Spencer
-          span.role Administrator
+          span.name #{user.fullName}
+          span.role #{role.title}
 
       .dropdown-menu.dropdown-menu-right.shadow-lg
         a.dropdown-item(href=`${prefixAdmin}/profile`)
           i.fas.fa-user.mr-2
           | Profile
-        a.dropdown-item(href=`${prefixAdmin}/setting`)
-          i.fas.fa-sliders-h.mr-2
-          | Settings
         .dropdown-divider
         a.dropdown-item.text-danger(href=`${prefixAdmin}/auth/logout`)
           i.fas.fa-sign-out-alt.mr-2

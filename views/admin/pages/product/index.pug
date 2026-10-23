@@ -5,6 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
+include ../../mixins/breadcrumb.pug
 append style
   link(rel="stylesheet" href="/admin/css/product.css")
 
@@ -14,13 +15,16 @@ block main
     +alert-error(3000)
 
     .container-fluid.p-0
-      //- Header trang
-      .d-flex.justify-content-between.align-items-center.mb-2
-        div
-          h3.page-title Danh sách sản phẩm
-          p.text-muted.mb-0 Quản lý sản phẩm, giá bán và trạng thái sản phẩm.
+      +breadcrumb("Danh sách sản phẩm", [
+        { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
+        { title: "Sản phẩm", link: "#" }
+      ])
+
+      .d-flex.justify-content-between.align-items-center.mb-3
+        p.text-muted.mb-0 Quản lý sản phẩm, giá bán và trạng thái sản phẩm.
+        
         if(role.permissions.includes("products_create"))
-          a.btn.btn-custom.btn-sm.d-inline-flex.align-items-center(href="/admin/products/create")
+          a.btn.btn-custom.btn-sm.d-inline-flex.align-items-center(href=`${prefixAdmin}/products/create`)
             i.fas.fa-plus.mr-2
             span Thêm sản phẩm
 

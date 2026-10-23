@@ -1,0 +1,65 @@
+extends ../../layouts/default.pug
+include ../../mixins/breadcrumb.pug
+block main
+  link(rel="stylesheet", href="/admin/css/profile.css")
+
+  .container-fluid.px-4.py-3
+    //- Tiêu đề trang
+    .d-flex.justify-content-between.align-items-center.mb-4
+      +breadcrumb("Thông tin cá nhân", [
+      { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
+      { title: "Thông tin cá nhân", link: "#" }
+      ])
+    .row
+      //- Cột trái: Hiển thị tóm tắt thông tin & Avatar
+      .col-xl-4.col-lg-5.mb-4
+        .card.shadow-sm.border-0.text-center.p-4
+          .profile-avatar-wrapper.position-relative.mx-auto.mb-3
+            img.rounded-circle.img-thumbnail(src=user.avatar || "https://ui-avatars.com/api/?name=Spencer&background=6366f1&color=fff&size=120", alt="Avatar", style="width: 120px; height: 120px; object-fit: cover;")
+          
+          h4.mb-1 #{user.fullName}
+          p.text-muted.mb-3 #{user.role ? user.role.title : "Chưa phân quyền"}
+          
+          .badge.badge-success.p-2.mb-3 Hoạt động
+          
+          hr.my-3
+          
+          .text-left.px-2
+            p.mb-2.small.text-muted 
+              i.fas.fas.fa-envelope.mr-2.text-primary
+              strong Email: 
+              | #{user.email || "admin@example.com"}
+            p.mb-2.small.text-muted 
+              i.fas.fa-phone.mr-2.text-primary
+              strong Số điện thoại: 
+              | #{user.phone || "Chưa cập nhật"}
+
+      //- Cột phải: Form cập nhật thông tin và Đổi mật khẩu
+      .col-xl-8.col-lg-7
+        //- Form cập nhật thông tin cơ bản
+        .card.shadow-sm.border-0.mb-4
+          .card-header.bg-white.py-3
+            h5.mb-0.text-primary 
+              i.fas.fa-user-edit.mr-2
+              | Chỉnh sửa thông tin
+          .card-body
+            form(action=`${prefixAdmin}/profile/edit?_method=PATCH`, method="POST", enctype="multipart/form-data")
+              .form-row
+                .form-group.col-md-6
+                  label(for="fullName") Họ và tên
+                  input.form-control(type="text", id="fullName", name="fullName", value=user.fullName || "Spencer", required)
+                .form-group.col-md-6
+                  label(for="email") Email
+                  input.form-control(type="email", id="email", name="email", value=user.email || "admin@example.com", required)
+              
+              .form-row
+                .form-group.col-md-6
+                  label(for="phone") Số điện thoại
+                  input.form-control(type="text", id="phone", name="phone", value=user.phone || "")
+                .form-group.col-md-6
+                  label(for="avatar") Đổi ảnh đại diện
+                  input.form-control-file(type="file", id="avatar", name="avatar", accept="image/*")
+
+              button.btn.btn-primary(type="submit") 
+                i.fas.fa-save.mr-2
+                | Lưu thay đổi

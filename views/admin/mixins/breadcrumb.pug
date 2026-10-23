@@ -1,0 +1,14 @@
+mixin breadcrumb(title, links)
+  .d-flex.justify-content-between.align-items-center.mb-4
+    div
+      h1.h3.mb-1.text-gray-800 #{title}
+      nav(aria-label="breadcrumb")
+        ol.breadcrumb.bg-transparent.p-0.mb-0.small
+          each item, index in links
+            if index === links.length - 1
+              //- Mục cuối cùng (trang hiện tại)
+              li.breadcrumb-item.active(aria-current="page") #{item.title}
+            else
+              //- Các mục trước có gắn link
+              li.breadcrumb-item
+                a(href=item.link) #{item.title}

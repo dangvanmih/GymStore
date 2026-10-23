@@ -1,7 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
-
+include ../../mixins/breadcrumb.pug
 append style
   link(rel="stylesheet" href="/admin/css/product-create.css")
 
@@ -10,11 +10,19 @@ block main
     +alert-error(5000)
 
     .container-fluid.p-0.create-product-wrapper
-      //- Header trang
+      //- 2. Kết hợp Breadcrumb và nút Quay lại ngang hàng nhau
       .d-flex.justify-content-between.align-items-center.mb-4
         div
-          h3.page-title.mb-1 Thêm mới sản phẩm
-          p.text-muted.mb-0 Nhập thông tin chi tiết để khởi tạo sản phẩm mới vào hệ thống.
+          h1.h3.mb-1.text-gray-800 Thêm mới sản phẩm
+          nav(aria-label="breadcrumb")
+            ol.breadcrumb.bg-transparent.p-0.mb-0.small
+              li.breadcrumb-item
+                a(href=`${prefixAdmin}/dashboard`) Dashboard
+              li.breadcrumb-item
+                a(href=`${prefixAdmin}/products`) Sản phẩm
+              li.breadcrumb-item.active(aria-current="page") Thêm mới
+
+        //- Nút Quay lại chuẩn màu sắc và icon
         a.btn.btn-outline-secondary.btn-sm.d-inline-flex.align-items-center(href=`${prefixAdmin}/products`)
           i.fas.fa-arrow-left.me-2.mr-2
           span Quay lại

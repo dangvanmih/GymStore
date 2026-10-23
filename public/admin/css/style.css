@@ -296,3 +296,18 @@ body {
   font-weight: 600 !important;
 }
 
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "/";
+  color: #6c757d;
+}
+.breadcrumb-item a {
+  color: #8c92ab;
+  text-decoration: none;
+}
+.breadcrumb-item a:hover {
+  color: #6366f1;
+}
+.breadcrumb-item.active {
+  color: #4b5563;
+  font-weight: 500;
+}
