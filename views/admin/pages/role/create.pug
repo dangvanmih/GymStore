@@ -1,9 +1,11 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
 append style
   link(rel="stylesheet" href="/admin/css/role-create.css")
 block main
   if(role.permissions.includes("roles_create"))
+    +alert-error(5000)
     .roles-create-wrapper.container-fluid.py-4
       //- Tiêu đề trang & Nút quay lại
       .d-flex.align-items-center.justify-content-between.mb-4

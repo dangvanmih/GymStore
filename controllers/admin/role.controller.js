@@ -26,11 +26,29 @@ module.exports.create = async (req, res) => {
 
 // POST: /admin/roles/create
 module.exports.createPost = async (req, res) => {
+  try {
+    // 1. Kiểm tra xem nhóm quyền đã tồn tại chưa (không phân biệt hoa thường)
+    const existingRole = await Role.findOne({
+      title: { $regex: new RegExp(`^${req.body.title}$`, "i") },
+      deleted: false
+    });
 
-  const role = new Role(req.body);
-  await role.save();
-  req.flash("success", "Tạo mới quyền thành công!");
-  res.redirect(`${systemConfig.prefixAdmin}/roles`);
+    if (existingRole) {
+      req.flash("error", "Nhóm quyền này đã tồn tại!");
+      return res.redirect(req.get("Referer"));
+    }
+
+    // 2. Nếu chưa tồn tại thì tiến hành lưu mới
+    const role = new Role(req.body);
+    await role.save();
+
+    req.flash("success", "Tạo mới quyền thành công!");
+    res.redirect(`${systemConfig.prefixAdmin}/roles`);
+
+  } catch (error) {
+    req.flash("error", "Tạo mới quyền không thành công!");
+    res.redirect(`${systemConfig.prefixAdmin}/roles`);
+  }
 };
 
 // GET: /admin/roles/edit/:id
@@ -54,6 +72,16 @@ module.exports.editPatch = async (req, res) => {
 
   const id = req.params.id
   try {
+    // 1. Kiểm tra xem nhóm quyền đã tồn tại chưa (không phân biệt hoa thường)
+    const existingRole = await Role.findOne({
+      title: { $regex: new RegExp(`^${req.body.title}$`, "i") },
+      deleted: false
+    });
+
+    if (existingRole) {
+      req.flash("error", "Nhóm quyền này đã tồn tại!");
+      return res.redirect(req.get("Referer"));
+    }
     await Role.updateOne({ _id: id }, req.body);
     req.flash("success", "Cập nhật nhóm quyền thành công!");
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`)
@@ -65,13 +93,31 @@ module.exports.editPatch = async (req, res) => {
 
 // DELETE: /admin/roles/delete/:id
 module.exports.delete = async (req, res) => {
-
-  const id = req.params.id
   try {
-    await Role.updateOne({ _id: id }, { deleted: true });
+    const id = req.params.id;
+
+    // 1. Tìm thông tin role trước khi xóa
+    const role = await Role.findOne({ _id: id, deleted: false });
+
+    if (!role) {
+      req.flash("error", "Vai trò không tồn tại!");
+      return res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`);
+    }
+
+    // 2. Kiểm tra nếu là nhóm Quản trị viên thì chặn lại không cho xóa
+    if (role.title.toLowerCase() === "quản trị viên" || role.title.toLowerCase() === "admin") {
+      req.flash("error", "Không được phép xóa nhóm quyền Quản trị viên!");
+      return res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`);
+    }
+
+    // 3. Nếu không phải thì tiến hành xóa mềm như bình thường
+    await Role.updateOne({ _id: id }, { deleted: true, deletedAt: new Date() });
+    
     req.flash("success", "Xóa vai trò thành công!");
-    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`)
+    res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`);
+
   } catch (error) {
+    console.log("Lỗi xóa vai trò:", error);
     req.flash("error", "Xóa vai trò không thành công!");
     res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/roles`);
   }

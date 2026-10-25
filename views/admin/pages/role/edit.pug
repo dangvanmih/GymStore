@@ -5,6 +5,7 @@ append style
 block main
   if(role.permissions.includes("roles_edit"))
     +alert-success(5000)
+    +alert-error(5000)
     .roles-create-wrapper.container-fluid.py-4
       //- Tiêu đề trang & Nút quay lại
       .d-flex.align-items-center.justify-content-between.mb-4

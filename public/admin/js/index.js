@@ -58,19 +58,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const linkPath = new URL(href, window.location.origin).pathname;
 
-    // Roles: active ở danh sách, thêm mới, chỉnh sửa và xem chi tiết
-    if (linkPath === "/admin/roles") {
-      if (
-        currentUrl === linkPath ||
-        currentUrl.startsWith(linkPath + "/")
-      ) {
+    // Roles Permissions: chỉ active đúng trang phân quyền (Đặt lên trên để check trước)
+    if (linkPath === "/admin/roles/permissions") {
+      if (currentUrl === linkPath) {
         link.classList.add("active");
       }
     }
 
-    // Roles Permissions: chỉ active đúng trang phân quyền
-    else if (linkPath === "/admin/roles/permissions") {
-      if (currentUrl === linkPath) {
+    // Roles: active ở danh sách, thêm mới, chỉnh sửa... nhưng KHÔNG ĐƯỢC active nếu đang ở trang permissions
+    else if (linkPath === "/admin/roles") {
+      if (
+        (currentUrl === linkPath || currentUrl.startsWith(linkPath + "/")) &&
+        !currentUrl.startsWith("/admin/roles/permissions") // Thêm điều kiện chặn trang permissions
+      ) {
         link.classList.add("active");
       }
     }
