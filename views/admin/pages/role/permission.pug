@@ -35,7 +35,7 @@ block main
             .table-responsive
               table.table.table-dark.table-hover.table-bordered.align-middle.mb-0(table-permissions)
                 thead
-                  //- Hàng chứa ID ẩn (hoặc dùng để code JS nhận diện ID nhóm quyền)
+                  //- Hàng chứa ID ẩn
                   tr(data-name="id" class="d-none")
                     td
                     each item in records
@@ -53,106 +53,94 @@ block main
                   tr.table-group-header
                     td(colspan=records.length + 1)
                       b Danh mục sản phẩm
-                  tr(data-name="products-category_view")
-                    td.ps-4 Xem
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="products-category_create")
-                    td.ps-4 Thêm mới
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="products-category_edit")
-                    td.ps-4 Sửa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="products-category_delete")
-                    td.ps-4 Xóa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
+                  
+                  - 
+                    const listPermissions = [
+                      { name: "products-category_view", label: "Xem" },
+                      { name: "products-category_create", label: "Thêm mới" },
+                      { name: "products-category_edit", label: "Sửa" },
+                      { name: "products-category_delete", label: "Xóa" }
+                    ]
 
-                  //- Sản phẩm
+                  each perm in listPermissions
+                    tr(data-name=perm.name)
+                      td.ps-4 #{perm.label}
+                      each item in records
+                        td.text-center
+                          input.form-check-input.checkbox-dark(
+                            type="checkbox" 
+                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "administrator")
+                          )
+
+                  //- Nhóm: Sản phẩm
                   tr.table-group-header
                     td(colspan=records.length + 1)
                       b Sản phẩm
-                  tr(data-name="products_view")
-                    td.ps-4 Xem
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="products_create")
-                    td.ps-4 Thêm mới
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="products_edit")
-                    td.ps-4 Sửa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="products_delete")
-                    td.ps-4 Xóa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
+                  
+                  - 
+                    const listProductPerms = [
+                      { name: "products_view", label: "Xem" },
+                      { name: "products_create", label: "Thêm mới" },
+                      { name: "products_edit", label: "Sửa" },
+                      { name: "products_delete", label: "Xóa" }
+                    ]
 
-                  //- Nhóm quyền
+                  each perm in listProductPerms
+                    tr(data-name=perm.name)
+                      td.ps-4 #{perm.label}
+                      each item in records
+                        td.text-center
+                          input.form-check-input.checkbox-dark(
+                            type="checkbox" 
+                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "administrator")
+                          )
+
+                  //- Nhóm: Nhóm quyền
                   tr.table-group-header
                     td(colspan=records.length + 1)
                       b Nhóm quyền
-                  tr(data-name="roles_view")
-                    td.ps-4 Xem
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="roles_create")
-                    td.ps-4 Thêm mới
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="roles_edit")
-                    td.ps-4 Sửa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="roles_delete")
-                    td.ps-4 Xóa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox") 
-                  tr(data-name="roles_permission")
-                    td.ps-4 Phân quyền
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
+                  
+                  - 
+                    const listRolePerms = [
+                      { name: "roles_view", label: "Xem" },
+                      { name: "roles_create", label: "Thêm mới" },
+                      { name: "roles_edit", label: "Sửa" },
+                      { name: "roles_delete", label: "Xóa" },
+                      { name: "roles_permission", label: "Phân quyền" }
+                    ]
 
-                  //- Tài khoản
+                  each perm in listRolePerms
+                    tr(data-name=perm.name)
+                      td.ps-4 #{perm.label}
+                      each item in records
+                        td.text-center
+                          input.form-check-input.checkbox-dark(
+                            type="checkbox" 
+                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "administrator")
+                          )
+
+                  //- Nhóm: Tài khoản
                   tr.table-group-header
                     td(colspan=records.length + 1)
                       b Tài khoản
-                  tr(data-name="accounts-view")
-                    td.ps-4 Xem
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="accounts-view_create")
-                    td.ps-4 Thêm mới
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="accounts-view_edit")
-                    td.ps-4 Sửa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
-                  tr(data-name="accounts-view_delete")
-                    td.ps-4 Xóa
-                    each item in records
-                      td.text-center
-                        input.form-check-input.checkbox-dark(type="checkbox")
+                  
+                  - 
+                    const listAccountPerms = [
+                      { name: "accounts-view", label: "Xem" },
+                      { name: "accounts-view_create", label: "Thêm mới" },
+                      { name: "accounts-view_edit", label: "Sửa" },
+                      { name: "accounts-view_delete", label: "Xóa" }
+                    ]
+
+                  each perm in listAccountPerms
+                    tr(data-name=perm.name)
+                      td.ps-4 #{perm.label}
+                      each item in records
+                        td.text-center
+                          input.form-check-input.checkbox-dark(
+                            type="checkbox" 
+                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "administrator")
+                          )
 
       form(
         id="form-change-permissions"

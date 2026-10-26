@@ -144,10 +144,33 @@ module.exports.permissionPatch = async (req, res) => {
     const permissions = JSON.parse(req.body.permissions);
 
     if (Array.isArray(permissions) && permissions.length > 0) {
+      // 1. Thu thập tất cả các loại quyền (permissions key) có trong hệ thống từ các role hoặc định nghĩa sẵn
+      // Để đảm bảo Quản trị viên luôn nhận được full tất cả các quyền hiện có:
+      const allRoles = await Role.find({ deleted: false });
+      let allPermissionsSet = new Set();
+      allRoles.forEach(r => {
+        if (r.permissions && Array.isArray(r.permissions)) {
+          r.permissions.forEach(p => allPermissionsSet.add(p));
+        }
+      });
+      const fullPermissions = Array.from(allPermissionsSet);
+
+      // 2. Duyệt qua từng item phân quyền gửi lên từ client
       for (const item of permissions) {
+        const role = await Role.findOne({ _id: item.id, deleted: false });
+        if (!role) continue;
+
+        let finalPermissions = item.permissions;
+
+        // Nếu là vai trò Quản trị viên / Administrator: LUÔN GÁN FULL QUYỀN
+        if (role.title.toLowerCase() === "quản trị viên" || role.title.toLowerCase() === "administrator") {
+          finalPermissions = fullPermissions; 
+        }
+
+        // Tiến hành cập nhật
         await Role.updateOne(
           { _id: item.id },
-          { permissions: item.permissions }
+          { permissions: finalPermissions }
         );
       }
 
