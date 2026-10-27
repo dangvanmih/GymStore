@@ -33,7 +33,7 @@
 .product-item .inner-image {
   position: relative;
   width: 100%;
-  aspect-ratio: 5 / 9;
+  aspect-ratio: 3/4;
   overflow: hidden;
   background-color: #f4f4f5;
   margin-bottom: 12px;

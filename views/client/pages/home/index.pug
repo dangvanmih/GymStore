@@ -2,32 +2,29 @@ extends ../../layouts/default.pug
 include ../../mixins/boxhead.pug
 
 block main
+  //- 1. PHẦN BANNER SLIDER TRUNG TÂM CỠ LỚN
+  .container-fluid.px-0.mb-5
+    .swiper.main-home-slider.overflow-hidden.shadow-sm
+      .swiper-wrapper
+        //- Slide 1: Video banner 1
+        .swiper-slide
+          .slider-item(style="height: 650px;")
+            video.w-100.h-100(autoplay, muted, loop, playsinline, style="object-fit: cover;")
+              source(src="/client/images/vd-banner-gym.mp4", type="video/mp4")
+        
+        //- Slide 2: Video banner 2
+        .swiper-slide
+          .slider-item(style="height: 650px;")
+            video.w-100.h-100(autoplay, muted, loop, playsinline, style="object-fit: cover;")
+              source(src="/client/images/vd-banner-2.mp4", type="video/mp4")
+
+        //- Nút chuyển slide qua lại (Next / Prev)
+        .swiper-button-next.text-light(style="width: 30px !important; height: 30px !important; background-color: rgba(0, 0, 0, 0.4) !important; border-radius: 50% !important; margin-top: -15px !important; --swiper-navigation-size: 14px !important;")
+        .swiper-button-prev.text-light(style="width: 30px !important; height: 30px !important; background-color: rgba(0, 0, 0, 0.4) !important; border-radius: 50% !important; margin-top: -15px !important; --swiper-navigation-size: 14px !important;")
+
+        //- Dấu chấm chuyển slide (Pagination)
+        .swiper-pagination
   .container.py-4
-    
-    //- 1. PHẦN BANNER SLIDER TRUNG TÂM CỠ LỚN
-    .row.mb-5.justify-content-center
-      .col-12
-        .swiper.main-home-slider.rounded-4.overflow-hidden.shadow-sm
-          .swiper-wrapper
-            //- Slide 1: Video banner 1
-            .swiper-slide
-              .slider-item(style="height: 480px;")
-                video.w-100.h-110(autoplay, muted, loop, playsinline, style="object-fit: cover;")
-                  source(src="/client/images/vd-banner-gym.mp4", type="video/mp4")
-            
-            //- Slide 2: Video banner 2
-            .swiper-slide
-              .slider-item(style="height: 480px;")
-                video.w-100.h-110(autoplay, muted, loop, playsinline, style="object-fit: cover;")
-                  source(src="/client/images/vd-banner-2.mp4", type="video/mp4")
-
-          //- Nút chuyển slide qua lại (Next / Prev)
-          .swiper-button-next.text-light(style="width: 30px !important; height: 30px !important; background-color: rgba(0, 0, 0, 0.4) !important; border-radius: 50% !important; margin-top: -15px !important; --swiper-navigation-size: 14px !important;")
-          .swiper-button-prev.text-light(style="width: 30px !important; height: 30px !important; background-color: rgba(0, 0, 0, 0.4) !important; border-radius: 50% !important; margin-top: -15px !important; --swiper-navigation-size: 14px !important;")
-
-          //- Dấu chấm chuyển slide (Pagination)
-          .swiper-pagination
-
     //- 2. PHẦN HIỂN THỊ SẢN PHẨM THEO DANH MỤC GỐC
     if (categoriesWithProducts && categoriesWithProducts.length > 0)
       each catData in categoriesWithProducts
