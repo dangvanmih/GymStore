@@ -3,13 +3,25 @@ include ../../mixins/boxhead.pug
 include ../../mixins/product-item.pug
 
 block main
-  .container.py-4
+  //- 1. PHẦN BREADCRUMB (Đường dẫn điều hướng)
+  .bg-light.py-2
+    .container
+      nav(aria-label="breadcrumb")
+        ol.breadcrumb.mb-0
+          li.breadcrumb-item
+            a.text-decoration-none.text-dark(href="/") Trang chủ
+          li.breadcrumb-item.active(aria-current="page") #{pageTitle}
+
+  //- 2. PHẦN BANNER DANH MỤC (Tùy chọn banner động hoặc tĩnh)
+  .container.mb-4
+    .category-banner.rounded-4.overflow-hidden(style="height: 250px;")
+      img.w-100.h-100(src="/client/images/banner-4.webp", alt=pageTitle, style="object-fit: cover;")
+  //- 3. NỘI DUNG CHÍNH (Danh sách sản phẩm)
+  .container.py-2
     .row
       .col-12.mb-4
         .box-header
-          //- Sử dụng tiêu đề động (pageTitle từ Controller truyền sang)
           +box-header(pageTitle)
-
     .row
       if (products && products.length > 0)
         each item in products
@@ -17,5 +29,5 @@ block main
             +product-item(item)
       else
         .col-12
-          .alert.alert-warning.text-center(role="alert")
+          .alert.alert-warning.text-center(role="alert" style="background-color: #f4f4f5; border: none; color: #52525b;")
             | Không tìm thấy sản phẩm nào trong danh mục này!
