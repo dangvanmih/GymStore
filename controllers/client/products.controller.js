@@ -1,6 +1,6 @@
 const Product = require("../../models/product.model");
 const Category = require("../../models/category.model");
-
+const {calculatePriceNew} = require("../../helpers/calculatePrice");
 // GET: /products
 module.exports.index = async (req, res) => {
 
@@ -43,8 +43,8 @@ module.exports.detailProduct = async (req, res) => {
       // Chuẩn hóa và tính lại priceNew cho từng variant nếu cần, hoặc lấy trực tiếp
       product.variants = product.variants.map(v => {
         const vPrice = Number(v.price) || Number(product.price) || 0;
-        const vPriceNew = discount > 0 
-          ? Math.round((vPrice * (100 - discount) / 100) / 10000) * 10000 
+        const vPriceNew = discount > 0
+          ? Math.round((vPrice * (100 - discount) / 100) / 10000) * 10000
           : vPrice;
         return {
           ...v,
@@ -59,8 +59,8 @@ module.exports.detailProduct = async (req, res) => {
     } else {
       // Sản phẩm không có phân loại (Free size / Giá chung)
       const basePrice = Number(product.price) || 0;
-      product.priceNew = discount > 0 
-        ? Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000 
+      product.priceNew = discount > 0
+        ? Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000
         : basePrice;
       product.price = basePrice;
       product.variants = []; // Đảm bảo mảng rỗng để file Pug tự động ẩn phần chọn size
@@ -75,7 +75,6 @@ module.exports.detailProduct = async (req, res) => {
     res.redirect("/");
   }
 };
-
 
 // [GET] /products/:slug
 module.exports.category = async (req, res) => {
@@ -94,20 +93,47 @@ module.exports.category = async (req, res) => {
       return res.redirect("/");
     }
 
-    // 2. Lấy danh sách sản phẩm thuộc danh mục này (bao gồm cả danh mục con nếu có)
-    // (Hoặc đơn giản lấy các sản phẩm có product_category_id = category.id)
+    // 2. Viết hàm đệ quy tìm tất cả các danh mục con (dựa vào parent_id)
+    const getSubCategory = async (parentId) => {
+      const subs = await Category.find({
+        parent_id: parentId.toString(),
+        deleted: false,
+        status: "active"
+      });
+
+      let allSubIds = [...subs.map(sub => sub._id)];
+
+      for (const sub of subs) {
+        const childIds = await getSubCategory(sub._id);
+        allSubIds = allSubIds.concat(childIds);
+      }
+
+      return allSubIds;
+    };
+
+    // Lấy toàn bộ ID danh mục con và gộp với ID của danh mục cha
+    const listSubCategoryId = await getSubCategory(category._id);
+    const listIdCategory = [category._id.toString(), ...listSubCategoryId.map(id => id.toString())];
+
+    // 3. Lấy tất cả sản phẩm có category_id nằm trong mảng danh mục trên
     const products = await Product.find({
-      product_category_id: category.id,
+      category_id: { $in: listIdCategory },
       deleted: false,
       status: "active"
     });
-
-    // 3. Render ra trang danh sách sản phẩm theo danh mục
+    const newProducts = products.map(item => {
+      return {
+        ...item._doc,
+        priceNew: calculatePriceNew(item.price, item.discountPercentage)
+      };
+    });
+    // 4. Render ra trang danh sách sản phẩm
     res.render("client/pages/products/index", {
       pageTitle: category.title,
-      products: products
+      products: newProducts
     });
   } catch (error) {
+    console.log("Lỗi lấy sản phẩm theo danh mục:", error);
     res.redirect("/");
   }
 };
@@ -116,7 +142,7 @@ module.exports.category = async (req, res) => {
 module.exports.searchSuggestion = async (req, res) => {
   try {
     const keyword = req.query.keyword || "";
-    
+
     if (!keyword.trim()) {
       return res.json({ products: [], total: 0 });
     }

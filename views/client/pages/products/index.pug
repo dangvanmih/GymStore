@@ -1,24 +1,21 @@
 extends ../../layouts/default.pug
 include ../../mixins/boxhead.pug
+include ../../mixins/product-item.pug
+
 block main
   .container.py-4
     .row
       .col-12.mb-4
         .box-header
-          +box-header('Danh sách sản phẩm')
+          //- Sử dụng tiêu đề động (pageTitle từ Controller truyền sang)
+          +box-header(pageTitle)
 
     .row
-      //- Sản phẩm 1
-      each item in products
-        .col-md-3.col-6.mb-4
-          .product-item
-            .inner-image
-              a(href=`/products/${item.slug}`)
-                img(src=item.thumbnail, alt=item.title)
-            .inner-content
-              h3.inner-title
-                a(href=`/products/detail/${item.slug}`) #{item.title}
-                | #{item.title} - #{item.slug}
-              .inner-price
-                span.inner-price-new #{item.priceNew}₫
-                span.inner-price-old #{item.price}₫
+      if (products && products.length > 0)
+        each item in products
+          .col-md-3.col-6.mb-4
+            +product-item(item)
+      else
+        .col-12
+          .alert.alert-warning.text-center(role="alert")
+            | Không tìm thấy sản phẩm nào trong danh mục này!

@@ -16,7 +16,6 @@ header.header.border-bottom.bg-white.sticky-top
                 if (item.children && item.children.length > 0)
                   //- Danh mục cha có danh mục con (Hiển thị Dropdown hover)
                   li.nav-item.dropdown.custom-dropdown
-                    //- Dùng span kết hợp sự kiện click trỏ thẳng qua JS, không sợ bị thư viện thẻ a chặn nữa
                     span.nav-link.custom-nav-link.d-flex.align-items-center(
                       style="cursor: pointer;",
                       onclick=`window.location.href='/products/${item.slug}'`
