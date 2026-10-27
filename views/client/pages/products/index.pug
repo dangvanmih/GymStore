@@ -3,7 +3,7 @@ include ../../mixins/boxhead.pug
 include ../../mixins/product-item.pug
 
 block main
-  //- 1. PHẦN BREADCRUMB (Đường dẫn điều hướng)
+  //- 1. BREADCRUMB
   .bg-light.py-2
     .container
       nav(aria-label="breadcrumb")
@@ -12,17 +12,92 @@ block main
             a.text-decoration-none.text-dark(href="/") Trang chủ
           li.breadcrumb-item.active(aria-current="page") #{pageTitle}
 
-  //- 2. PHẦN BANNER DANH MỤC (Tùy chọn banner động hoặc tĩnh)
+  //- 2. BANNER
   .container.mb-4
     .category-banner.rounded-4.overflow-hidden(style="height: 250px;")
       img.w-100.h-100(src="/client/images/banner-4.webp", alt=pageTitle, style="object-fit: cover;")
-  //- 3. NỘI DUNG CHÍNH (Danh sách sản phẩm)
+
+  //- 3. NỘI DUNG CHÍNH
   .container.py-2
     .row
       .col-12.mb-4
         .box-header
           +box-header(pageTitle)
-    .row
+
+    //- 4. THANH BỘ LỌC VÀ SẮP XẾP
+    .row.mb-4
+      .col-12
+        .filter-sort-bar.p-3.bg-white.rounded-3.shadow-sm
+          .d-flex.flex-wrap.align-items-center.justify-content-between.gap-3
+            //- Nhóm Bộ lọc bên trái
+            .filter-group.d-flex.flex-wrap.align-items-center.gap-2
+              span.fw-bold.me-2.d-flex.align-items-center.gap-1
+                i.fa-solid.fa-filter
+                | BỘ LỌC
+
+              //- Lọc giá
+              .dropdown
+                button.btn.btn-outline-secondary.dropdown-toggle.btn-sm(type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false")
+                  | Lọc giá
+                ul.dropdown-menu.p-3(style="min-width: 200px;")
+                  li.mb-2
+                    .form-check
+                      input.form-check-input.filter-checkbox(type="checkbox" name="price" value="under-200k" id="price1")
+                      label.form-check-label(for="price1") Dưới 200.000₫
+                  li.mb-2
+                    .form-check
+                      input.form-check-input.filter-checkbox(type="checkbox" name="price" value="200k-500k" id="price2")
+                      label.form-check-label(for="price2") 200.000₫ - 500.000₫
+                  li.mb-2
+                    .form-check
+                      input.form-check-input.filter-checkbox(type="checkbox" name="price" value="500k-800k" id="price3")
+                      label.form-check-label(for="price3") 500.000₫ - 800.000₫
+                  li.mb-0
+                    .form-check
+                      input.form-check-input.filter-checkbox(type="checkbox" name="price" value="over-800k" id="price4")
+                      label.form-check-label(for="price4") Trên 800.000₫
+
+              //- Lọc Màu sắc
+              .dropdown
+                button.btn.btn-outline-secondary.dropdown-toggle.btn-sm(type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false")
+                  | Màu sắc
+                ul.dropdown-menu.p-3(style="min-width: 160px; max-height: 200px; overflow-y: auto;")
+                  if (availableColors && availableColors.length > 0)
+                    each color, index in availableColors
+                      li.mb-2
+                        .form-check
+                          input.form-check-input.filter-checkbox(type="checkbox" name="color" value=color id=`color-${index}`)
+                          label.form-check-label(for=`color-${index}`) #{color}
+                  else
+                    li.text-muted.small.text-center Không có màu sắc
+
+              //- Lọc Kích thước
+              .dropdown
+                button.btn.btn-outline-secondary.dropdown-toggle.btn-sm(type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false")
+                  | Kích thước
+                ul.dropdown-menu.p-3(style="min-width: 140px; max-height: 200px; overflow-y: auto;")
+                  if (availableSizes && availableSizes.length > 0)
+                    each size, index in availableSizes
+                      li.mb-2
+                        .form-check
+                          input.form-check-input.filter-checkbox(type="checkbox" name="size" value=size id=`size-${index}`)
+                          label.form-check-label(for=`size-${index}`) #{size}
+                  else
+                    li.text-muted.small.text-center Không có kích thước
+
+            //- Sắp xếp
+            .sort-group.ms-auto
+              .dropdown
+                button.btn.btn-outline-dark.dropdown-toggle.btn-sm.d-flex.align-items-center.gap-2(type="button" data-bs-toggle="dropdown" aria-expanded="false")
+                  i.fa-solid.fa-arrow-down-wide-short
+                  | Sắp xếp
+                ul.dropdown-menu.dropdown-menu-end.shadow-sm
+                  li: a.dropdown-item.active(href="#") Sản phẩm nổi bật
+                  li: a.dropdown-item(href="#") Giá: Tăng dần
+                  li: a.dropdown-item(href="#") Giá: Giảm dần
+
+    //- 5. DANH SÁCH SẢN PHẨM (Có class product-list-row để AJAX nhồi dữ liệu vào đây)
+    .row.product-list-row
       if (products && products.length > 0)
         each item in products
           .col-md-3.col-6.mb-4
@@ -30,4 +105,6 @@ block main
       else
         .col-12
           .alert.alert-warning.text-center(role="alert" style="background-color: #f4f4f5; border: none; color: #52525b;")
-            | Không tìm thấy sản phẩm nào trong danh mục này!
+            | Không tìm thấy kết quả. Vui lòng thử lại!
+
+  script(src="/client/js/product-filter.js")

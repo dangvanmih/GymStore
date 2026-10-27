@@ -1,0 +1,10 @@
+include ../mixins/product-item.pug
+
+if (products && products.length > 0)
+  each item in products
+    .col-md-3.col-6.mb-4
+      +product-item(item)
+else
+  .col-12
+    .alert.alert-warning.text-center(role="alert" style="background-color: #f4f4f5; border: none; color: #52525b;")
+      | Không tìm thấy kết quả. Vui lòng thử lại!

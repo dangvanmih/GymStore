@@ -1,6 +1,6 @@
 const Product = require("../../models/product.model");
 const Category = require("../../models/category.model");
-const {calculatePriceNew} = require("../../helpers/calculatePrice");
+const { calculatePriceNew } = require("../../helpers/calculatePrice");
 // GET: /products
 module.exports.index = async (req, res) => {
 
@@ -93,7 +93,7 @@ module.exports.category = async (req, res) => {
       return res.redirect("/");
     }
 
-    // 2. Viết hàm đệ quy tìm tất cả các danh mục con (dựa vào parent_id)
+    // 2. Viết hàm đệ quy tìm tất cả các danh mục con
     const getSubCategory = async (parentId) => {
       const subs = await Category.find({
         parent_id: parentId.toString(),
@@ -111,29 +111,162 @@ module.exports.category = async (req, res) => {
       return allSubIds;
     };
 
-    // Lấy toàn bộ ID danh mục con và gộp với ID của danh mục cha
     const listSubCategoryId = await getSubCategory(category._id);
     const listIdCategory = [category._id.toString(), ...listSubCategoryId.map(id => id.toString())];
 
-    // 3. Lấy tất cả sản phẩm có category_id nằm trong mảng danh mục trên
-    const products = await Product.find({
+    // Lấy tất cả sản phẩm gốc của danh mục để làm bộ lọc màu/size
+    const allProductsInCate = await Product.find({
       category_id: { $in: listIdCategory },
       deleted: false,
       status: "active"
     });
+
+    const availableColors = [
+      ...new Set(
+        allProductsInCate.flatMap(item =>
+          item.variants ? item.variants.map(v => v.color).filter(c => c && c.trim() !== "") : []
+        )
+      )
+    ];
+
+    const availableSizes = [
+      ...new Set(
+        allProductsInCate.flatMap(item =>
+          item.variants ? item.variants.map(v => v.size).filter(s => s && s.trim() !== "") : []
+        )
+      )
+    ];
+
+    // 3. XÂY DỰNG ĐIỀU KIỆN TÌM KIẾM (LỌC GIÁ, MÀU, SIZE LINH HOẠT)
+    let find = {
+      category_id: { $in: listIdCategory },
+      deleted: false,
+      status: "active"
+    };
+
+    // Mảng chứa các điều kiện lọc (dùng $and để kết hợp nhiều bộ lọc cùng lúc)
+    let conditions = [];
+
+    // 3.1. Lọc theo Giá
+    if (req.query.price) {
+      let minPrice = 0;
+      let maxPrice = 999999999;
+
+      if (req.query.price === "under-200k") {
+        minPrice = 0;
+        maxPrice = 200000;
+      } else if (req.query.price === "200k-500k") {
+        minPrice = 200000;
+        maxPrice = 500000;
+      } else if (req.query.price === "500k-800k") {
+        minPrice = 500000;
+        maxPrice = 800000;
+      } else if (req.query.price === "over-800k") {
+        minPrice = 800000;
+        maxPrice = 999999999;
+      }
+
+      conditions.push({
+        $or: [
+          // 1. Nếu là sản phẩm thường (không có variants) nằm trong khoảng giá
+          {
+            $and: [
+              { hasVariants: { $ne: true } },
+              {
+                $or: [
+                  { priceNew: { $gte: minPrice, $lte: maxPrice } },
+                  { price: { $gte: minPrice, $lte: maxPrice } }
+                ]
+              }
+            ]
+          },
+          // 2. Nếu là sản phẩm có variants -> dùng $elemMatch để kiểm tra từng phân loại bên trong
+          {
+            "variants": {
+              $elemMatch: {
+                $or: [
+                  { priceNew: { $gte: minPrice, $lte: maxPrice } },
+                  { price: { $gte: minPrice, $lte: maxPrice } }
+                ]
+              }
+            }
+          }
+        ]
+      });
+    }
+
+    // 3.2. Lọc theo Màu sắc
+    if (req.query.color) {
+      conditions.push({
+        $or: [
+          { "variants.color": req.query.color },
+          { color: req.query.color }
+        ]
+      });
+    }
+
+    // 3.3. Lọc theo Kích thước
+    if (req.query.size) {
+      conditions.push({
+        $or: [
+          { "variants.size": req.query.size },
+          { size: req.query.size }
+        ]
+      });
+    }
+
+    // Nếu có các điều kiện lọc, gộp chung vào biến `find` chính bằng `$and`
+    if (conditions.length > 0) {
+      find.$and = conditions;
+    }
+
+    // 4. Lấy danh sách sản phẩm sau khi lọc
+
+    const products = await Product.find(find);
+
     const newProducts = products.map(item => {
+      let displayPrice = item.price;
+      let displayPriceNew = calculatePriceNew(item.price, item.discountPercentage);
+
+      if (item.hasVariants && item.variants && item.variants.length > 0) {
+        displayPrice = item.variants[0].price;
+        displayPriceNew = item.variants[0].priceNew || calculatePriceNew(displayPrice, item.discountPercentage);
+      }
+
       return {
         ...item._doc,
-        priceNew: calculatePriceNew(item.price, item.discountPercentage)
+        price: displayPrice,
+        priceNew: displayPriceNew
       };
     });
-    // 4. Render ra trang danh sách sản phẩm
+
+    // 5. XỬ LÝ PHẢN HỒI CHO AJAX REQUEST (KHÔNG LOAD LẠI TRANG)
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {
+      return res.render("client/partials/product-list.pug", {
+        products: newProducts
+      }, (err, html) => {
+        if (err) {
+          console.log("Lỗi render partial:", err);
+          return res.status(500).json({ error: "Lỗi render HTML" });
+        }
+        return res.json({
+          code: 200,
+          html: html
+        });
+      });
+    }
+
+    // 6. Render trang bình thường nếu load lần đầu
     res.render("client/pages/products/index", {
       pageTitle: category.title,
-      products: newProducts
+      products: newProducts,
+      availableColors: availableColors,
+      availableSizes: availableSizes,
+      slug: slug
     });
+
   } catch (error) {
-    console.log("Lỗi lấy sản phẩm theo danh mục:", error);
+    console.log("Lỗi lọc sản phẩm:", error);
     res.redirect("/");
   }
 };
