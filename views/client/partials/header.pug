@@ -55,7 +55,7 @@ header.header.border-bottom.bg-white.sticky-top
         //- Shopping Cart
         a.nav-icon-item.icon-link.cart-link.mr-3(href='/cart')
           i.fas.fa-shopping-bag
-          span.cart-badge 3
+          span.cart-badge #{miniCart ? miniCart.totalQuantity : 0}
 
         //- Language Switcher
         .nav-icon-item.dropdown.lang-dropdown
