@@ -1,10 +1,12 @@
 extends ../../layouts/default.pug
 include ../../mixins/product-item.pug
+include ../../mixins/alert.pug
 
 block style
   link(rel="stylesheet" href="/client/css/detailProduct.css?v=1.1")
 
 block main
+  +alert-success(5000)
   .product-detail-page.py-4(data-variants=JSON.stringify(product.variants || []))
     .container
       //- Breadcrumb
@@ -79,7 +81,7 @@ block main
 
             //- Số lượng & Nút
             form(
-              action=`/cart/add/${product.id}`
+              action=`/cart/add/${product._id}`
               method="POST"
               class="mb-4"
             )

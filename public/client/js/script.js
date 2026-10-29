@@ -120,3 +120,22 @@ document.addEventListener("DOMContentLoaded", function () {
     effect: 'slide',          // Hiệu ứng trượt ngang
   });
 });
+
+// Xử lý ẩn thông báo Flash (Alert)
+const showAlert = document.querySelector("[show-alert]");
+if (showAlert) {
+  const time = parseInt(showAlert.getAttribute("data-time")) || 3000;
+  const closeAlert = showAlert.querySelector("[close-alert]");
+
+  // Tự động ẩn sau khoảng thời gian 'data-time'
+  setTimeout(() => {
+    showAlert.classList.add("alert-hidden");
+  }, time);
+
+  // Nút đóng thủ công
+  if (closeAlert) {
+    closeAlert.addEventListener("click", () => {
+      showAlert.classList.add("alert-hidden");
+    });
+  }
+};

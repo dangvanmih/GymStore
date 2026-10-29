@@ -1,0 +1,11 @@
+mixin alert-success(time = 3000)
+  - if (messages.success)
+    .message.info.alert-success-custom(show-alert data-time=time)
+      span= messages.success
+      span.close-alert(close-alert) ✕
+
+mixin alert-error(time = 3000)
+  - if (messages.error)
+    .message.info.alert-danger-custom(show-alert data-time=time)
+      span= messages.error
+      span.close-alert(close-alert) ✕
