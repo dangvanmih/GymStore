@@ -281,7 +281,7 @@ module.exports.featured = async (req, res) => {
     featured: "1",
     deleted: false,
     status: "active"
-  });
+  }).limit(4);
 
   const newProductFeatured = calculateProductsPrice(productFeatured)
 
