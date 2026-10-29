@@ -1,6 +1,8 @@
 const Product = require("../../models/product.model");
 const Category = require("../../models/category.model");
 const { calculatePriceNew } = require("../../helpers/calculatePrice");
+const { calculateProductsPrice } = require("../../helpers/productPrice");
+
 // GET: /products
 module.exports.index = async (req, res) => {
 
@@ -270,6 +272,24 @@ module.exports.category = async (req, res) => {
     res.redirect("/");
   }
 };
+
+// GET: /products/featured
+module.exports.featured = async (req, res) => {
+
+  // Lấy ra sản phẩm nổi bật
+  const productFeatured = await Product.find({
+    featured: "1",
+    deleted: false,
+    status: "active"
+  });
+
+  const newProductFeatured = calculateProductsPrice(productFeatured)
+
+  res.render("client/pages/products/index", {
+    pageTitle: "Sản phẩm nổi bật",
+    products: newProductFeatured
+  });
+}
 
 // GET: /api/search
 module.exports.searchSuggestion = async (req, res) => {

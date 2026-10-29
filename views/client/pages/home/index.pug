@@ -10,13 +10,13 @@ block main
         .swiper-slide
           .slider-item(style="height: 650px;")
             video.w-100.h-100(autoplay, muted, loop, playsinline, style="object-fit: cover;")
-              source(src="/client/images/vd-banner-gym.mp4", type="video/mp4")
-        
+              source(src="/client/images/vd-banner-gym.mp4" type="video/mp4")
+
         //- Slide 2: Video banner 2
         .swiper-slide
           .slider-item(style="height: 650px;")
             video.w-100.h-100(autoplay, muted, loop, playsinline, style="object-fit: cover;")
-              source(src="/client/images/vd-banner-2.mp4", type="video/mp4")
+              source(src="/client/images/vd-banner-2.mp4" type="video/mp4")
 
         //- Nút chuyển slide qua lại (Next / Prev)
         .swiper-button-next.text-light(style="width: 30px !important; height: 30px !important; background-color: rgba(0, 0, 0, 0.4) !important; border-radius: 50% !important; margin-top: -15px !important; --swiper-navigation-size: 14px !important;")
@@ -25,7 +25,30 @@ block main
         //- Dấu chấm chuyển slide (Pagination)
         .swiper-pagination
   .container.py-4
-    //- 2. PHẦN HIỂN THỊ SẢN PHẨM THEO DANH MỤC GỐC
+    //- phần hiển thị sản phẩm nổi bật
+    .category-section.mb-3
+        h2.fw-bold.text-uppercase.m-0(style="font-size: 20px;") Sản phẩm nổi bật
+    if (productFeatured && productFeatured.length > 0)
+      .row
+        each item in productFeatured 
+          .col-md-3.col-6.mb-4
+            .product-item
+              .inner-image
+                a(href=`/products/detail/${item.slug}`)
+                  img(src= item.thumbnail alt=item.title)
+              .inner-content
+                h3.inner-title
+                  a(href=`/products/detail/${item.slug}`) #{item.title}
+              .inner-price
+                if (item.priceNew && item.priceNew > 0)
+                  span.inner-price-new #{item.priceNew.toLocaleString('vi-VN')}₫
+                  if (item.price && item.price > item.priceNew)
+                    span.inner-price-old #{item.price.toLocaleString('vi-VN')}₫
+      .text-center.mt-3
+        a.btn.btn-outline-dark.px-4.py-2.rounded-pill.fw-semibold(href=`/products/featured`, style="font-size: 14px;") Xem thêm sản phẩm
+
+
+    //- PHẦN HIỂN THỊ SẢN PHẨM THEO DANH MỤC GỐC
     if (categoriesWithProducts && categoriesWithProducts.length > 0)
       each catData in categoriesWithProducts
         if (catData.products && catData.products.length > 0)
