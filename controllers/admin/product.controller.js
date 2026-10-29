@@ -160,7 +160,14 @@ module.exports.createProduct = async (req, res) => {
 
 // POST: /admin/product/create
 module.exports.createPostProduct = async (req, res) => {
-  // 1. Xử lý giá chung và phần trăm giảm giá chung (Xử lý bỏ dấu chấm nếu có)
+
+  // kiểm tra quyền ngăn postman có thể tạo sản phẩm
+  // const permissions = res.locals.role.permissions;
+  // if(!permissions.include("product-category_create")) {
+  //   return res.send("403 forbiddent")
+  // }  
+
+  // Xử lý giá chung và phần trăm giảm giá chung (Xử lý bỏ dấu chấm nếu có)
   const rawPrice = req.body.price ? req.body.price.toString().replace(/\./g, "") : "0";
   const price = parseInt(rawPrice) || 0;
   const discountPercentage = parseInt(req.body.discountPercentage) || 0;
@@ -171,7 +178,7 @@ module.exports.createPostProduct = async (req, res) => {
   // Tính giá mới chung của sản phẩm (có làm tròn đẹp)
   req.body.priceNew = calculatePriceNew(price, discountPercentage);
 
-  // 2. Xử lý cờ phân loại Size/Màu (hasVariants)
+  // Xử lý cờ phân loại Size/Màu (hasVariants)
   if (req.body.hasVariants === "true" || req.body.hasVariants === true) {
     req.body.hasVariants = true;
     req.body.stock = 0; // Đặt stock chung = 0 khi dùng biến thể
@@ -190,7 +197,7 @@ module.exports.createPostProduct = async (req, res) => {
           const variantPriceNew = calculatePriceNew(variantPrice, discountPercentage);
 
           return {
-            size: item.size.trim().toUpperCase(), // Tự động ép size thành chữ hoa (S, M, L...)
+            size: item.size.trim().toUpperCase(),
             color: item.color ? item.color.trim() : "",
             price: variantPrice,
             priceNew: variantPriceNew,
@@ -207,7 +214,7 @@ module.exports.createPostProduct = async (req, res) => {
     req.body.variants = [];
   }
 
-  // 3. Xử lý vị trí hiển thị (position)
+  // Xử lý vị trí hiển thị (position)
   if (!req.body.position || req.body.position === "") {
     const countProducts = await Product.countDocuments();
     req.body.position = countProducts + 1;
@@ -215,7 +222,7 @@ module.exports.createPostProduct = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
-  // 4. Lưu thông tin người tạo
+  // Lưu thông tin người tạo
   if (res.locals && res.locals.user) {
     req.body.createdBy = {
       account_id: res.locals.user.id,
@@ -223,7 +230,7 @@ module.exports.createPostProduct = async (req, res) => {
     };
   }
 
-  // 5. Lưu vào Database
+  // Lưu vào Database
   try {
     const product = new Product(req.body);
     await product.save();
