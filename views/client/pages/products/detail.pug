@@ -1,4 +1,5 @@
 extends ../../layouts/default.pug
+include ../../mixins/product-item.pug
 
 block style
   link(rel="stylesheet" href="/client/css/detailProduct.css?v=1.0")
@@ -148,5 +149,13 @@ block main
                 #collapseShipping.accordion-collapse.collapse(aria-labelledby="headingShipping" data-bs-parent="#productAccordion")
                   .accordion-body
                     p Đơn hàng được giao hàng COD toàn quốc. Thời gian nhận hàng từ 2 - 4 ngày làm việc.
+
+    if relatedProducts && relatedProducts.length > 0
+      .container.py-5
+        h2.fw-bold.text-uppercase.mb-4(style="font-size: 20px;") Sản phẩm liên quan
+        .row
+          each item in relatedProducts
+            .col-md-3.col-6.mb-4
+              +product-item(item)
 
   script(src="/client/js/product.js")

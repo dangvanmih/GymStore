@@ -68,9 +68,20 @@ module.exports.detailProduct = async (req, res) => {
       product.variants = []; // Đảm bảo mảng rỗng để file Pug tự động ẩn phần chọn size
     }
 
+    const relatedProducts = await Product.find({
+      category_id: product.category_id,
+      _id: { $ne: product._id },
+      status: "active",
+      deleted: false
+    })
+      .sort({ featured: -1, position: -1, createdAt: -1 })
+      .limit(4)
+      .lean();
+
     res.render("client/pages/products/detail", {
       pageTitle: product.title,
-      product: product
+      product: product,
+      relatedProducts: calculateProductsPrice(relatedProducts)
     });
   } catch (error) {
     console.log("Lỗi chi tiết sản phẩm:", error);
