@@ -195,3 +195,23 @@
 [close-alert]:hover {
   opacity: 1;
 }
+
+
+.cart-product-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.cart-quantity-control .input-quantity {
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.cart-quantity-control .input-quantity::-webkit-inner-spin-button,
+.cart-quantity-control .input-quantity::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
