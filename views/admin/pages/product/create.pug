@@ -51,7 +51,7 @@ block main
                     placeholder="Ví dụ: Áo Gym Tanktop Nam Co Giãn, Bình Lắc Shaker..."
                     required
                   )
-                
+
                 //- Danh mục
                 .mb-3
                   label.form-label.fw-medium(for="category_id") Danh mục cha 
@@ -89,7 +89,7 @@ block main
                         value="0"
                         min="0"
                         required
-                        oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')"
+                        oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')" 
                         onfocus="if(this.value=='0') this.value=''"
                         onblur="if(this.value=='') this.value='0'"
                       )
@@ -137,7 +137,7 @@ block main
                       .col-md-3 Số lượng #[span.text-danger *]
                     #variants-list
                       //- JavaScript sẽ tự động chèn các dòng nhập vào đây
-                    
+
                     button#btn-add-variant.btn.btn-sm.btn-outline-primary.mt-2(type="button")
                       i.fas.fa-plus.me-1.mr-1
                       span Thêm biến thể
@@ -211,7 +211,26 @@ block main
                       value="inactive"
                     )
                     label.form-check-label(for="statusInActive") Dừng hoạt động
-
+                //- Sản phẩm nổi bật
+                .mb-3
+                  label.form-label.fw-medium.d-block Sản phẩm nổi bật
+                  .form-check.form-check-inline
+                    input.form-check-input(
+                      type="radio"
+                      name="featured"
+                      id="featured1"
+                      value="1"
+                    )
+                    label.form-check-label(for="featured1") Nổi bật
+                  .form-check.form-check-inline
+                    input.form-check-input(
+                      type="radio"
+                      name="featured"
+                      id="featured0"
+                      value="0"
+                      checked
+                    )
+                    label.form-check-label(for="featured0") Không
             //- Nút Submit Form
             .d-grid.gap-2
               button.btn.btn-custom.btn-submit-create.btn-lg(type="submit")

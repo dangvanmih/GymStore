@@ -253,7 +253,27 @@ block main
                       checked=(product.status === 'inactive')
                     )
                     label.form-check-label(for="statusInActive") Dừng hoạt động
-
+                //- Sản phẩm nổi bật
+                .mb-3
+                  label.form-label.fw-medium.d-block Sản phẩm nổi bật
+                  .form-check.form-check-inline
+                    input.form-check-input.custom-radio(
+                      type="radio"
+                      name="featured"
+                      id="featured1"
+                      value="1"
+                      checked=(product.featured === 'featured1')
+                    )
+                    label.form-check-label(for="featured1") Nổi bật
+                  .form-check.form-check-inline
+                    input.form-check-input.custom-radio(
+                      type="radio"
+                      name="featured"
+                      id="featured0"
+                      value="0"
+                      checked=(product.featured === 'featured0')
+                    )
+                    label.form-check-label(for="featured0") Không
             //- Nút Submit Form
             .d-grid.gap-2
               button.btn.btn-custom.btn-submit-create.btn-lg(type="submit")

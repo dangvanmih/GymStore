@@ -282,6 +282,31 @@
   font-weight: 600;
 }
 
+/* TRẠNG THÁI Nổi bật KHI TÍCH CHỌN */
+.create-product-wrapper .form-check-input[type="radio"][value="1"]:checked {
+  background-color: #1c53e9 !important;
+  border-color: #1c53e9 !important;
+  box-shadow: 0 0 8px rgba(16, 55, 185, 0.3) !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+}
+
+.create-product-wrapper .form-check:has(.form-check-input[value="1"]:checked) .form-check-label {
+  color: #1c53e9 !important;
+  font-weight: 600;
+}
+
+/* trạng thái không Nổi bật KHI TÍCH CHỌN */
+.create-product-wrapper .form-check-input[type="radio"][value="0"]:checked {
+  background-color: #858da3 !important;
+  border-color: #858da3 !important;
+  box-shadow: 0 0 8px rgba(156, 163, 184, 0.3) !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+}
+
+.create-product-wrapper .form-check:has(.form-check-input[value="0"]:checked) .form-check-label {
+  color: #858da3 !important;
+  font-weight: 600;
+}
 /* Style cho label đi kèm */
 .create-product-wrapper .form-check-label {
   color: var(--text-muted) !important;

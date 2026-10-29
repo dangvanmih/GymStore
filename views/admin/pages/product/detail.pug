@@ -151,9 +151,10 @@ block main
                           //- Cột Giá riêng (Hiển thị giá sau giảm và giá gốc nếu có giảm giá)
                           td.py-2
                             if variant.priceNew && variant.priceNew < variant.price
-                              div.d-flex.align-items-center.gap-2
-                                span.fw-bold.text-danger= `${Number(variant.priceNew).toLocaleString('vi-VN')}đ`
-                                span.text-muted.text-decoration-line-through.small= `${Number(variant.price).toLocaleString('vi-VN')}đ`
+                              div.d-flex.align-items-center
+                                span.fw-bold.text-danger.mr-2= `${Number(variant.priceNew).toLocaleString('vi-VN')}đ `
+                                span -
+                                span.text-muted.text-decoration-line-through.small.ml-2= ` ${Number(variant.price).toLocaleString('vi-VN')}đ`
                             else
                               span.fw-semibold.text-title= `${Number(variant.price || product.price).toLocaleString('vi-VN')}đ`
 
