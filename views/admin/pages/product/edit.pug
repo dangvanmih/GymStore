@@ -262,7 +262,7 @@ block main
                       name="featured"
                       id="featured1"
                       value="1"
-                      checked=(product.featured === 'featured1')
+                      checked=(product.featured === '1' ? true : false)
                     )
                     label.form-check-label(for="featured1") Nổi bật
                   .form-check.form-check-inline
@@ -271,7 +271,7 @@ block main
                       name="featured"
                       id="featured0"
                       value="0"
-                      checked=(product.featured === 'featured0')
+                      checked=(product.featured === '0' ? true : false)
                     )
                     label.form-check-label(for="featured0") Không
             //- Nút Submit Form
