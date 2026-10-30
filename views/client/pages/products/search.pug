@@ -1,12 +1,13 @@
 extends ../../layouts/default.pug
 include ../../mixins/product-item.pug
+include ../../mixins/breadcrumb.pug
 
 
 block main
   .container.my-4
+    +breadcrumb("Kết quả tìm kiếm", [{ title: "Trang chủ", link: "/" }, { title: "Tìm kiếm" }])
     .row.mb-4
       .col-12
-        h1.h3.font-weight-bold Kết quả tìm kiếm
         p.text-muted 
           | Tìm thấy 
           span.font-weight-bold.text-dark #{products.length} 

@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/product-item.pug
 include ../../mixins/alert.pug
+include ../../mixins/breadcrumb.pug
 
 block style
   link(rel="stylesheet" href="/client/css/detailProduct.css?v=1.1")
@@ -9,15 +10,11 @@ block main
   +alert-success(5000)
   .product-detail-page.py-4(data-variants=JSON.stringify(product.variants || []))
     .container
-      //- Breadcrumb
-      nav.custom-breadcrumb.mb-4(aria-label="breadcrumb")
-        ol.breadcrumb.mb-0
-          li.breadcrumb-item
-            a(href="/") Trang chủ
-          if product.category
-            li.breadcrumb-item
-              a(href=`/products/${product.category.slug}`)= product.category.title
-          li.breadcrumb-item.active(aria-current="page")= product.title
+      - const productBreadcrumbs = [{ title: "Trang chủ", link: "/" }]
+      if product.category
+        - productBreadcrumbs.push({ title: product.category.title, link: `/products/${product.category.slug}` })
+      - productBreadcrumbs.push({ title: product.title })
+      +breadcrumb(product.title, productBreadcrumbs)
 
       .row.g-4
         //- Cột trái: Ảnh
@@ -33,8 +30,6 @@ block main
         //- Cột phải: Thông tin
         .col-lg-6
           .product-info-wrapper.ps-lg-3
-            h1.product-title.mb-3= product.title
-
             //- Giá bán
             .product-price-box.d-flex.align-items-center.mb-4
               if product.discountPercentage > 0

@@ -1,16 +1,10 @@
 extends ../../layouts/default.pug
-include ../../mixins/boxhead.pug
 include ../../mixins/product-item.pug
+include ../../mixins/breadcrumb.pug
 
 block main
-  //- 1. BREADCRUMB
-  .bg-light.py-2
-    .container
-      nav(aria-label="breadcrumb")
-        ol.breadcrumb.mb-0
-          li.breadcrumb-item
-            a.text-decoration-none.text-dark(href="/") Trang chủ
-          li.breadcrumb-item.active(aria-current="page") #{pageTitle}
+  .container.pt-3
+    +breadcrumb(pageTitle, [{ title: "Trang chủ", link: "/" }, { title: pageTitle }])
 
   //- 2. BANNER
   .container.mb-4
@@ -19,11 +13,6 @@ block main
 
   //- 3. NỘI DUNG CHÍNH
   .container.py-2
-    .row
-      .col-12.mb-4
-        .box-header
-          +box-header(pageTitle)
-
     //- 4. THANH BỘ LỌC VÀ SẮP XẾP
     .row.mb-4
       .col-12

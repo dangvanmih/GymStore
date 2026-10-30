@@ -1,23 +1,12 @@
 extends ../../layouts/default.pug
-include ../../mixins/boxhead.pug
 include ../../mixins/alert.pug
+include ../../mixins/breadcrumb.pug
 
 block main
   +alert-success(3000)
-  .bg-light.py-2
-    .container
-      nav(aria-label="breadcrumb")
-        ol.breadcrumb.mb-0
-          li.breadcrumb-item
-            a.text-decoration-none.text-dark(href="/") Trang chủ
-          li.breadcrumb-item.active(aria-current="page") #{pageTitle}
   .container.py-2.pb-5.mb-5(style="padding-bottom: 180px !important; margin-bottom: 100px !important;")
-    .row
-      .col-12.mb-2.mt-2
-        .box-header
-          +box-header(pageTitle)
-
-      if (cartDetail && cartDetail.products && cartDetail.products.length > 0)
+    +breadcrumb(pageTitle, [{ title: "Trang chủ", link: "/" }, { title: pageTitle }])
+    if (cartDetail && cartDetail.products && cartDetail.products.length > 0)
         .row
           //- Cột danh sách sản phẩm
           .col-lg-8
@@ -30,7 +19,7 @@ block main
                     th(scope="col") Tên sản phẩm
                     th(scope="col") Đơn giá
                     th(scope="col" style="width: 120px;") Số lượng
-                    th(scope="col") Thành tiền
+                    th(scope="col" style="width: 100px") Thành tiền
                     th(scope="col" style="width: 100px;") Thao tác
                 tbody
                   each item, index in cartDetail.products
@@ -50,9 +39,12 @@ block main
                                 | | Size: #{item.size}
                         td.text-center
                           span.fw-semibold #{Number(item.price || 0).toLocaleString('vi-VN')}đ
+                          if item.priceOld > item.price
+                            br
+                            span.text-muted.text-decoration-line-through.small #{Number(item.priceOld).toLocaleString('vi-VN')}đ
                         td.text-center
                           .input-group.input-group-sm.cart-quantity-control(style="max-width: 120px")
-                            button.btn.btn-outline-secondary.btn-quantity(type="button" data-action="decrease" aria-label="Giảm số lượng") −
+                            button.btn.btn-quantity(type="button" data-action="decrease" aria-label="Giảm số lượng") −
                             input.form-control.input-quantity(
                               type="number"
                               value=item.quantity
@@ -60,11 +52,12 @@ block main
                               max=(item.stock || 99)
                               product-id=item.product_id
                             )
-                            button.btn.btn-outline-secondary.btn-quantity(type="button" data-action="increase" aria-label="Tăng số lượng") +
+                            button.btn.btn-quantity(type="button" data-action="increase" aria-label="Tăng số lượng") +
                         td.text-center
                           span.fw-bold.text-danger.item-total-price #{Number(item.totalPrice || 0).toLocaleString('vi-VN')}đ
                         td.text-center
-                          a.btn.btn-sm.btn-outline-danger.btn-delete-item(href=`/cart/delete/${item.product_id}`) Xoá
+                          a.btn.btn-sm.btn-delete-item(href=`/cart/delete/${item.product_id}` aria-label="Xóa sản phẩm" title="Xóa sản phẩm")
+                            i.fa-solid.fa-trash-can(aria-hidden="true")
                     else
                       tr
                         td.text-center #{index + 1}
@@ -87,7 +80,8 @@ block main
                   span.fw-bold Tổng cộng:
                   span.fw-bold.text-danger.fs-5.cart-total-all #{Number(cartDetail.totalAll || 0).toLocaleString('vi-VN')}đ
                 a.btn.btn-dark.w-100.py-2(href="/checkout") Tiến hành thanh toán
-      else
+    else
+      .row
         .col-12.text-center.py-5
           .cart-empty-icon.mb-3
             svg(xmlns="http://www.w3.org/2000/svg" width="84" height="84" fill="currentColor" class="bi bi-cartX text-muted" viewBox="0 0 16 16")

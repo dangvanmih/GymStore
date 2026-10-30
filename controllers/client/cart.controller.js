@@ -29,6 +29,7 @@ module.exports.index = async (req, res) => {
           // 1. Tính toán giá chuẩn bằng helper
           const processedProduct = calculateProductPrice(product);
           let itemPrice = processedProduct.priceNew;
+          let itemPriceOld = processedProduct.price;
           let selectedVariant = null;
 
           // 2. Nếu sản phẩm có phân loại, tìm đúng giá của size và màu người dùng đã chọn trong giỏ hàng
@@ -43,6 +44,7 @@ module.exports.index = async (req, res) => {
               itemPrice = Number(selectedVariant.priceNew) || (discount > 0
                 ? Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000
                 : basePrice);
+              itemPriceOld = basePrice;
             }
           }
 
@@ -50,6 +52,7 @@ module.exports.index = async (req, res) => {
           item.productInfo = processedProduct;
           item.stock = selectedVariant ? Number(selectedVariant.stock) || 0 : Number(product.stock) || 0;
           item.price = Number(itemPrice) || 0; // Đảm bảo luôn là số
+          item.priceOld = Number(itemPriceOld) > item.price ? Number(itemPriceOld) : 0;
           item.totalPrice = item.price * (Number(item.quantity) || 1);
 
           totalAll += item.totalPrice;
