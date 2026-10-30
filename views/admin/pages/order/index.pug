@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/breadcrumb.pug
+
+block main
+  +alert-success(4000)
+  +alert-error(5000)
+  .container-fluid.p-0
+    +breadcrumb("Quản lý đơn hàng", [
+      { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
+      { title: "Đơn hàng" }
+    ])
+    .card.border-0.shadow-sm.rounded-3
+      .card-body.p-0
+        .table-responsive
+          table.table.table-hover.align-middle.mb-0
+            thead
+              tr
+                th Mã đơn
+                th Khách hàng
+                th Ngày đặt
+                th Tổng tiền
+                th Trạng thái
+                th Thao tác
+            tbody
+              if orders.length
+                each order in orders
+                  tr
+                    td.fw-semibold= order.orderNumber
+                    td
+                      div= order.customer.fullName
+                      small.text-muted= order.customer.phone
+                    td= new Date(order.createdAt).toLocaleString('vi-VN')
+                    td= order.total.toLocaleString('vi-VN') + '₫'
+                    td
+                      span.badge(class=(order.status === 'delivered' ? 'badge-success' : order.status === 'placed' ? 'badge-warning' : 'badge-primary'))= statusLabels[order.status]
+                    td
+                      a.btn.btn-sm.btn-outline-dark(href=`${prefixAdmin}/orders/${order._id}`) Chi tiết
+              else
+                tr
+                  td.text-center.text-muted.py-5(colspan="6") Chưa có đơn hàng nào.

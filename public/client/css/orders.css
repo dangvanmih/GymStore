@@ -1,0 +1,256 @@
+.order-confirmation-page {
+  min-height: 70vh;
+  background: #f4f5f6;
+}
+
+.order-confirmation-card {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+  border: 1px solid #e2e5e8;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(20, 30, 40, 0.05);
+}
+
+.order-pending-icon {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff8e6;
+  color: #f59e0b;
+  font-size: 1.3rem;
+}
+
+.order-confirmation-total {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.order-progress {
+  display: flex;
+  margin: 22px 0;
+  padding: 14px 8px 8px;
+  border-radius: 10px;
+  background: #fafbfb;
+}
+
+.order-progress-step {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #a0a6ad;
+  text-align: center;
+}
+
+.order-progress-step::after {
+  position: absolute;
+  top: 14px;
+  left: calc(50% + 17px);
+  width: calc(100% - 34px);
+  height: 1px;
+  background: #d9dde1;
+  content: "";
+}
+
+.order-progress-step.has-connector::after {
+  background: #18b943;
+}
+
+.order-progress-step:last-child::after {
+  display: none;
+}
+
+.order-progress-icon {
+  z-index: 1;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cbd0d5;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 0.85rem;
+}
+
+.order-progress-step.is-complete {
+  color: #222;
+}
+
+.order-progress-step.is-complete .order-progress-icon {
+  border-color: #18b943;
+  color: #18b943;
+}
+
+.order-progress-title {
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.order-info-grid {
+  padding: 14px 0;
+  border-top: 1px solid #edf0f2;
+  border-bottom: 1px solid #edf0f2;
+}
+
+.order-info-row,
+.order-total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 5px 0;
+  font-size: 0.82rem;
+}
+
+.order-info-row > span {
+  flex: 0 0 38%;
+  color: #78818a;
+}
+
+.order-info-row > strong {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.order-address {
+  padding: 13px 0;
+  border-bottom: 1px solid #edf0f2;
+  font-size: 0.82rem;
+}
+
+.order-products {
+  padding-top: 6px;
+}
+
+.order-product-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0f2;
+  font-size: 0.82rem;
+}
+
+.order-product-description {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.order-total-lines {
+  padding-top: 10px;
+}
+
+.order-grand-total {
+  margin-top: 5px;
+  padding-top: 11px;
+  border-top: 1px solid #e6e9ec;
+  font-size: 0.95rem;
+}
+
+.order-note {
+  padding: 10px;
+  border-radius: 6px;
+  background: #f7f8f9;
+  color: #66707a;
+  font-size: 0.8rem;
+}
+
+.tracking-page {
+  max-width: 1120px;
+}
+
+.tracking-filter-card,
+.tracking-order-card,
+.tracking-empty,
+.tracking-lookup {
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 14px rgba(20, 30, 40, 0.05);
+}
+
+.tracking-lookup {
+  padding: 12px 16px;
+  color: #59636d;
+  font-size: 0.9rem;
+}
+
+.tracking-lookup summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tracking-order-card {
+  padding: 18px;
+}
+
+.tracking-order-card .order-progress {
+  margin: 12px 0 16px;
+  background: transparent;
+}
+
+.tracking-order-products {
+  display: flex;
+  flex-direction: column;
+}
+
+.tracking-product-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+}
+
+.tracking-product-row img {
+  width: 48px;
+  height: 54px;
+  border-radius: 8px;
+  background: #f2f3f4;
+  object-fit: cover;
+}
+
+.tracking-product-row .flex-grow-1 {
+  min-width: 0;
+}
+
+.tracking-product-row .flex-grow-1 strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tracking-address {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f5f6f6;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 575.98px) {
+  .order-confirmation-card {
+    padding: 18px 14px;
+  }
+
+  .order-info-row {
+    font-size: 0.75rem;
+  }
+
+  .order-progress-title {
+    font-size: 0.62rem;
+  }
+
+  .tracking-order-card {
+    padding: 14px;
+  }
+}

@@ -4,6 +4,7 @@ include ../../mixins/breadcrumb.pug
 
 block main
   +alert-success(3000)
+  +alert-error(5000)
   .container.py-2.pb-5.mb-5(style="padding-bottom: 180px !important; margin-bottom: 100px !important;")
     +breadcrumb(pageTitle, [{ title: "Trang chủ", link: "/" }, { title: pageTitle }])
     if (cartDetail && cartDetail.products && cartDetail.products.length > 0)

@@ -1,0 +1,98 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/breadcrumb.pug
+
+block main
+  .container.py-4
+    +alert-success(4000)
+    +alert-error(6000)
+    +breadcrumb(pageTitle, [{ title: "Trang chủ", link: "/" }, { title: "Giỏ hàng", link: "/cart" }, { title: pageTitle }])
+    form#place-order-form(action="/checkout/place-order" method="POST")
+    .row.g-4
+        .col-lg-7
+          .card.border-0.shadow-sm.mb-4
+            .card-body.p-4
+              h2.h5.fw-bold.mb-3 Địa chỉ nhận hàng
+              if addresses.length
+                each address, index in addresses
+                  .form-check.border.rounded-3.p-3.ps-5.mb-3
+                    input.form-check-input(type="radio" name="addressId" id=`address-${address._id}` value=address._id form="place-order-form" required checked=(String(address._id) === defaultAddressId))
+                    label.form-check-label.w-100(for=`address-${address._id}`)
+                      .d-flex.justify-content-between.gap-2
+                        span.fw-semibold #{address.recipientName} · #{address.phone}
+                        span.badge.text-bg-light #{address.label}
+                      .text-muted.small.mt-1 #{address.streetAddress}, #{address.ward}, #{address.district}, #{address.province}
+                    form(action=`/checkout/addresses/${address._id}/delete` method="POST")
+                      button.btn.btn-sm.btn-link.text-danger.p-0.mt-2(type="submit") Xóa địa chỉ
+              else
+                p.text-muted Chưa có địa chỉ nhận hàng. Thêm địa chỉ để tiếp tục đặt hàng.
+
+              details.mt-3
+                summary.btn.btn-outline-dark.btn-sm Thêm địa chỉ mới
+                .row.g-3.mt-1
+                  .col-md-6
+                    label.form-label(for="recipientName") Tên người nhận
+                    input#recipientName.form-control(type="text" name="recipientName" form="add-address-form" required)
+                  .col-md-6
+                    label.form-label(for="phone") Số điện thoại
+                    input#phone.form-control(type="tel" name="phone" form="add-address-form" required)
+                  .col-md-6
+                    label.form-label(for="email") Email liên hệ (không bắt buộc)
+                    input#email.form-control(type="email" name="email" form="add-address-form")
+                  .col-md-6
+                    label.form-label(for="addressLabel") Tên địa chỉ
+                    input#addressLabel.form-control(type="text" name="label" value="Nhà riêng" form="add-address-form")
+                  .col-md-6
+                    label.form-label(for="province") Tỉnh/Thành phố
+                    input#province.form-control(type="text" name="province" form="add-address-form" required)
+                  .col-md-6
+                    label.form-label(for="district") Quận/Huyện
+                    input#district.form-control(type="text" name="district" form="add-address-form" required)
+                  .col-md-6
+                    label.form-label(for="ward") Phường/Xã
+                    input#ward.form-control(type="text" name="ward" form="add-address-form" required)
+                  .col-12
+                    label.form-label(for="streetAddress") Địa chỉ cụ thể
+                    input#streetAddress.form-control(type="text" name="streetAddress" form="add-address-form" placeholder="Số nhà, tên đường" required)
+                  .col-12
+                    .form-check
+                      input#isDefault.form-check-input(type="checkbox" name="isDefault" form="add-address-form")
+                      label.form-check-label(for="isDefault") Đặt làm địa chỉ mặc định
+                  .col-12
+                    form#add-address-form(action="/checkout/addresses" method="POST")
+                    button.btn.btn-dark.btn-sm(type="submit" form="add-address-form") Lưu địa chỉ
+
+          .card.border-0.shadow-sm
+            .card-body.p-4
+              label.form-label.fw-semibold(for="note") Ghi chú đơn hàng
+              textarea#note.form-control(name="note" rows="3" form="place-order-form" placeholder="Ghi chú cho người bán (không bắt buộc)")
+
+        .col-lg-5
+          .card.border-0.shadow-sm
+            .card-body.p-4
+              h2.h5.fw-bold.mb-3 Đơn hàng của bạn
+              each item in lines
+                .d-flex.gap-3.py-3.border-bottom
+                  img.rounded(src=item.thumbnail alt=item.title style="width: 64px; height: 76px; object-fit: cover")
+                  .flex-grow-1
+                    .fw-semibold.small #{item.title}
+                    if item.size || item.color
+                      .text-muted.small #{item.color} #{item.size}
+                    .text-muted.small Số lượng: #{item.quantity}
+                  .text-end.small.fw-semibold #{item.total.toLocaleString('vi-VN')}₫
+              .d-flex.justify-content-between.mt-3
+                span Tạm tính
+                span.fw-semibold #{subtotal.toLocaleString('vi-VN')}₫
+              if discountTotal > 0
+                .d-flex.justify-content-between.mt-2.text-success
+                  span Ưu đãi sản phẩm
+                  span -#{discountTotal.toLocaleString('vi-VN')}₫
+              .d-flex.justify-content-between.mt-2
+                span Phí vận chuyển
+                span Miễn phí
+              hr
+              .d-flex.justify-content-between.mb-3
+                span.fw-bold Tổng cộng
+                span.fw-bold.text-danger.fs-5 #{subtotal.toLocaleString('vi-VN')}₫
+              .alert.alert-light.small.mb-3 Phương thức thanh toán: Thanh toán khi nhận hàng (COD)
+              button.btn.btn-dark.btn-lg.w-100(type="submit" form="place-order-form" disabled=(addresses.length === 0)) Gửi đơn chờ xác nhận

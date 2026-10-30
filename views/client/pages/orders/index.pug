@@ -1,0 +1,80 @@
+extends ../../layouts/default.pug
+include ../../mixins/order-progress.pug
+include ../../mixins/alert.pug
+
+append style
+  link(rel="stylesheet" href="/client/css/orders.css")
+
+block main
+  .container.tracking-page.py-4
+    +alert-error(5000)
+    .d-flex.flex-wrap.justify-content-between.align-items-center.gap-3.mb-3
+      div
+        a.small.text-success.text-decoration-none(href="/") Trang chủ
+        span.small.text-muted  / Đơn hàng của tôi
+        h1.h3.fw-bold.mt-2
+          i.fa-solid.fa-truck-fast.text-success.me-2
+          | Theo dõi đơn hàng
+        p.text-muted.mb-0 Tất cả đơn mua và tiến độ giao hàng của bạn tại đây.
+      a.btn.btn-outline-secondary(href="/orders")
+        i.fa-solid.fa-rotate-right.me-2
+        | Cập nhật
+
+    .tracking-filter-card.mb-3
+      form(action="/orders" method="GET")
+        .input-group.mb-2
+          input.form-control(type="search" name="q" value=keyword placeholder="Tìm theo mã đơn hoặc tên sản phẩm")
+          button.btn.btn-outline-secondary(type="submit" aria-label="Tìm đơn hàng")
+            i.fa-solid.fa-magnifying-glass
+        if selectedStatus
+          input(type="hidden" name="status" value=selectedStatus)
+      - const queryPart = keyword ? `&q=${encodeURIComponent(keyword)}` : ""
+      .d-flex.flex-wrap.gap-2
+        a.btn.btn-sm.rounded-pill(class=(!selectedStatus ? "btn-success" : "btn-outline-secondary") href=(keyword ? `/orders?q=${encodeURIComponent(keyword)}` : "/orders")) Tất cả
+        each item in statuses
+          a.btn.btn-sm.rounded-pill(class=(selectedStatus === item.key ? "btn-success" : "btn-outline-secondary") href=`/orders?status=${item.key}${queryPart}`)= item.title
+
+    details.tracking-lookup.mb-3
+      summary Tra cứu đơn đặt trên thiết bị khác
+      form.row.g-2.mt-2(action="/orders/lookup" method="POST")
+        .col-md-5
+          input.form-control(type="text" name="orderNumber" placeholder="Mã đơn hàng" required)
+        .col-md-5
+          input.form-control(type="tel" name="phone" placeholder="Số điện thoại nhận hàng" required)
+        .col-md-2
+          button.btn.btn-outline-success.w-100(type="submit") Tra cứu
+
+    if orders.length
+      each order in orders
+        .tracking-order-card.mb-3
+          .d-flex.flex-wrap.justify-content-between.align-items-start.gap-2.pb-3.border-bottom
+            div
+              strong= order.orderNumber
+              .small.text-muted Đặt lúc #{new Date(order.createdAt).toLocaleString('vi-VN')}
+            span.badge(class=(order.status === 'delivered' ? 'text-bg-success' : order.status === 'placed' ? 'text-bg-warning' : 'text-bg-primary'))= statusLabels[order.status]
+          +order-progress(order.status)
+          .tracking-order-products
+            each item in order.products
+              .tracking-product-row
+                img(src=item.thumbnail alt=item.title)
+                .flex-grow-1
+                  strong= item.title
+                  .small.text-muted #{[item.color, item.size].filter(Boolean).join(' · ')} · SL #{item.quantity}
+                strong= item.total.toLocaleString('vi-VN') + '₫'
+          .tracking-address
+            i.fa-solid.fa-location-dot.text-success.me-2
+            span.fw-semibold #{order.customer.fullName} · #{order.customer.phone}
+            .small.text-muted.ms-4 #{order.shippingAddress.fullAddress}
+          .d-flex.flex-wrap.justify-content-between.align-items-end.gap-3.pt-3.mt-3.border-top
+            div
+              .small.text-muted Thanh toán khi nhận hàng · #{order.paymentStatus === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+              .mt-1
+                span Tổng cộng:
+                strong.text-success.ms-1 #{order.total.toLocaleString('vi-VN')}₫
+            a.btn.btn-success.btn-sm(href=`/orders/${order._id}`) Xem chi tiết
+    else
+      .tracking-empty.text-center.py-5
+        i.fa-regular.fa-rectangle-list.text-muted(style="font-size: 3rem")
+        h2.h5.mt-3 Chưa tìm thấy đơn hàng
+        p.text-muted Kiểm tra lại từ khóa hoặc tiếp tục mua sắm.
+        a.btn.btn-success(href="/products") Xem sản phẩm

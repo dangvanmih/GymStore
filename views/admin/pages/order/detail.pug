@@ -1,0 +1,76 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/breadcrumb.pug
+
+block main
+  +alert-success(4000)
+  +alert-error(5000)
+  .container-fluid.p-0
+    +breadcrumb(pageTitle, [
+      { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
+      { title: "Đơn hàng", link: `${prefixAdmin}/orders` },
+      { title: order.orderNumber }
+    ])
+    .d-flex.flex-wrap.justify-content-between.align-items-center.gap-3.mb-3
+      div
+        span.badge(class=(order.status === 'delivered' ? 'badge-success' : order.status === 'placed' ? 'badge-warning' : 'badge-primary'))= statusLabels[order.status]
+        p.text-muted.small.mt-2.mb-0 Đặt lúc #{new Date(order.createdAt).toLocaleString('vi-VN')}
+      if nextStatus
+        form(action=`${prefixAdmin}/orders/${order._id}/status` method="POST")
+          input(type="hidden" name="status" value=nextStatus)
+          button.btn.btn-dark(type="submit")= nextAction
+
+    .row.g-3
+      .col-lg-8
+        .card.border-0.shadow-sm.mb-3
+          .card-header.bg-white.fw-semibold Sản phẩm trong đơn
+          .table-responsive
+            table.table.align-middle.mb-0
+              thead
+                tr
+                  th Sản phẩm
+                  th Phân loại
+                  th Đơn giá
+                  th Số lượng
+                  th Thành tiền
+              tbody
+                each item in order.products
+                  tr
+                    td
+                      .d-flex.align-items-center.gap-2
+                        if item.thumbnail
+                          img.rounded(src=item.thumbnail alt=item.title style="width: 48px; height: 56px; object-fit: cover")
+                        span= item.title
+                    td #{item.color} #{item.size}
+                    td= item.price.toLocaleString('vi-VN') + '₫'
+                    td= item.quantity
+                    td= item.total.toLocaleString('vi-VN') + '₫'
+          .card-body
+            .d-flex.justify-content-between
+              span Tạm tính
+              span= order.subtotal.toLocaleString('vi-VN') + '₫'
+            .d-flex.justify-content-between.mt-2
+              span Vận chuyển
+              span= order.shippingFee.toLocaleString('vi-VN') + '₫'
+            hr
+            .d-flex.justify-content-between.fw-bold
+              span Tổng cộng
+              span.text-danger= order.total.toLocaleString('vi-VN') + '₫'
+      .col-lg-4
+        .card.border-0.shadow-sm.mb-3
+          .card-header.bg-white.fw-semibold Người nhận
+          .card-body
+            p.fw-semibold.mb-1= order.customer.fullName
+            p.mb-2= order.customer.phone
+            p.small.mb-2 Thanh toán COD · #{order.paymentStatus === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+            p.text-muted.mb-0= order.shippingAddress.fullAddress
+            if order.note
+              hr
+              p.small.mb-0 Ghi chú: #{order.note}
+        .card.border-0.shadow-sm
+          .card-header.bg-white.fw-semibold Lịch sử trạng thái
+          ul.list-group.list-group-flush
+            each event in order.statusHistory
+              li.list-group-item
+                .fw-semibold= statusLabels[event.status]
+                .small.text-muted #{new Date(event.changedAt).toLocaleString('vi-VN')} · #{event.note}

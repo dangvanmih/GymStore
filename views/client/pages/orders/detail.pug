@@ -1,0 +1,59 @@
+extends ../../layouts/default.pug
+include ../../mixins/order-progress.pug
+include ../../mixins/breadcrumb.pug
+
+append style
+  link(rel="stylesheet" href="/client/css/orders.css")
+
+block main
+  .container.py-4
+    +breadcrumb(pageTitle, [{ title: "Trang chủ", link: "/" }, { title: "Đơn hàng của tôi", link: "/orders" }, { title: order.orderNumber }])
+    .order-confirmation-card.order-detail-card
+      .d-flex.flex-wrap.justify-content-between.align-items-center.gap-2
+        div
+          h1.h4.fw-bold.mb-1= order.orderNumber
+          p.text-muted.small.mb-0 Đặt lúc #{new Date(order.createdAt).toLocaleString('vi-VN')}
+        span.badge(class=(order.status === 'delivered' ? 'text-bg-success' : order.status === 'placed' ? 'text-bg-warning' : 'text-bg-primary'))= statusLabels[order.status]
+      +order-progress(order.status)
+      .order-info-grid
+        .order-info-row
+          span Người nhận
+          strong #{order.customer.fullName} · #{order.customer.phone}
+        if order.customer.email
+          .order-info-row
+            span Email liên hệ
+            strong= order.customer.email
+        .order-info-row
+          span Địa chỉ giao hàng
+          strong= order.shippingAddress.fullAddress
+        .order-info-row
+          span Phương thức thanh toán
+          strong Thanh toán khi nhận hàng (COD)
+        .order-info-row
+          span Trạng thái thanh toán
+          strong= order.paymentStatus === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'
+      .order-products
+        each item in order.products
+          .order-product-row
+            .order-product-description
+              strong= item.title
+              small.text-muted #{[item.color, item.size].filter(Boolean).join(' · ')} · SL #{item.quantity}
+            strong= item.total.toLocaleString('vi-VN') + '₫'
+      .order-total-lines
+        .order-total-row
+          span Tạm tính
+          span= order.subtotal.toLocaleString('vi-VN') + '₫'
+        if order.discountTotal > 0
+          .order-total-row.text-success
+            span Ưu đãi sản phẩm
+            span= '-' + order.discountTotal.toLocaleString('vi-VN') + '₫'
+        .order-total-row
+          span Phí giao hàng
+          span= order.shippingFee ? order.shippingFee.toLocaleString('vi-VN') + '₫' : 'Miễn phí'
+        .order-total-row.order-grand-total
+          strong Tổng cộng
+          strong= order.total.toLocaleString('vi-VN') + '₫'
+      if order.note
+        .order-note Ghi chú: #{order.note}
+      .mt-3
+        a.btn.btn-outline-secondary(href="/orders") Quay lại danh sách đơn hàng

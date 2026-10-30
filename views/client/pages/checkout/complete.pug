@@ -1,0 +1,80 @@
+extends ../../layouts/default.pug
+include ../../mixins/order-progress.pug
+
+append style
+  link(rel="stylesheet" href="/client/css/orders.css")
+
+block main
+  .order-confirmation-page.py-4
+    .container
+      .order-confirmation-card
+        .text-center
+          .order-pending-icon
+            i.fa-regular.fa-clock
+          if order.status === "placed"
+            h1.h5.fw-bold.mt-3 Chờ nhân viên xác nhận đơn hàng
+          else
+            h1.h5.fw-bold.mt-3 Đơn hàng đã được xác nhận
+          .order-confirmation-total #{order.total.toLocaleString('vi-VN')}₫
+        +order-progress(order.status)
+
+        .order-info-grid
+          .order-info-row
+            span Mã giao dịch / đơn hàng
+            strong= order.orderNumber
+          .order-info-row
+            span Thời gian đặt hàng
+            strong= new Date(order.createdAt).toLocaleString('vi-VN')
+          .order-info-row
+            span Phương thức
+            strong Thanh toán khi nhận hàng (COD)
+          .order-info-row
+            span Thanh toán
+            strong Chưa thanh toán
+          .order-info-row
+            span Người nhận
+            strong #{order.customer.fullName} · #{order.customer.phone}
+          if order.customer.email
+            .order-info-row
+              span Email liên hệ
+              strong= order.customer.email
+        .order-address
+          i.fa-solid.fa-location-dot.text-success.me-2
+          | #{order.shippingAddress.fullAddress}
+
+        .order-products
+          each item in order.products
+            .order-product-row
+              .order-product-description
+                strong= item.title
+                if item.size || item.color
+                  small.text-muted #{item.color} #{item.size} · SL #{item.quantity}
+                else
+                  small.text-muted Số lượng: #{item.quantity}
+              strong= item.total.toLocaleString('vi-VN') + '₫'
+
+        .order-total-lines
+          .order-total-row
+            span Tạm tính
+            span= order.subtotal.toLocaleString('vi-VN') + '₫'
+          if order.discountTotal > 0
+            .order-total-row.text-success
+              span Ưu đãi sản phẩm
+              span= '-' + order.discountTotal.toLocaleString('vi-VN') + '₫'
+          .order-total-row
+            span Phí giao hàng
+            span= order.shippingFee ? order.shippingFee.toLocaleString('vi-VN') + '₫' : 'Miễn phí'
+          .order-total-row.order-grand-total
+            strong Tổng cộng
+            strong= order.total.toLocaleString('vi-VN') + '₫'
+        if order.note
+          .order-note Ghi chú: #{order.note}
+
+        .alert.alert-primary.mt-3.mb-3
+          strong Đơn hàng đã được ghi nhận
+          p.mb-0.small Vui lòng chờ nhân viên gọi điện xác nhận. Bạn có thể theo dõi trạng thái đơn hàng bên dưới.
+        .d-flex.flex-wrap.gap-2
+          a.btn.btn-outline-secondary.flex-fill(href="/products") Tiếp tục mua sắm
+          a.btn.btn-success.flex-fill(href="/") Về trang chủ
+        .text-center.mt-3
+          a.fw-semibold(href="/orders") Theo dõi tất cả đơn hàng

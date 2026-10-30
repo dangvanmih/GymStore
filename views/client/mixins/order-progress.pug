@@ -1,0 +1,9 @@
+mixin order-progress(status)
+  - const steps = [{ key: "placed", title: "Đặt hàng", icon: "fa-bag-shopping" }, { key: "preparing", title: "Chuẩn bị", icon: "fa-box" }, { key: "shipping", title: "Đang giao", icon: "fa-truck" }, { key: "delivered", title: "Đã nhận", icon: "fa-circle-check" }]
+  - const activeStep = steps.findIndex(step => step.key === status)
+  .order-progress
+    each step, index in steps
+      .order-progress-step(class={ "is-complete": index <= activeStep, "has-connector": index < activeStep })
+        .order-progress-icon
+          i(class=`fa-solid ${step.icon}`)
+        span.order-progress-title= step.title
