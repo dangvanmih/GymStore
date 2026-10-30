@@ -1,0 +1,16 @@
+extends ../../layouts/default.pug
+include ../../mixins/product-item.pug
+include ../../mixins/breadcrumb.pug
+
+block main
+  .container.py-3
+    +breadcrumb(pageTitle, [{ title: "Trang chủ", link: "/" }, { title: pageTitle }])
+    #favorite-products(class=(products.length ? "row" : "row d-none"))
+      if products.length > 0
+        each item in products
+          .col-md-3.col-6.mb-4.favorite-product-card(data-product-id=String(item._id))
+            +product-item(item)
+    #favorite-empty(class=(products.length ? "text-center py-5 d-none" : "text-center py-5"))
+      i.fa-regular.fa-heart.text-muted(style="font-size: 3rem")
+      p.fs-5.text-muted.mt-3 Bạn chưa có sản phẩm yêu thích.
+      a.btn.btn-dark.px-4.py-2.mt-2(href="/products") Tiếp tục mua sắm

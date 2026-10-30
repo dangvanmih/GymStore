@@ -36,6 +36,9 @@ block main
               .inner-image
                 a(href=`/products/detail/${item.slug}`)
                   img(src= item.thumbnail alt=item.title)
+                  form.favorite-toggle(action=`/favorites/toggle/${item._id}`, method="POST" data-favorite-form data-product-id=String(item._id))
+                    button.favorite-toggle-button(type="submit" aria-label=(favoriteIds && favoriteIds.includes(String(item._id)) ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích") title=(favoriteIds && favoriteIds.includes(String(item._id)) ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"))
+                      i(class=(favoriteIds && favoriteIds.includes(String(item._id)) ? "fa-solid fa-heart" : "fa-regular fa-heart"))
               .inner-content
                 h3.inner-title
                   a(href=`/products/detail/${item.slug}`) #{item.title}
@@ -64,6 +67,9 @@ block main
                     .inner-image
                       a(href=`/products/detail/${item.slug}`)
                         img(src=item.thumbnail, alt=item.title)
+                      form.favorite-toggle(action=`/favorites/toggle/${item._id}`, method="POST" data-favorite-form data-product-id=String(item._id))
+                        button.favorite-toggle-button(type="submit" aria-label=(favoriteIds && favoriteIds.includes(String(item._id)) ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích") title=(favoriteIds && favoriteIds.includes(String(item._id)) ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"))
+                          i(class=(favoriteIds && favoriteIds.includes(String(item._id)) ? "fa-solid fa-heart" : "fa-regular fa-heart"))
                     .inner-content
                       h3.inner-title
                         a(href=`/products/detail/${item.slug}`) #{item.title}

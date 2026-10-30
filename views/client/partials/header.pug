@@ -52,23 +52,15 @@ header.header.bg-white.sticky-top
               i.fas.fa-user-plus.mr-2
               | Đăng ký
 
+        a.nav-icon-item.icon-link.favorite-link.mr-3(href='/favorites' aria-label='Sản phẩm yêu thích' title='Sản phẩm yêu thích')
+          i.fa-regular.fa-heart
+          if favoriteCount > 0
+            span.favorite-badge #{favoriteCount}
+
         //- Shopping Cart
         a.nav-icon-item.icon-link.cart-link.mr-3(href='/cart')
           i.fas.fa-shopping-bag
           span.cart-badge #{miniCart ? miniCart.totalQuantity : 0}
-
-        //- Language Switcher
-        .nav-icon-item.dropdown.lang-dropdown
-          a.icon-link.dropdown-toggle.no-caret(href='#', id='langDropdown', data-toggle='dropdown')
-            img.flag-icon(src='https://flagcdn.com/w40/vn.png', alt='VN')
-          .dropdown-menu.dropdown-menu-right.shadow-sm.border-0.min-vw-0(style='min-width: 110px;')
-            a.dropdown-item.d-flex.align-items-center.py-2(href='?lang=vi')
-              img.flag-icon.mr-2(src='https://flagcdn.com/w40/vn.png', alt='VN')
-              span.small.font-weight-bold VN
-            a.dropdown-item.d-flex.align-items-center.py-2(href='?lang=en')
-              img.flag-icon.mr-2(src='https://flagcdn.com/w40/gb.png', alt='EN')
-              span.small.font-weight-bold EN
-
 
 //- SEARCH OVERLAY (Khung tìm kiếm phủ toàn màn hình)
 #searchOverlay.search-overlay
