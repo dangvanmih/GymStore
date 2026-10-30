@@ -152,76 +152,280 @@ module.exports.addPost = async (req, res) => {
   res.redirect(req.get("Referer"));
 }
 
-// POST /cart/update: cập nhật số lượng và trả tổng tiền mới cho trang giỏ hàng
+
+// POST /cart/update
+// Cập nhật số lượng sản phẩm trong giỏ hàng
+// Trả về số lượng, thành tiền và tổng tiền mới
 module.exports.updatePost = async (req, res) => {
   try {
-    const cart = await Cart.findById(req.cookies.cartId);
-    if (!cart) return res.status(404).json({ success: false, message: "Không tìm thấy giỏ hàng." });
+    // 1. Lấy giỏ hàng của người dùng
+    const cartId = req.cookies.cartId;
 
+    const cart = await Cart.findById(cartId);
+
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy giỏ hàng."
+      });
+    }
+
+    // 2. Lấy thông tin từ request gửi lên
     const productId = String(req.body.productId || "");
     const size = String(req.body.size || "");
     const color = String(req.body.color || "");
-    const product = await Product.findOne({ _id: productId, deleted: false, status: "active" }).lean();
-    if (!product) return res.status(404).json({ success: false, message: "Sản phẩm không còn khả dụng." });
 
-    const hasVariants = productHasVariants(product);
-    let index = cart.products.findIndex(item => String(item.product_id) === productId && (
-      !hasVariants || ((item.size || "") === size && (item.color || "") === color)
-    ));
-    // Hỗ trợ mục giỏ cũ chưa lưu size/màu hoặc sản phẩm vừa được đổi cấu hình phân loại.
-    if (index < 0) index = cart.products.findIndex(item => String(item.product_id) === productId);
-    if (index < 0) return res.status(404).json({ success: false, message: "Không tìm thấy sản phẩm trong giỏ." });
-    const variant = hasVariants
-      ? (product.variants || []).find(v => (v.size || "") === size && (v.color || "") === color)
-      : null;
+    const requestedQuantity = parseInt(req.body.quantity, 10) || 1;
 
-    const stock = Number(variant ? variant.stock : product.stock) || 0;
-    if (stock < 1) return res.status(400).json({ success: false, message: "Sản phẩm đã hết hàng." });
-    const quantity = Math.max(1, Math.min(stock, parseInt(req.body.quantity, 10) || 1));
-    cart.products[index].quantity = quantity;
-    await cart.save();
-
-    const basePrice = Number(variant ? variant.price : product.price) || 0;
-    const discount = Number(product.discountPercentage) || 0;
-    const price = Number(variant?.priceNew) || (discount > 0
-      ? Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000
-      : basePrice);
-    const products = await Product.find({
-      _id: { $in: cart.products.map(item => item.product_id) },
+    // 3. Tìm sản phẩm trong database
+    const product = await Product.findOne({
+      _id: productId,
       deleted: false,
       status: "active"
     }).lean();
-    const productById = new Map(products.map(item => [String(item._id), item]));
-    let totalAll = 0;
-    for (const item of cart.products) {
-      const itemProduct = productById.get(String(item.product_id));
-      if (!itemProduct) continue;
-      const itemVariant = productHasVariants(itemProduct)
-        ? (itemProduct.variants || []).find(v => (v.size || "") === (item.size || "") && (v.color || "") === (item.color || ""))
-        : null;
-      const itemBasePrice = Number(itemVariant ? itemVariant.price : itemProduct.price) || 0;
-      const itemDiscount = Number(itemProduct.discountPercentage) || 0;
-      const itemUnitPrice = Number(itemVariant?.priceNew) || (itemDiscount > 0
-        ? Math.round((itemBasePrice * (100 - itemDiscount) / 100) / 10000) * 10000
-        : itemBasePrice);
-      totalAll += itemUnitPrice * (Number(item.quantity) || 0);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Sản phẩm không còn khả dụng."
+      });
     }
 
-    res.json({
+    // 4. Kiểm tra sản phẩm có phân loại hay không
+    const hasVariants = productHasVariants(product);
+
+    // 5. Tìm sản phẩm tương ứng trong giỏ hàng
+    let productIndex = -1;
+
+    for (let i = 0; i < cart.products.length; i++) {
+      const cartItem = cart.products[i];
+
+      const isSameProduct =
+        String(cartItem.product_id) === productId;
+
+      const isSameVariant =
+        (cartItem.size || "") === size &&
+        (cartItem.color || "") === color;
+
+      if (isSameProduct && (!hasVariants || isSameVariant)) {
+        productIndex = i;
+        break;
+      }
+    }
+
+    // Nếu không tìm thấy đúng phân loại,
+    // tìm lại theo productId để hỗ trợ dữ liệu giỏ hàng cũ.
+    if (productIndex === -1) {
+      productIndex = cart.products.findIndex((cartItem) => {
+        return String(cartItem.product_id) === productId;
+      });
+    }
+
+    if (productIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy sản phẩm trong giỏ."
+      });
+    }
+
+    // 6. Lấy thông tin phân loại sản phẩm
+    let variant = null;
+
+    if (hasVariants) {
+      variant = (product.variants || []).find((item) => {
+        return (
+          (item.size || "") === size &&
+          (item.color || "") === color
+        );
+      });
+    }
+
+    // 7. Xác định số lượng tồn kho
+    let stock = 0;
+
+    if (variant) {
+      stock = Number(variant.stock) || 0;
+    } else {
+      stock = Number(product.stock) || 0;
+    }
+
+    if (stock < 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Sản phẩm đã hết hàng."
+      });
+    }
+
+    // 8. Giới hạn số lượng theo tồn kho
+    const quantity = Math.max(
+      1,
+      Math.min(requestedQuantity, stock)
+    );
+
+    // 9. Cập nhật số lượng vào giỏ hàng
+    cart.products[productIndex].quantity = quantity;
+
+    await cart.save();
+
+    // 10. Tính đơn giá của sản phẩm vừa cập nhật
+    const basePrice = Number(
+      variant ? variant.price : product.price
+    ) || 0;
+
+    const discountPercentage =
+      Number(product.discountPercentage) || 0;
+
+    let price = basePrice;
+
+    // Ưu tiên sử dụng giá mới của phân loại nếu có
+    if (variant && Number(variant.priceNew) > 0) {
+      price = Number(variant.priceNew);
+    } else if (discountPercentage > 0) {
+      const discountedPrice =
+        basePrice * (100 - discountPercentage) / 100;
+
+      // Làm tròn giá về hàng chục nghìn
+      price = Math.round(discountedPrice / 10000) * 10000;
+    }
+
+    // Thành tiền của sản phẩm vừa cập nhật
+    const itemTotal = price * quantity;
+
+    // 11. Lấy tất cả sản phẩm trong giỏ hàng từ database
+    const productIds = cart.products.map((item) => {
+      return item.product_id;
+    });
+
+    const products = await Product.find({
+      _id: { $in: productIds },
+      deleted: false,
+      status: "active"
+    }).lean();
+
+    // 12. Tạo Map để tra cứu sản phẩm theo ID
+    const productMap = new Map();
+
+    for (const item of products) {
+      productMap.set(String(item._id), item);
+    }
+
+    // 13. Tính tổng tiền của toàn bộ giỏ hàng
+    let totalAll = 0;
+
+    for (const cartItem of cart.products) {
+      // Tìm thông tin sản phẩm tương ứng
+      const currentProduct = productMap.get(
+        String(cartItem.product_id)
+      );
+
+      if (!currentProduct) {
+        continue;
+      }
+
+      // Kiểm tra và lấy phân loại tương ứng
+      const currentHasVariants =
+        productHasVariants(currentProduct);
+
+      let currentVariant = null;
+
+      if (currentHasVariants) {
+        currentVariant = (currentProduct.variants || []).find((item) => {
+          return (
+            (item.size || "") === (cartItem.size || "") &&
+            (item.color || "") === (cartItem.color || "")
+          );
+        });
+      }
+
+      // Lấy giá gốc
+      const currentBasePrice = Number(
+        currentVariant
+          ? currentVariant.price
+          : currentProduct.price
+      ) || 0;
+
+      // Lấy phần trăm giảm giá
+      const currentDiscount =
+        Number(currentProduct.discountPercentage) || 0;
+
+      // Tính đơn giá sau giảm
+      let currentUnitPrice = currentBasePrice;
+
+      if (
+        currentVariant &&
+        Number(currentVariant.priceNew) > 0
+      ) {
+        currentUnitPrice = Number(currentVariant.priceNew);
+      } else if (currentDiscount > 0) {
+        const discountedPrice =
+          currentBasePrice * (100 - currentDiscount) / 100;
+
+        currentUnitPrice =
+          Math.round(discountedPrice / 10000) * 10000;
+      }
+
+      // Cộng thành tiền của từng sản phẩm vào tổng tiền
+      const currentQuantity = Number(cartItem.quantity) || 0;
+
+      totalAll += currentUnitPrice * currentQuantity;
+    }
+
+    // 14. Tính tổng số lượng sản phẩm trong giỏ
+    const totalQuantity = cart.products.reduce(
+      (total, item) => {
+        return total + (Number(item.quantity) || 0);
+      },
+      0
+    );
+
+    // 15. Trả kết quả về frontend
+    return res.json({
       success: true,
       quantity,
       stock,
-      itemTotal: price * quantity,
+      itemTotal,
       totalAll,
-      totalQuantity: cart.products.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0)
+      totalQuantity
     });
+
   } catch (error) {
     console.log("Lỗi cập nhật số lượng giỏ hàng:", error);
-    res.status(500).json({ success: false, message: "Không thể cập nhật giỏ hàng." });
+
+    return res.status(500).json({
+      success: false,
+      message: "Không thể cập nhật giỏ hàng."
+    });
   }
 };
 
+
+// Hàm kiểm tra sản phẩm có sử dụng phân loại hay không
 function productHasVariants(product) {
-  const enabled = product?.hasVariants === true || product?.hasVariants === "true" || product?.hasVariants === 1;
-  return enabled && Array.isArray(product?.variants) && product.variants.length > 0;
+  const enabled =
+    product?.hasVariants === true ||
+    product?.hasVariants === "true" ||
+    product?.hasVariants === 1;
+
+  const hasVariantList =
+    Array.isArray(product?.variants) &&
+    product.variants.length > 0;
+
+  return enabled && hasVariantList;
+}
+
+
+//GET /cart/delete/:productId
+module.exports.delete = async (req, res) => {
+  const productId = req.params.productId;
+  const cartId = req.cookies.cartId;
+  await Cart.updateOne(
+    {
+      _id: cartId
+    },
+    {
+      "$pull": {products: {"product_id": productId}}
+    }
+  );
+  req.flash("Success", "Đã xóa sản phẩm khỏi giỏ hàng!");
+  res.redirect(req.get("Referer"));
 }

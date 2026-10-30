@@ -1,6 +1,5 @@
 const Product = require("../../models/product.model");
 const Category = require("../../models/category.model");
-const { calculatePriceNew } = require("../../helpers/calculatePrice");
 const { calculateProductsPrice } = require("../../helpers/productPrice");
 
 // GET: /products
@@ -11,12 +10,7 @@ module.exports.index = async (req, res) => {
     deleted: false
   }).sort({ position: "desc" }).lean();
 
-  const newProducts = products.map(item => {
-    item.priceNew = Math.round(
-      item.price * (1 - item.discountPercentage / 100) / 10000
-    ) * 10000;
-    return item;
-  })
+  const newProducts = calculateProductsPrice(products);
 
   res.render("client/pages/products/index", {
     pageTitle: "Trang sản phẩm",
@@ -235,23 +229,8 @@ module.exports.category = async (req, res) => {
 
     // 4. Lấy danh sách sản phẩm sau khi lọc
 
-    const products = await Product.find(find);
-
-    const newProducts = products.map(item => {
-      let displayPrice = item.price;
-      let displayPriceNew = calculatePriceNew(item.price, item.discountPercentage);
-
-      if (item.hasVariants && item.variants && item.variants.length > 0) {
-        displayPrice = item.variants[0].price;
-        displayPriceNew = item.variants[0].priceNew || calculatePriceNew(displayPrice, item.discountPercentage);
-      }
-
-      return {
-        ...item._doc,
-        price: displayPrice,
-        priceNew: displayPriceNew
-      };
-    });
+    const products = await Product.find(find).lean();
+    const newProducts = calculateProductsPrice(products);
 
     // 5. XỬ LÝ PHẢN HỒI CHO AJAX REQUEST (KHÔNG LOAD LẠI TRANG)
     if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {

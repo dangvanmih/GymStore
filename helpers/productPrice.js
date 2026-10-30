@@ -10,14 +10,19 @@ module.exports.calculateProductPrice = (item) => {
 
   // 1. Nếu sản phẩm có phân loại (variants)
   if (product.hasVariants && product.variants && Array.isArray(product.variants) && product.variants.length > 0) {
-    const validVariants = product.variants.filter(v => v.priceNew && v.priceNew > 0);
+    const pricedVariants = product.variants
+      .map(variant => {
+        const price = Number(variant.price) || Number(product.price) || 0;
+        const priceNew = Number(variant.priceNew) || module.exports.calculatePriceNew(price, discount);
+        return { price, priceNew };
+      })
+      .filter(variant => variant.price > 0);
 
-    if (validVariants.length > 0) {
-      // Lấy biến thể có giá mới nhỏ nhất
-      const minVariant = validVariants.reduce((min, current) => current.priceNew < min.priceNew ? current : min);
-
+    if (pricedVariants.length > 0) {
+      // Hiển thị mức giá thấp nhất trong các size/màu có giá hợp lệ.
+      const minVariant = pricedVariants.reduce((min, current) => current.priceNew < min.priceNew ? current : min);
       displayPriceNew = minVariant.priceNew;
-      displayPrice = minVariant.price || Number(product.price) || 0;
+      displayPrice = minVariant.price;
     }
   }
 
@@ -41,6 +46,13 @@ module.exports.calculateProductPrice = (item) => {
     priceNew: displayPriceNew,
     price: displayPrice
   };
+};
+
+module.exports.calculatePriceNew = (price, discountPercentage) => {
+  const basePrice = Number(price) || 0;
+  const discount = Number(discountPercentage) || 0;
+  if (discount <= 0) return basePrice;
+  return Math.round((basePrice * (1 - discount / 100)) / 10000) * 10000;
 };
 
 // Hàm hỗ trợ tính cho cả một mảng danh sách sản phẩm
