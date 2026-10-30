@@ -426,6 +426,6 @@ module.exports.delete = async (req, res) => {
       "$pull": {products: {"product_id": productId}}
     }
   );
-  req.flash("Success", "Đã xóa sản phẩm khỏi giỏ hàng!");
-  res.redirect(req.get("Referer"));
+  req.flash("success", "Đã xóa sản phẩm khỏi giỏ hàng!");
+  res.redirect(req.get("Referer") || "/cart");
 }
