@@ -90,3 +90,42 @@ module.exports.lookup = async (req, res) => {
     return res.redirect("/orders");
   }
 };
+
+// POST /orders/:orderId/confirm-received: khách xác nhận đã nhận đơn đang giao.
+module.exports.confirmReceived = async (req, res) => {
+  try {
+    if (!/^[a-f\d]{24}$/i.test(req.params.orderId || "")) return res.redirect("/orders");
+    const order = await Order.findById(req.params.orderId);
+    const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    const isGuestOwner = order && (order.guest_id === guestId || order.customer_id === guestId);
+    const isVerifiedLookup = order && req.signedCookies.orderAccess === String(order._id);
+
+    if (!order || (!isGuestOwner && !isVerifiedLookup)) {
+      req.flash("error", "Bạn không có quyền cập nhật đơn hàng này.");
+      return res.redirect("/orders");
+    }
+    if (order.status !== "shipping") {
+      req.flash("error", "Chỉ có thể xác nhận đã nhận khi đơn hàng đang được giao.");
+      return res.redirect(`/orders/${order._id}`);
+    }
+
+    order.status = "delivered";
+    order.statusHistory.push({
+      status: "delivered",
+      changedBy: String(order.customer_id || order.guest_id || "customer"),
+      note: "Khách hàng xác nhận đã nhận đơn."
+    });
+    // Xác nhận nhận hàng hoàn tất thanh toán với COD; VNPay giữ nguyên trạng thái đã trả.
+    if (order.paymentStatus !== "paid") {
+      order.paymentStatus = "paid";
+      order.paidAt = new Date();
+    }
+    await order.save();
+    req.flash("success", "Đã xác nhận nhận hàng. Đơn hàng được đánh dấu đã thanh toán.");
+    return res.redirect(`/orders/${order._id}`);
+  } catch (error) {
+    console.log("Lỗi xác nhận đã nhận đơn hàng:", error);
+    req.flash("error", "Không thể xác nhận đã nhận đơn hàng lúc này.");
+    return res.redirect("/orders");
+  }
+};

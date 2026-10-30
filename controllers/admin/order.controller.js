@@ -7,11 +7,11 @@ const statusLabels = {
   shipping: "Đang giao",
   delivered: "Đã nhận"
 };
-const nextStatus = { placed: "preparing", preparing: "shipping", shipping: "delivered" };
+// Admin xử lý đến bước đang giao; khách hàng xác nhận bước đã nhận.
+const nextStatus = { placed: "preparing", preparing: "shipping" };
 const nextAction = {
   placed: "Xác nhận đơn hàng",
-  preparing: "Chuyển sang đang giao",
-  shipping: "Xác nhận đã nhận hàng"
+  preparing: "Chuyển sang đang giao"
 };
 
 module.exports.index = async (req, res) => {
@@ -48,7 +48,7 @@ module.exports.advanceStatus = async (req, res) => {
 
     const targetStatus = nextStatus[order.status];
     if (order.paymentMethod === "vnpay" && order.paymentStatus !== "paid") {
-      req.flash("error", "Chỉ xác nhận xử lý đơn VNPay sau khi IPN ghi nhận thanh toán thành công.");
+      req.flash("error", "Chỉ xử lý đơn VNPay sau khi hệ thống ghi nhận thanh toán thành công.");
       return res.redirect(`${systemConfig.prefixAdmin}/orders/${order._id}`);
     }
     if (!targetStatus || targetStatus !== req.body.status) {

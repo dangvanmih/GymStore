@@ -7,6 +7,7 @@ append style
 
 block main
   .container.tracking-page.py-4
+    +alert-success(5000)
     +alert-error(5000)
     .d-flex.flex-wrap.justify-content-between.align-items-center.gap-3.mb-3
       div
@@ -71,7 +72,11 @@ block main
               .mt-1
                 span Tổng cộng:
                 strong.text-success.ms-1 #{order.total.toLocaleString('vi-VN')}₫
-            a.btn.btn-success.btn-sm(href=`/orders/${order._id}`) Xem chi tiết
+            .d-flex.flex-wrap.gap-2
+              if order.status === "shipping"
+                form(action=`/orders/${order._id}/confirm-received` method="POST")
+                  button.btn.btn-success.btn-sm(type="submit") Xác nhận đã nhận
+              a.btn.btn-outline-success.btn-sm(href=`/orders/${order._id}`) Xem chi tiết
     else
       .tracking-empty.text-center.py-5
         i.fa-regular.fa-rectangle-list.text-muted(style="font-size: 3rem")

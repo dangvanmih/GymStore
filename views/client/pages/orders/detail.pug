@@ -1,11 +1,14 @@
 extends ../../layouts/default.pug
 include ../../mixins/order-progress.pug
 include ../../mixins/breadcrumb.pug
+include ../../mixins/alert.pug
 
 append style
   link(rel="stylesheet" href="/client/css/orders.css")
 
 block main
+  +alert-success(5000)
+  +alert-error(5000)
   .container.py-4
     +breadcrumb(pageTitle, [{ title: "Trang chủ", link: "/" }, { title: "Đơn hàng của tôi", link: "/orders" }, { title: order.orderNumber }])
     .order-confirmation-card.order-detail-card
@@ -58,5 +61,8 @@ block main
       if order.paymentMethod === "vnpay" && order.paymentStatus === "failed"
         form.mt-3(action=`/orders/${order._id}/pay-vnpay-again` method="POST")
           button.btn.btn-warning(type="submit") Thử thanh toán VNPay lại
+      if order.status === "shipping"
+        form.mt-3(action=`/orders/${order._id}/confirm-received` method="POST")
+          button.btn.btn-success(type="submit") Xác nhận đã nhận đơn
       .mt-3
         a.btn.btn-outline-secondary(href="/orders") Quay lại danh sách đơn hàng

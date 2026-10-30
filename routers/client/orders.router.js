@@ -5,6 +5,7 @@ const ordersController = require("../../controllers/client/orders.controller");
 
 router.get("/", ordersController.index);
 router.post("/lookup", ordersController.lookup);
+router.post("/:orderId/confirm-received", ordersController.confirmReceived);
 router.post("/:orderId/pay-vnpay-again", checkoutController.retryVnpay);
 router.get("/:orderId/complete", checkoutController.complete);
 router.get("/:orderId", ordersController.detail);
