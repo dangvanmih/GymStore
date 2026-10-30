@@ -43,8 +43,12 @@ const orderSchema = new mongoose.Schema({
     default: "placed",
     index: true
   },
-  paymentMethod: { type: String, enum: ["cod"], default: "cod" },
-  paymentStatus: { type: String, enum: ["unpaid", "paid"], default: "unpaid" },
+  paymentMethod: { type: String, enum: ["cod", "vnpay"], default: "cod" },
+  paymentStatus: { type: String, enum: ["unpaid", "pending", "paid", "failed"], default: "unpaid" },
+  paymentTxnRef: { type: String, default: undefined, unique: true, sparse: true },
+  paymentTransactionNo: { type: String, default: "" },
+  paymentResponseCode: { type: String, default: "" },
+  paidAt: { type: Date, default: null },
   statusHistory: [{
     status: { type: String, enum: ["placed", "preparing", "shipping", "delivered"] },
     changedBy: { type: String, default: "" },

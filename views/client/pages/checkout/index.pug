@@ -94,5 +94,13 @@ block main
               .d-flex.justify-content-between.mb-3
                 span.fw-bold Tổng cộng
                 span.fw-bold.text-danger.fs-5 #{subtotal.toLocaleString('vi-VN')}₫
-              .alert.alert-light.small.mb-3 Phương thức thanh toán: Thanh toán khi nhận hàng (COD)
+              h3.h6.fw-bold.mt-4.mb-2 Phương thức thanh toán
+              .form-check.border.rounded-3.p-3.ps-5.mb-2
+                input#payment-cod.form-check-input(type="radio" name="paymentMethod" value="cod" form="place-order-form" checked required)
+                label.form-check-label(for="payment-cod") Thanh toán khi nhận hàng (COD)
+              .form-check.border.rounded-3.p-3.ps-5.mb-3(class=(vnpayEnabled ? "" : "opacity-50"))
+                input#payment-vnpay.form-check-input(type="radio" name="paymentMethod" value="vnpay" form="place-order-form" disabled=!vnpayEnabled)
+                label.form-check-label(for="payment-vnpay") Thanh toán qua VNPay
+                if !vnpayEnabled
+                  .small.text-muted Cửa hàng chưa cấu hình VNPay sandbox.
               button.btn.btn-dark.btn-lg.w-100(type="submit" form="place-order-form" disabled=(addresses.length === 0)) Gửi đơn chờ xác nhận

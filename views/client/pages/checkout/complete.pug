@@ -11,12 +11,16 @@ block main
         .text-center
           .order-pending-icon
             i.fa-regular.fa-clock
-          if order.status === "placed"
+          if order.paymentMethod === "vnpay" && order.paymentStatus === "pending"
+            h1.h5.fw-bold.mt-3 Chờ xác nhận thanh toán VNPay
+          else if order.status === "placed"
             h1.h5.fw-bold.mt-3 Chờ nhân viên xác nhận đơn hàng
           else
             h1.h5.fw-bold.mt-3 Đơn hàng đã được xác nhận
           .order-confirmation-total #{order.total.toLocaleString('vi-VN')}₫
         +order-progress(order.status)
+        if paymentNotice
+          .alert(class=(paymentNotice.success ? "alert-success" : "alert-warning"))= paymentNotice.message
 
         .order-info-grid
           .order-info-row
@@ -27,10 +31,10 @@ block main
             strong= new Date(order.createdAt).toLocaleString('vi-VN')
           .order-info-row
             span Phương thức
-            strong Thanh toán khi nhận hàng (COD)
+            strong= order.paymentMethod === "vnpay" ? "VNPay" : "Thanh toán khi nhận hàng (COD)"
           .order-info-row
             span Thanh toán
-            strong Chưa thanh toán
+            strong= order.paymentStatus === "paid" ? "Đã thanh toán" : order.paymentStatus === "failed" ? "Thanh toán thất bại" : order.paymentStatus === "pending" ? "Đang chờ xác nhận" : "Chưa thanh toán"
           .order-info-row
             span Người nhận
             strong #{order.customer.fullName} · #{order.customer.phone}
@@ -72,7 +76,10 @@ block main
 
         .alert.alert-primary.mt-3.mb-3
           strong Đơn hàng đã được ghi nhận
-          p.mb-0.small Vui lòng chờ nhân viên gọi điện xác nhận. Bạn có thể theo dõi trạng thái đơn hàng bên dưới.
+          p.mb-0.small Theo dõi tiến độ xử lý và giao hàng của đơn bên dưới.
+        if order.paymentMethod === "vnpay" && order.paymentStatus === "failed"
+          form.mt-3(action=`/orders/${order._id}/pay-vnpay-again` method="POST")
+            button.btn.btn-warning.w-100(type="submit") Thử thanh toán VNPay lại
         .d-flex.flex-wrap.gap-2
           a.btn.btn-outline-secondary.flex-fill(href="/products") Tiếp tục mua sắm
           a.btn.btn-success.flex-fill(href="/") Về trang chủ

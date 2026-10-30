@@ -67,7 +67,7 @@ block main
             .small.text-muted.ms-4 #{order.shippingAddress.fullAddress}
           .d-flex.flex-wrap.justify-content-between.align-items-end.gap-3.pt-3.mt-3.border-top
             div
-              .small.text-muted Thanh toán khi nhận hàng · #{order.paymentStatus === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+              .small.text-muted #{order.paymentMethod === 'vnpay' ? 'VNPay' : 'Thanh toán khi nhận hàng'} · #{order.paymentStatus === 'paid' ? 'Đã thanh toán' : order.paymentStatus === 'failed' ? 'Thất bại' : order.paymentStatus === 'pending' ? 'Đang chờ xác nhận' : 'Chưa thanh toán'}
               .mt-1
                 span Tổng cộng:
                 strong.text-success.ms-1 #{order.total.toLocaleString('vi-VN')}₫

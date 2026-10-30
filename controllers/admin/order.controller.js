@@ -47,6 +47,10 @@ module.exports.advanceStatus = async (req, res) => {
     }
 
     const targetStatus = nextStatus[order.status];
+    if (order.paymentMethod === "vnpay" && order.paymentStatus !== "paid") {
+      req.flash("error", "Chỉ xác nhận xử lý đơn VNPay sau khi IPN ghi nhận thanh toán thành công.");
+      return res.redirect(`${systemConfig.prefixAdmin}/orders/${order._id}`);
+    }
     if (!targetStatus || targetStatus !== req.body.status) {
       req.flash("error", "Trạng thái đơn hàng không hợp lệ.");
       return res.redirect(`${systemConfig.prefixAdmin}/orders/${order._id}`);

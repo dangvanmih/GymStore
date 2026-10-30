@@ -6,5 +6,6 @@ router.get("/", controller.index);
 router.post("/addresses", controller.addAddress);
 router.post("/addresses/:addressId/delete", controller.deleteAddress);
 router.post("/place-order", controller.placeOrder);
+router.get("/vnpay-return", controller.vnpayReturn);
 
 module.exports = router;

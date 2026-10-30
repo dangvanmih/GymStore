@@ -28,10 +28,10 @@ block main
           strong= order.shippingAddress.fullAddress
         .order-info-row
           span Phương thức thanh toán
-          strong Thanh toán khi nhận hàng (COD)
+          strong= order.paymentMethod === "vnpay" ? "VNPay" : "Thanh toán khi nhận hàng (COD)"
         .order-info-row
           span Trạng thái thanh toán
-          strong= order.paymentStatus === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'
+          strong= order.paymentStatus === 'paid' ? 'Đã thanh toán' : order.paymentStatus === 'failed' ? 'Thanh toán thất bại' : order.paymentStatus === 'pending' ? 'Đang chờ xác nhận' : 'Chưa thanh toán'
       .order-products
         each item in order.products
           .order-product-row
@@ -55,5 +55,8 @@ block main
           strong= order.total.toLocaleString('vi-VN') + '₫'
       if order.note
         .order-note Ghi chú: #{order.note}
+      if order.paymentMethod === "vnpay" && order.paymentStatus === "failed"
+        form.mt-3(action=`/orders/${order._id}/pay-vnpay-again` method="POST")
+          button.btn.btn-warning(type="submit") Thử thanh toán VNPay lại
       .mt-3
         a.btn.btn-outline-secondary(href="/orders") Quay lại danh sách đơn hàng

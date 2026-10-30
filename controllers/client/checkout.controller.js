@@ -3,6 +3,7 @@ const Address = require("../../models/address.model");
 const Cart = require("../../models/cart.model");
 const Order = require("../../models/order.model");
 const Product = require("../../models/product.model");
+const vnpay = require("../../helpers/vnpay");
 
 const getGuestId = (req, res) => {
   let guestId = req.cookies.guestId || req.cookies.customerId;
@@ -97,6 +98,7 @@ module.exports.index = async (req, res) => {
       subtotal,
       discountTotal,
       addresses,
+      vnpayEnabled: vnpay.isConfigured(),
       defaultAddressId: String((addresses.find(address => address.isDefault) || addresses[0] || {})._id || "")
     });
   } catch (error) {
@@ -164,6 +166,16 @@ module.exports.placeOrder = async (req, res) => {
   let reserved = [];
   let savedOrder = null;
   try {
+    const paymentMethod = String(req.body.paymentMethod || "cod");
+    if (!["cod", "vnpay"].includes(paymentMethod)) {
+      req.flash("error", "Phương thức thanh toán không hợp lệ.");
+      return res.redirect("/checkout");
+    }
+    if (paymentMethod === "vnpay" && !vnpay.isConfigured()) {
+      req.flash("error", "Cửa hàng chưa cấu hình VNPay. Vui lòng chọn COD hoặc thử lại sau.");
+      return res.redirect("/checkout");
+    }
+
     const address = await Address.findOne({ _id: req.body.addressId, $or: [{ owner_id: guestId }, { customer_id: guestId }] }).lean();
     if (!address) {
       req.flash("error", "Vui lòng chọn địa chỉ nhận hàng hợp lệ.");
@@ -193,8 +205,10 @@ module.exports.placeOrder = async (req, res) => {
     }
 
     const fullAddress = [address.streetAddress, address.ward, address.district, address.province].join(", ");
+    const orderNumber = `GS${Date.now()}${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
     const order = new Order({
-      orderNumber: `GS${Date.now()}${crypto.randomBytes(2).toString("hex").toUpperCase()}`,
+      orderNumber,
+      ...(paymentMethod === "vnpay" ? { paymentTxnRef: orderNumber } : {}),
       guest_id: guestId,
       cart_id: String(cart._id),
       customer: { fullName: address.recipientName, phone: address.phone, email: address.email },
@@ -213,14 +227,16 @@ module.exports.placeOrder = async (req, res) => {
       shippingFee: 0,
       total: subtotal - discountTotal,
       status: "placed",
-      paymentMethod: "cod",
-      paymentStatus: "unpaid",
+      paymentMethod,
+      paymentStatus: paymentMethod === "vnpay" ? "pending" : "unpaid",
       statusHistory: [{ status: "placed", note: "Khách hàng gửi yêu cầu đặt hàng." }]
     });
+    const paymentUrl = paymentMethod === "vnpay" ? vnpay.createPaymentUrl(order, req) : "";
     await order.save();
     savedOrder = order;
 
     await Cart.updateOne({ _id: cart._id }, { $set: { products: [] } });
+    if (paymentUrl) return res.redirect(paymentUrl);
     return res.redirect(`/orders/${order._id}/complete`);
   } catch (error) {
     if (savedOrder) return res.redirect(`/orders/${savedOrder._id}/complete`);
@@ -236,6 +252,81 @@ module.exports.placeOrder = async (req, res) => {
     console.log("Lỗi tạo đơn hàng:", error);
     req.flash("error", error.message || "Không thể tạo đơn hàng. Vui lòng thử lại.");
     res.redirect("/checkout");
+  }
+};
+
+// GET /checkout/vnpay-return: xác minh chữ ký và thông tin đơn từ VNPay,
+// sau đó cập nhật kết quả thanh toán và hiển thị cho khách.
+module.exports.vnpayReturn = async (req, res) => {
+  try {
+    if (!vnpay.verifyResponse(req.query)) {
+      req.flash("error", "Không xác minh được kết quả trả về từ VNPay.");
+      return res.redirect("/orders");
+    }
+    const order = await Order.findOne({ paymentTxnRef: String(req.query.vnp_TxnRef || "") });
+    const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    if (!order || (order.guest_id !== guestId && order.customer_id !== guestId)) return res.redirect("/orders");
+
+    const correctMerchant = req.query.vnp_TmnCode === process.env.VNPAY_TMN_CODE;
+    const correctAmount = Number(req.query.vnp_Amount) === Math.round(order.total * 100);
+    const validPaymentResponse = correctMerchant && correctAmount;
+    const callbackSuccess = validPaymentResponse &&
+      req.query.vnp_ResponseCode === "00" && req.query.vnp_TransactionStatus === "00";
+    const paymentNotice = !validPaymentResponse
+      ? { success: false, message: "Thông tin giao dịch không khớp với đơn hàng. Hãy liên hệ cửa hàng để được hỗ trợ." }
+      : callbackSuccess
+        ? { success: true, message: "Thanh toán VNPay thành công. Đơn hàng đã được cập nhật." }
+        : { success: false, message: `Thanh toán chưa thành công (mã ${req.query.vnp_ResponseCode || "không rõ"}). Bạn có thể thử thanh toán lại từ trang chi tiết đơn hàng.` };
+
+    if (validPaymentResponse && order.paymentStatus === "pending") {
+      order.paymentStatus = callbackSuccess ? "paid" : "failed";
+      order.paymentResponseCode = String(req.query.vnp_ResponseCode || "");
+      order.paymentTransactionNo = String(req.query.vnp_TransactionNo || "");
+      if (callbackSuccess) order.paidAt = new Date();
+      await order.save();
+    }
+
+    return res.render("client/pages/checkout/complete", {
+      pageTitle: "Kết quả thanh toán",
+      order: order.toObject(),
+      paymentNotice
+    });
+  } catch (error) {
+    console.log("Lỗi VNPay Return URL:", error);
+    req.flash("error", "Không thể đọc kết quả thanh toán.");
+    res.redirect("/orders");
+  }
+};
+
+// POST /orders/:orderId/pay-vnpay-again: khởi tạo lại VNPay khi lần thanh toán trước thất bại.
+module.exports.retryVnpay = async (req, res) => {
+  try {
+    if (!vnpay.isConfigured()) {
+      req.flash("error", "Cửa hàng chưa cấu hình VNPay sandbox.");
+      return res.redirect("/orders");
+    }
+    const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    const order = await Order.findOne({
+      _id: req.params.orderId,
+      $or: [{ guest_id: guestId }, { customer_id: guestId }]
+    });
+    if (!order || order.paymentMethod !== "vnpay" || order.paymentStatus !== "failed") {
+      req.flash("error", "Đơn hàng này chưa thể thanh toán lại.");
+      return res.redirect("/orders");
+    }
+
+    order.paymentTxnRef = `${order.orderNumber}-${Date.now()}`;
+    order.paymentStatus = "pending";
+    order.paymentResponseCode = "";
+    order.paymentTransactionNo = "";
+    order.paidAt = null;
+    const paymentUrl = vnpay.createPaymentUrl(order, req);
+    await order.save();
+    return res.redirect(paymentUrl);
+  } catch (error) {
+    console.log("Lỗi tạo lại giao dịch VNPay:", error);
+    req.flash("error", "Không thể khởi tạo lại thanh toán VNPay.");
+    res.redirect("/orders");
   }
 };
 

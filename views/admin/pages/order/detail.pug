@@ -62,7 +62,7 @@ block main
           .card-body
             p.fw-semibold.mb-1= order.customer.fullName
             p.mb-2= order.customer.phone
-            p.small.mb-2 Thanh toán COD · #{order.paymentStatus === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+            p.small.mb-2 #{order.paymentMethod === 'vnpay' ? 'Thanh toán VNPay' : 'Thanh toán COD'} · #{order.paymentStatus === 'paid' ? 'Đã thanh toán' : order.paymentStatus === 'failed' ? 'Thanh toán thất bại' : order.paymentStatus === 'pending' ? 'Đang chờ thanh toán' : 'Chưa thanh toán'}
             p.text-muted.mb-0= order.shippingAddress.fullAddress
             if order.note
               hr
