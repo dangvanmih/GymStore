@@ -1,0 +1,44 @@
+/* Xóa bỏ khoảng cách và ép khung chia đôi tràn màn hình */
+.register-fullscreen-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cột trái chứa hình nền full chiều cao */
+.register-left-bg {
+  background: url('/client/images/banner-2.webp') center center / cover no-repeat;
+  /* Đảm bảo chiều cao tối thiểu lấp đầy phần nhìn bên dưới header */
+  min-height: calc(100vh - 80px);
+  border-radius: 0 20px 20px 0;
+  overflow: hidden;
+}
+
+/* Lớp phủ tối gradient cho ảnh bên trái */
+.register-overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+/* Tinh chỉnh input form bên phải */
+.register-form-container .form-control {
+  padding: 12px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+}
+
+.register-form-container .form-control:focus {
+  border-color: #212529;
+  box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.1);
+}
+
+.register-form-container .form-label {
+  font-size: 13px;
+  color: #495057;
+}
+
+.register-overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.85) 100%);
+  justify-content: flex-end !important; /* Đẩy nội dung lên trên thay vì nằm sát đáy */
+  padding-bottom: 100px !important; /* Khoảng cách từ mép trên xuống đến chữ */
+}

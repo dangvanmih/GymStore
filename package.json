@@ -31,6 +31,7 @@
     "mongoose": "^9.9.3",
     "mongoose-slug-updater": "^3.3.0",
     "multer": "^2.4.0",
+    "nodemailer": "^10.3.1",
     "pug": "^3.0.4",
     "streamifier": "^0.1.1",
     "tinymce": "^8.9.3"

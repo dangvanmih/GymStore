@@ -1,0 +1,57 @@
+extends ../../layouts/default.pug
+
+block style
+  link(rel="stylesheet" href="/client/css/register.css?v=1.0")
+
+block main
+  .register-fullscreen-wrapper
+    .row.g-0.min-vh-100
+      
+      //- CỘT TRÁI: Ảnh nền full nửa màn hình
+      .col-lg-6.d-none.d-lg-flex.position-relative.register-left-bg
+        .register-overlay.d-flex.flex-column.justify-content-end.p-5.text-white.w-100
+          h1.display-5.fw-bold.mb-3 Chào mừng đến với DEGREY
+          p.lead.text-white-50 Mọi thứ bạn cần cho hành trình tập luyện nâng tầm vóc dáng với trang phục chất lượng, giá tốt mỗi ngày.
+
+      //- CỘT PHẢI: Form Đăng ký căn giữa
+      .col-12.col-lg-6.bg-white.d-flex.align-items-center.justify-content-center.p-4.p-md-5
+        .register-form-container.w-100(style="max-width: 480px;")
+          h2.fw-bold.mb-4.text-center Đăng ký tài khoản
+
+          form(action="/user/register" method="POST")
+            .row
+              .col-md-6.mb-3
+                label.form-label.fw-semibold Họ
+                input.form-control(type="text" name="firstName" placeholder="Nhập họ của bạn" required)
+              .col-md-6.mb-3
+                label.form-label.fw-semibold Tên
+                input.form-control(type="text" name="lastName" placeholder="Nhập tên của bạn" required)
+
+            .mb-3
+              label.form-label.fw-semibold Email
+              input.form-control(type="email" name="email" placeholder="Nhập email của bạn" required)
+
+            .mb-3
+              label.form-label.fw-semibold Số điện thoại
+              input.form-control(type="text" name="phone" placeholder="Nhập số điện thoại của bạn")
+
+            .mb-3
+              label.form-label.fw-semibold Mật khẩu
+              input.form-control(type="password" name="password" placeholder="Nhập mật khẩu của bạn" required)
+
+            .mb-4
+              label.form-label.fw-semibold Nhập lại mật khẩu
+              input.form-control(type="password" name="confirmPassword" placeholder="Nhập lại mật khẩu của bạn" required)
+
+            button.btn.btn-dark.w-100.py-3.fw-bold.mb-3(type="submit") Đăng ký
+
+            .text-center.text-muted.small.mb-3
+              | Bạn đã có tài khoản? 
+              a.text-dark.fw-semibold.text-decoration-none(href="/user/login") Đăng nhập
+
+            p.text-center.text-muted.terms-text.small
+              | Bằng việc đăng ký, bạn đồng ý với 
+              a.text-dark.text-decoration-underline(href="#") Điều khoản sử dụng
+              | . Tìm hiểu cách chúng tôi sử dụng dữ liệu của bạn trong 
+              a.text-dark.text-decoration-underline(href="#") Chính sách bảo mật
+              | .

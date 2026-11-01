@@ -139,3 +139,17 @@ if (showAlert) {
     });
   }
 };
+
+//xử lý nhập lại password
+const formRegister = document.querySelector("form[action*='/user/register']");
+if (formRegister) {
+  formRegister.addEventListener("submit", (e) => {
+    const password = formRegister.querySelector("input[name='password']").value;
+    const confirmPassword = formRegister.querySelector("input[name='confirmPassword']").value;
+
+    if (password !== confirmPassword) {
+      e.preventDefault(); // Ngăn chặn không cho form submit lên server
+      alert("Mật khẩu nhập lại không khớp! Vui lòng kiểm tra lại.");
+    }
+  });
+}
