@@ -98,12 +98,22 @@
   white-space: nowrap;
 }
 
-.nav-menu .nav-link i {
-  font-size: 1rem;
+.menu-icon {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--text-body, #83808D);
+  transition: color 0.2s ease, margin 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-menu .nav-link .menu-icon {
   width: 20px;
-  text-align: center;
-  transition: margin 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
-  color: var(--text-body);
+  flex-basis: 20px;
 }
 
 .nav-menu .nav-link:hover {
@@ -111,7 +121,7 @@
   background: linear-gradient(135deg, #c3a1fd48, #9254fd44) !important;
 }
 
-.nav-menu .nav-link:hover i {
+.nav-menu .nav-link:hover .menu-icon {
   color: #7140FD;
 }
 
@@ -123,7 +133,7 @@
   box-shadow: 0 4px 12px rgba(113, 64, 253, 0.25);
 }
 
-.nav-menu .nav-link.active i {
+.nav-menu .nav-link.active .menu-icon {
   color: #FFFFFF !important;
 }
 
@@ -141,6 +151,11 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+}
+
+.toggle-btn .menu-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .toggle-btn:hover {
@@ -180,9 +195,10 @@
   width: 100%;
 }
 
-.sider.collapsed .nav-menu .nav-link i {
+.sider.collapsed .nav-menu .nav-link .menu-icon {
   margin: 0;
-  font-size: 1.15rem;
+  width: 21px;
+  height: 21px;
 }
 
 /* ==========================================

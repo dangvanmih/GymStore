@@ -4,7 +4,8 @@ header.header-admin
   //- Left Section: Nút 3 gạch (Mobile Toggle) & Logo
   .header-logo.d-flex.align-items-center.gap-2
     button#sidebarToggle.mobile-menu-toggle(type="button" title="Mở/Đóng Menu")
-      i.fas.fa-bar
+      svg.menu-icon(viewBox="0 0 24 24" aria-hidden="true")
+        path(d="M4 6h16M4 12h16M4 18h16")
 
   //- Actions & Profile
   .header-actions
