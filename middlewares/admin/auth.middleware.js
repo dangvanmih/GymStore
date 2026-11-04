@@ -1,5 +1,6 @@
 const Account = require("../../models/account.model");
 const Role = require("../../models/role.model");
+const Order = require("../../models/order.model");
 const systemConfig = require("../../configs/system");
 const { isAdministratorRole } = require("../../configs/permissions");
 
@@ -33,6 +34,8 @@ module.exports.requireAuth = async (req, res, next) => {
     // Đưa dữ liệu ra toàn bộ file Pug
     res.locals.user = user;
     res.locals.role = role;
+    // Treat legacy/unspecified statuses as awaiting confirmation; later statuses are excluded.
+    res.locals.pendingOrdersCount = await Order.countDocuments({ status: { $nin: ["preparing", "shipping", "delivered"] } });
 
     next();
   } catch (error) {

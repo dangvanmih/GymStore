@@ -75,6 +75,7 @@
 
 .nav-menu .nav-link {
   display: flex;
+  position: relative;
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
@@ -112,6 +113,36 @@
 .nav-menu .nav-link .menu-icon {
   width: 20px;
   flex-basis: 20px;
+}
+
+.menu-badge {
+  position: absolute;
+  top: 2px;
+  left: 29px;
+  z-index: 1;
+  display: inline-flex;
+  min-width: 14px;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 1;
+  visibility: visible;
+  text-indent: 0;
+}
+
+.menu-badge[hidden] {
+  display: none !important;
 }
 
 .nav-menu .nav-link:hover {
@@ -200,6 +231,11 @@
   margin: 0;
   width: 21px;
   height: 21px;
+}
+
+.sider.collapsed .nav-menu .menu-badge {
+  left: calc(50% + 4px);
+  top: 2px;
 }
 
 /* ==========================================

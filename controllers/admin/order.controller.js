@@ -1,5 +1,6 @@
 const Order = require("../../models/order.model");
 const systemConfig = require("../../configs/system");
+const mongoose = require("mongoose");
 
 const statusLabels = {
   placed: "Đặt hàng",
@@ -23,7 +24,21 @@ module.exports.index = async (req, res) => {
   });
 };
 
+module.exports.pendingCount = async (req, res, next) => {
+  try {
+    // Treat legacy/unspecified statuses as awaiting confirmation; later statuses are excluded.
+    const count = await Order.countDocuments({ status: { $nin: ["preparing", "shipping", "delivered"] } });
+    res.json({ count });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.detail = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id) || !/^[a-f\d]{24}$/i.test(req.params.id)) {
+    return res.status(404).send("KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n hÃ ng.");
+  }
+
   const order = await Order.findById(req.params.id).lean();
   if (!order) {
     req.flash("error", "Không tìm thấy đơn hàng.");
