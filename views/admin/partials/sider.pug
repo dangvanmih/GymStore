@@ -32,6 +32,10 @@ aside.sider
           a.nav-link(href=`${prefixAdmin}/products`)
             i.fas.fa-boxes
             span Products
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/inventory`)
+            i.fas.fa-warehouse
+            span Inventory
       if(role.permissions.includes("products-category_view"))
         li.nav-item
           a.nav-link(href=`${prefixAdmin}/categories`)

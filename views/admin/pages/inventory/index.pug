@@ -1,0 +1,84 @@
+extends ../../layouts/default.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/breadcrumb.pug
+
+append style
+  link(rel="stylesheet" href="/admin/css/product.css")
+
+block main
+  if(role.permissions.includes("products_view"))
+    .container-fluid.p-0
+      +breadcrumb("Quản lý tồn kho", [
+        { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
+        { title: "Tồn kho", link: "#" }
+      ])
+
+      p.text-muted.mb-3 Theo dõi số lượng sản phẩm đã bán và còn trong kho.
+
+      .card.mb-3
+        .card-header Bộ lọc và tìm kiếm
+        .card-body
+          .row.align-items-center
+            .col-md-6.mb-2.mb-md-0
+              +filter-Status(filterStatus)
+              button.btn.btn-sm.ml-1.btn-outline-custom(
+                type="button"
+                data-stock-filter="out"
+                class=stockFilter === 'out' ? 'active' : ''
+              ) Hết hàng
+            .col-md-6
+              +search(keyword)
+
+      .card.border-0.shadow-sm.rounded-3
+        .card-body.p-0
+          .table-responsive
+            table.table.table-hover.align-middle.mb-0.custom-enterprise-table
+              thead
+                tr
+                  th.text-center(style="width: 70px") STT
+                  th Tên sản phẩm
+                  th.text-center(style="width: 170px") Số lượng ban đầu
+                  th.text-center(style="width: 140px") Đã bán
+                  th.text-center(style="width: 140px") Tồn kho
+                  th.text-center(style="width: 160px") Trạng thái
+              tbody
+                if products && products.length
+                  each product, index in products
+                    tr
+                      td.text-center #{pagination.limitItems * (pagination.currentPage - 1) + index + 1}
+                      td
+                        .fw-semibold.text-dark.product-title #{product.title}
+                        if product.hasVariants && product.inventoryVariants.length
+                          .inventory-size-list.mt-2
+                            each variant in product.inventoryVariants
+                              .inventory-size-row
+                                span.inventory-size-label
+                                  | Size #{variant.size}
+                                  if variant.color
+                                    |  · #{variant.color}
+                                span Tổng #{variant.totalQuantity.toLocaleString('vi-VN')}
+                                span Đã bán #{variant.sold.toLocaleString('vi-VN')}
+                                span(class=variant.remaining === 0 ? 'text-danger font-weight-bold' : '') Còn #{variant.remaining.toLocaleString('vi-VN')}
+                      td.text-center #{product.totalQuantity.toLocaleString('vi-VN')}
+                      td.text-center #{product.sold.toLocaleString('vi-VN')}
+                      td.text-center
+                        span(class=product.remaining === 0 ? 'text-danger font-weight-bold' : 'font-weight-bold text-dark') #{product.remaining.toLocaleString('vi-VN')}
+                      td.text-center
+                        if product.status === 'active'
+                          span.badge-status.badge-status-success
+                            i.fas.fa-circle
+                            | Hoạt động
+                        else
+                          span.badge-status.badge-status-danger
+                            i.fas.fa-circle
+                            | Dừng hoạt động
+                else
+                  tr
+                    td.text-center.py-4(colspan="6")
+                      .text-muted Không tìm thấy sản phẩm nào.
+
+        +pagination(pagination)
+
+    script(src="/admin/js/inventory.js")

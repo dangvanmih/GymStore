@@ -97,6 +97,28 @@ tr:hover {
   text-overflow: ellipsis;
 }
 
+.inventory-size-list {
+  display: grid;
+  gap: 4px;
+  max-width: 620px;
+  white-space: normal;
+}
+
+.inventory-size-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: #6b6875;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.inventory-size-label {
+  min-width: 100px;
+  color: #242130;
+  font-weight: 600;
+}
+
 .product-price {
   color: var(--text-body, #242130) !important;
   font-weight: 600;
