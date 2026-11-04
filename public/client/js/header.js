@@ -1,4 +1,43 @@
+// xử lý menu mobile
+
 document.addEventListener("DOMContentLoaded", () => {
+  const mobileMenuButton = document.getElementById("btnMobileMenu");
+  const mobileNavigation = document.getElementById("mobileNavigation");
+
+  if (mobileMenuButton && mobileNavigation) {
+    const closeMobileMenu = () => {
+      mobileNavigation.classList.remove("is-open");
+      mobileNavigation.setAttribute("aria-hidden", "true");
+      mobileMenuButton.setAttribute("aria-expanded", "false");
+      mobileMenuButton.setAttribute("aria-label", "Mở menu");
+      mobileMenuButton.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+    };
+
+    mobileMenuButton.addEventListener("click", () => {
+      const isOpen = mobileNavigation.classList.toggle("is-open");
+      mobileNavigation.setAttribute("aria-hidden", String(!isOpen));
+      mobileMenuButton.setAttribute("aria-expanded", String(isOpen));
+      mobileMenuButton.setAttribute("aria-label", isOpen ? "Đóng menu" : "Mở menu");
+      mobileMenuButton.innerHTML = `<i class="fa-solid fa-${isOpen ? "xmark" : "bars"}" aria-hidden="true"></i>`;
+    });
+
+    mobileNavigation.addEventListener("click", event => {
+      if (event.target.closest("a")) closeMobileMenu();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeMobileMenu();
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 992) closeMobileMenu();
+    });
+  }
+
+
+// Xử lý tìm kiếm sản phẩm
+
+
   const searchInput = document.getElementById("searchInput");
   const searchResultsContainer = document.getElementById("search-results");
   const suggestionsBlock = document.getElementById("searchSuggestionsBlock"); // Khối gợi ý

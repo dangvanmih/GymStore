@@ -35,6 +35,9 @@ header.header.bg-white.sticky-top
 
       //- Action Utilities
       .col-lg-3.col-6.d-flex.align-items-center.justify-content-end
+        button#btnMobileMenu.mobile-menu-toggle.d-lg-none(type='button', aria-label='Mở menu', aria-expanded='false', aria-controls='mobileNavigation')
+          i.fa-solid.fa-bars(aria-hidden='true')
+
         //- Nút kính hiển vi kích hoạt Search Overlay
         button#btnOpenSearch.icon-link.btn.btn-link.mr-3(type='button', title='Tìm kiếm')
           i.fas.fa-search
@@ -61,6 +64,20 @@ header.header.bg-white.sticky-top
         a.nav-icon-item.icon-link.cart-link.mr-3(href='/cart')
           i.fas.fa-shopping-bag
           span.cart-badge #{miniCart ? miniCart.totalQuantity : 0}
+
+    #mobileNavigation.mobile-navigation.d-lg-none(aria-hidden='true')
+      nav(aria-label='Menu chính')
+        ul.mobile-navigation-list
+          if (layoutCategories)
+            each item in layoutCategories
+              li.mobile-navigation-item
+                a.mobile-navigation-link(href=`/products/${item.slug}`) #{item.title}
+                if (item.children && item.children.length > 0)
+                  ul.mobile-subnavigation
+                    each sub in item.children
+                      li: a.mobile-navigation-sublink(href=`/products/${sub.slug}`) #{sub.title}
+          li.mobile-navigation-item: a.mobile-navigation-link(href='/cua-hang') Cửa hàng
+          li.mobile-navigation-item: a.mobile-navigation-link(href='/orders') Tra cứu đơn
 
 //- SEARCH OVERLAY (Khung tìm kiếm phủ toàn màn hình)
 #searchOverlay.search-overlay

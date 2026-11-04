@@ -118,6 +118,78 @@
   background-color: #f4f4f5;
   color: #000;
 }
+/* xử lý menu mobile */
+
+.header .mobile-menu-toggle {
+  width: 36px;
+  height: 36px;
+  margin-right: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #111;
+  font-size: 1.2rem;
+}
+
+.header .mobile-menu-toggle:hover,
+.header .mobile-menu-toggle:focus-visible {
+  background: #f4f4f5;
+}
+
+.mobile-navigation {
+  display: none;
+  max-height: calc(100vh - 72px);
+  overflow-y: auto;
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+
+.mobile-navigation.is-open {
+  display: block;
+}
+
+.mobile-navigation-list,
+.mobile-subnavigation {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobile-navigation-item {
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-navigation-link,
+.mobile-navigation-sublink {
+  display: block;
+  padding: 13px 8px;
+  color: #111;
+  font-size: .9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobile-navigation-sublink {
+  padding: 10px 24px;
+  color: #555;
+  font-size: .85rem;
+  font-weight: 400;
+}
+
+.mobile-navigation-link:hover,
+.mobile-navigation-sublink:hover {
+  color: #ff4500;
+}
+
+@media (min-width: 992px) {
+  .mobile-navigation,
+  .header .mobile-menu-toggle {
+    display: none !important;
+  }
+}
+
+/* hết xử lý mobile menu */
 
 .header .cart-link {
   position: relative;
