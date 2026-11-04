@@ -88,6 +88,19 @@
   text-decoration: none !important;
 }
 
+.user-profile .dropdown-toggle::after {
+  flex: 0 0 auto;
+  margin-left: 2px;
+  border-top-color: #000;
+  transform: rotate(0deg);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.user-profile .dropdown-toggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
 .user-profile .avatar {
   width: 36px;
   height: 36px;
