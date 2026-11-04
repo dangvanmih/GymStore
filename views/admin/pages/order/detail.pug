@@ -15,7 +15,7 @@ block main
       div
         span.badge(class=(order.status === 'delivered' ? 'badge-success' : order.status === 'placed' ? 'badge-warning' : 'badge-primary'))= statusLabels[order.status]
         p.text-muted.small.mt-2.mb-0 Đặt lúc #{new Date(order.createdAt).toLocaleString('vi-VN')}
-      if nextStatus
+      if nextStatus && role.permissions.includes("orders_update")
         form(action=`${prefixAdmin}/orders/${order._id}/status` method="POST")
           input(type="hidden" name="status" value=nextStatus)
           button.btn.btn-dark(type="submit")= nextAction

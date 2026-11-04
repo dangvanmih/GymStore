@@ -69,7 +69,9 @@ block main
                         td.text-center
                           input.form-check-input.checkbox-dark(
                             type="checkbox" 
-                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "admin")
+                            value=perm.name
+                            data-role-id=item.id
+                            disabled=(perm.name === "roles_permission" && ["quản trị viên", "administrator", "admin"].includes(item.title.toLowerCase()))
                           )
 
                   //- Nhóm: Sản phẩm
@@ -92,7 +94,70 @@ block main
                         td.text-center
                           input.form-check-input.checkbox-dark(
                             type="checkbox" 
-                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "admin")
+                            value=perm.name
+                            data-role-id=item.id
+                            disabled=(perm.name === "roles_permission" && ["quản trị viên", "administrator", "admin"].includes(item.title.toLowerCase()))
+                          )
+
+                  tr.table-group-header
+                    td(colspan=records.length + 1)
+                      b Đơn hàng
+
+                  -
+                    const listOrderPerms = [
+                      { name: "orders_view", label: "Xem danh sách và chi tiết" },
+                      { name: "orders_update", label: "Cập nhật trạng thái đơn hàng" }
+                    ]
+
+                  each perm in listOrderPerms
+                    tr(data-name=perm.name)
+                      td.ps-4 #{perm.label}
+                      each item in records
+                        td.text-center
+                          input.form-check-input.checkbox-dark(
+                            type="checkbox"
+                            value=perm.name
+                            data-role-id=item.id
+                          )
+
+                  tr.table-group-header
+                    td(colspan=records.length + 1)
+                      b Tồn kho
+
+                  -
+                    const listInventoryPerms = [
+                      { name: "inventory_view", label: "Xem tồn kho" }
+                    ]
+
+                  each perm in listInventoryPerms
+                    tr(data-name=perm.name)
+                      td.ps-4 #{perm.label}
+                      each item in records
+                        td.text-center
+                          input.form-check-input.checkbox-dark(
+                            type="checkbox"
+                            value=perm.name
+                            data-role-id=item.id
+                          )
+
+                  tr.table-group-header
+                    td(colspan=records.length + 1)
+                      b Cài đặt
+
+                  -
+                    const listSettingsPerms = [
+                      { name: "settings_view", label: "Xem cài đặt" }
+                    ]
+
+                  each perm in listSettingsPerms
+                    tr(data-name=perm.name)
+                      td.ps-4 #{perm.label}
+                      each item in records
+                        td.text-center
+                          input.form-check-input.checkbox-dark(
+                            type="checkbox"
+                            value=perm.name
+                            data-role-id=item.id
                           )
 
                   //- Nhóm: Nhóm quyền
@@ -116,7 +181,9 @@ block main
                         td.text-center
                           input.form-check-input.checkbox-dark(
                             type="checkbox" 
-                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "admin")
+                            value=perm.name
+                            data-role-id=item.id
+                            disabled=(perm.name === "roles_permission" && ["quản trị viên", "administrator", "admin"].includes(item.title.toLowerCase()))
                           )
 
                   //- Nhóm: Tài khoản
@@ -139,7 +206,9 @@ block main
                         td.text-center
                           input.form-check-input.checkbox-dark(
                             type="checkbox" 
-                            disabled=(item.title.toLowerCase() === "quản trị viên" || item.title.toLowerCase() === "admin")
+                            value=perm.name
+                            data-role-id=item.id
+                            disabled=(perm.name === "roles_permission" && ["quản trị viên", "administrator", "admin"].includes(item.title.toLowerCase()))
                           )
 
       form(
@@ -151,4 +220,4 @@ block main
         div(class="form-group")
           input(type="text" class="form-control" name="permissions")    
 
-      script(src="/admin/js/role.js")
+      script(src="/admin/js/role.js?v=2")

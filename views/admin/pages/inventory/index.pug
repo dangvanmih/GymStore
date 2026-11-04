@@ -8,7 +8,7 @@ append style
   link(rel="stylesheet" href="/admin/css/product.css")
 
 block main
-  if(role.permissions.includes("products_view"))
+  if(role.permissions.includes("inventory_view"))
     .container-fluid.p-0
       +breadcrumb("Quản lý tồn kho", [
         { title: "Dashboard", link: `${prefixAdmin}/dashboard` },

@@ -1,6 +1,7 @@
 const Account = require("../../models/account.model");
 const Role = require("../../models/role.model");
 const systemConfig = require("../../configs/system");
+const { isAdministratorRole } = require("../../configs/permissions");
 
 module.exports.requireAuth = async (req, res, next) => {
   try {
@@ -23,6 +24,10 @@ module.exports.requireAuth = async (req, res, next) => {
       .select("title permissions");
     if (!role) {
       return res.status(403).send("Không tìm thấy vai trò của tài khoản.");
+    }
+
+    if (isAdministratorRole(role.title)) {
+      role.permissions = [...new Set([...(role.permissions || []), "roles_permission"])];
     }
 
     // Đưa dữ liệu ra toàn bộ file Pug

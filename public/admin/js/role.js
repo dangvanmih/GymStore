@@ -43,33 +43,23 @@ const tablePermissions = document.querySelector("[table-permissions]");
 if (tablePermissions) {
   const btnSubmit = document.querySelector("[button-submit]");
   btnSubmit.addEventListener("click", () => {
-    let permissions = [];
+    const idRow = tablePermissions.querySelector('[data-name="id"]');
+    const roleIdInputs = Array.from(idRow.querySelectorAll("input"));
+    const permissions = roleIdInputs.map(input => ({
+      id: input.value,
+      permissions: []
+    }));
+    const permissionsById = new Map(permissions.map(item => [item.id, item]));
 
-    const rows = tablePermissions.querySelectorAll("[data-name]");
-
-    rows.forEach(row => {
-
-      const name = row.getAttribute("data-name");
-      const inputs = row.querySelectorAll("input");
-
-      if (name == "id") {
-        inputs.forEach(input => {
-          const id = input.value;
-          permissions.push({
-            id: id,
-            permissions: []
-          });
-        })
-      } else {
-        inputs.forEach((input, index) => {
-          const checked = input.checked;
-          if (checked) {
-            // dựa vào chỉ số index bên trên để biết cái data-name nào được tích để gán cho cái name = id
-            permissions[index].permissions.push(name)
-          }
-        })
-      };
-    })
+    tablePermissions.querySelectorAll("input[type='checkbox']:checked").forEach(input => {
+      const rowInputs = Array.from(input.closest("tr").querySelectorAll("input[type='checkbox']"));
+      const columnIndex = rowInputs.indexOf(input);
+      const rolePermissions = permissionsById.get(input.dataset.roleId)
+        || permissionsById.get(roleIdInputs[columnIndex]?.value);
+      if (rolePermissions && input.value) {
+        rolePermissions.permissions.push(input.value);
+      }
+    });
 
     if (permissions.length > 0) {
       const formChangePermission = document.querySelector(
@@ -96,21 +86,13 @@ if (dataRecords) {
 
   const tablePermissions = document.querySelector("[table-permissions]");
 
-  records.forEach((record, index) => {
-    const permission = record.permissions;
-
-    permission.forEach(permission => {
-      const row = tablePermissions.querySelector(
-        `[data-name="${permission}"]`
+  records.forEach(record => {
+    const roleId = record._id || record.id;
+    (record.permissions || []).forEach(permission => {
+      const input = tablePermissions.querySelector(
+        `input[type="checkbox"][data-role-id="${roleId}"][value="${permission}"]`
       );
-
-      if (row) {
-        const input = row.querySelectorAll("input")[index];
-
-        if (input) {
-          input.checked = true;
-        }
-      }
+      if (input) input.checked = true;
     });
   });
 };
