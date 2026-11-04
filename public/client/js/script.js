@@ -37,41 +37,27 @@ document.addEventListener('DOMContentLoaded', function () {
 // end searchOverlay
 
 
-//scroll web
-document.addEventListener("DOMContentLoaded", function () {
-  const lenis = new Lenis({
-    duration: 0.17,      // Thời gian mượt (giảm số này thì nhanh hơn, tăng thì chậm hơn)
-    easing: (t) => t,   // Hàm easing, có thể custom
-    smooth: true,
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-
-  requestAnimationFrame(raf);
-});
-//end-scroll-web
-
 // scroll-header
-let lastScroll = 0; //vị trí scroll của lần trước
+let lastScroll = window.scrollY;
+let lastHeaderDirectionChange = lastScroll;
 const header = document.querySelector(".header");
 
-window.addEventListener("scroll", () => {
-  const currentScroll = window.scrollY;
+if (header) {
+  window.addEventListener("scroll", () => {
+    const currentScroll = window.scrollY;
+    const direction = Math.sign(currentScroll - lastScroll);
 
-  if (currentScroll > lastScroll) { //đang scroll xuống
-    // scroll xuống
-    header.classList.add("hide");
+    if (currentScroll < 80) {
+      header.classList.remove("hide");
+      lastHeaderDirectionChange = currentScroll;
+    } else if (direction && Math.abs(currentScroll - lastHeaderDirectionChange) >= 8) {
+      header.classList.toggle("hide", direction > 0);
+      lastHeaderDirectionChange = currentScroll;
+    }
 
-  } else { //đang scroll lên
-    // scroll lên
-    header.classList.remove("hide");
-  }
-
-  lastScroll = currentScroll; // sau mỗi lần scroll thì gán lại vị trí scroll mới nhất
-});
+    lastScroll = currentScroll;
+  }, { passive: true });
+}
 
 //end-scrol-header
 

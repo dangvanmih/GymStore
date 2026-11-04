@@ -7,4 +7,5 @@ router.post('/register', controller.registerPost);
 
 router.get('/otp-password', controller.otpPassword);
 router.post('/otp-password', controller.otpPasswordPost);
+router.post('/otp-password/resend', controller.resendOtp);
 module.exports = router;
