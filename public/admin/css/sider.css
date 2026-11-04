@@ -1,17 +1,14 @@
-/* ==========================================
-   SIDER - LIGHT THEME ENTERPRISE
-   ========================================== */
-
 /* 1. Khung Sider chính */
 .sider {
   width: 260px;
   min-width: 260px;
   height: 100vh;
-  background-color: #FFFFFF !important; /* Nền trắng tinh tế theo thiết kế */
+  background-color: #ffffff !important; /* Nền trắng tinh tế theo thiết kế */
   box-shadow: 4px 0 16px rgba(113, 64, 253, 0.06) !important;
   display: flex;
   flex-direction: column;
-  transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+  transition:
+    width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
     min-width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
 }
@@ -23,7 +20,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  transition: padding 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+  transition:
+    padding 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
     justify-content 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -36,14 +34,11 @@
 }
 
 .logo-icon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, #7140FD, #C75AFD); /* Sử dụng dải màu Gradient thương hiệu */
-  border-radius: 8px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
   font-size: 0.9rem;
 }
 
@@ -66,7 +61,7 @@
 .menu-group-title {
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--text-muted, #BCB8C7); /* Chữ phụ xám nhạt */
+  color: var(--text-muted, #bcb8c7); /* Chữ phụ xám nhạt */
   letter-spacing: 1px;
   padding: 16px 12px 8px 12px;
   white-space: nowrap;
@@ -88,7 +83,8 @@
   font-weight: 500;
   border-radius: 8px;
   text-decoration: none !important;
-  transition: background-color 0.2s ease,
+  transition:
+    background-color 0.2s ease,
     color 0.2s ease,
     padding 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
     justify-content 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -107,8 +103,10 @@
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
-  color: var(--text-body, #83808D);
-  transition: color 0.2s ease, margin 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color: var(--text-body, #83808d);
+  transition:
+    color 0.2s ease,
+    margin 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .nav-menu .nav-link .menu-icon {
@@ -122,26 +120,26 @@
 }
 
 .nav-menu .nav-link:hover .menu-icon {
-  color: #7140FD;
+  color: #7140fd;
 }
 
 /* Trạng thái Active - Dùng màu Tím thương hiệu */
 .nav-menu .nav-link.active {
-  color: #FFFFFF !important;
-  background: linear-gradient(135deg, #C2A1FD, #9154FD) !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #c2a1fd, #9154fd) !important;
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(113, 64, 253, 0.25);
 }
 
 .nav-menu .nav-link.active .menu-icon {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 
 /* Nút Toggle */
 .toggle-btn {
   background: transparent;
   border: none;
-  color: var(--text-body, #83808D);
+  color: var(--text-body, #83808d);
   font-size: 1rem;
   cursor: pointer;
   width: 32px;
@@ -160,7 +158,7 @@
 
 .toggle-btn:hover {
   color: var(--text-title, #242130);
-  background-color: var(--bg-card-hover, #EFEFF4);
+  background-color: var(--bg-card-hover, #efeff4);
 }
 
 /* --- TRẠNG THÁI SIDER COLLAPSED (THU GỌN) --- */
@@ -176,7 +174,10 @@
   visibility: hidden;
   width: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease, visibility 0.25s ease, width 0.45s ease;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease,
+    width 0.45s ease;
 }
 
 .sider.collapsed .sider-header {
@@ -220,7 +221,7 @@
     min-width: 280px !important;
     height: 100vh !important;
     z-index: 1055 !important; /* Nằm trên cùng */
-    background-color: #FFFFFF !important;
+    background-color: #ffffff !important;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1) !important;
     transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
   }
@@ -243,7 +244,9 @@
     z-index: 1050;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 
   /* Khi mở menu thì hiện lớp nền mờ */
@@ -253,7 +256,7 @@
   }
 
   /* Đảm bảo nút menu 3 gạch luôn hiển thị trên thanh header ở mobile */
-  .mobile-menu-toggle, 
+  .mobile-menu-toggle,
   .sider-header .toggle-btn {
     display: inline-flex !important;
   }
