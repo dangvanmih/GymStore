@@ -359,19 +359,25 @@ module.exports.detailProduct = async (req, res) => {
     };
 
     const product = await Product.findOne(findQuery).lean();
-    const category = await Category.findOne({ _id: product.category_id });
-    const createByUser = await Account.findOne({
-      _id: product.createdBy.account_id
-    }).select("fullName");
+    if (!product) {
+      req.flash("error", "Không tìm thấy sản phẩm!");
+      return res.redirect(`${systemConfig.prefixAdmin}/products`);
+    }
+
+    // Danh mục và tài khoản có thể đã bị xóa hoặc không có trên dữ liệu cũ.
+    const category = product.category_id
+      ? await Category.findOne({ _id: product.category_id }).lean()
+      : null;
+    const createByUser = product.createdBy?.account_id
+      ? await Account.findById(product.createdBy.account_id).select("fullName").lean()
+      : null;
 
     const latestUpdate = product.updatedBy?.length
       ? product.updatedBy[product.updatedBy.length - 1]
       : null;
 
     const updatedByUser = latestUpdate
-      ? await Account.findOne({
-        _id: latestUpdate.account_id
-      }).select("fullName")
+      ? await Account.findById(latestUpdate.account_id).select("fullName").lean()
       : null;
 
     product.priceNew = Math.round(

@@ -52,8 +52,9 @@ block main
             div
               strong= order.orderNumber
               .small.text-muted Đặt lúc #{new Date(order.createdAt).toLocaleString('vi-VN')}
-            span.badge(class=(order.status === 'delivered' ? 'text-bg-success' : order.status === 'placed' ? 'text-bg-warning' : 'text-bg-primary'))= statusLabels[order.status]
-          +order-progress(order.status)
+            span.badge(class=(order.status === 'cancelled' ? 'text-bg-danger' : order.status === 'delivered' ? 'text-bg-success' : order.status === 'placed' ? 'text-bg-warning' : 'text-bg-primary'))= statusLabels[order.status]
+          if order.status !== "cancelled"
+            +order-progress(order.status)
           .tracking-order-products
             each item in order.products
               .tracking-product-row
@@ -73,6 +74,9 @@ block main
                 span Tổng cộng:
                 strong.text-success.ms-1 #{order.total.toLocaleString('vi-VN')}₫
             .d-flex.flex-wrap.gap-2
+              if order.status === "placed"
+                form(action=`/orders/${order._id}/cancel` method="POST")
+                  button.btn.btn-outline-danger.btn-sm(type="button" data-order-cancel) Hủy đơn
               if order.status === "shipping"
                 form(action=`/orders/${order._id}/confirm-received` method="POST")
                   button.btn.btn-success.btn-sm(type="submit") Xác nhận đã nhận

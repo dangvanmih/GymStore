@@ -13,12 +13,17 @@ block main
     ])
     .d-flex.flex-wrap.justify-content-between.align-items-center.gap-3.mb-3
       div
-        span.badge(class=(order.status === 'delivered' ? 'badge-success' : order.status === 'placed' ? 'badge-warning' : 'badge-primary'))= statusLabels[order.status]
+        span.badge(class=(order.status === 'cancelled' ? 'badge-danger' : order.status === 'delivered' ? 'badge-success' : order.status === 'placed' ? 'badge-warning' : 'badge-primary'))= statusLabels[order.status]
         p.text-muted.small.mt-2.mb-0 Đặt lúc #{new Date(order.createdAt).toLocaleString('vi-VN')}
-      if nextStatus && role.permissions.includes("orders_update")
-        form(action=`${prefixAdmin}/orders/${order._id}/status` method="POST")
-          input(type="hidden" name="status" value=nextStatus)
-          button.btn.btn-dark(type="submit")= nextAction
+      if role.permissions.includes("orders_update")
+        .d-flex.flex-wrap.align-items-center
+          if nextStatus
+            form.mr-2.mb-0(action=`${prefixAdmin}/orders/${order._id}/status` method="POST")
+              input(type="hidden" name="status" value=nextStatus)
+              button.btn.btn-dark(type="submit")= nextAction
+          if order.status === "placed"
+            form.mb-0(action=`${prefixAdmin}/orders/${order._id}/cancel` method="POST")
+              button.btn.btn-outline-danger(type="button" data-order-cancel) Hủy đơn hàng
 
     .row.g-3
       .col-lg-8

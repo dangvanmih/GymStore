@@ -1,7 +1,3 @@
-/* ==========================================
-   MOBILE & TABLET RESPONSIVE FIXES
-   ========================================== */
-
 @media (max-width: 991.98px) {
   /* 1. Xử lý khung hiển thị chung trên mobile */
   .admin-wrapper {

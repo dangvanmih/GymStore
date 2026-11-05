@@ -1,10 +1,70 @@
 const Order = require("../../models/order.model");
+const { restoreOrderStock } = require("../../helpers/cancel-order");
+
+const cancellationReasons = [
+  "Tìm được giá tốt hơn",
+  "Cần thay đổi địa chỉ",
+  "Không còn nhu cầu nữa",
+  "Đặt nhầm sản phẩm",
+  "Thời gian giao hàng chưa phù hợp",
+  "Lý do khác"
+];
 
 const statusLabels = {
   placed: "Chờ xác nhận",
   preparing: "Đang chuẩn bị",
   shipping: "Đang giao hàng",
-  delivered: "Đã giao hàng"
+  delivered: "Đã giao hàng",
+  cancelled: "Đã hủy"
+};
+
+// POST /orders/:orderId/cancel: chỉ chủ đơn mới được hủy đơn chưa xác nhận.
+module.exports.cancel = async (req, res) => {
+  try {
+    if (!/^[a-f\d]{24}$/i.test(req.params.orderId || "")) return res.redirect("/orders");
+    const order = await Order.findById(req.params.orderId);
+    const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    const isGuestOwner = order && (order.guest_id === guestId || order.customer_id === guestId);
+    const isVerifiedLookup = order && req.signedCookies.orderAccess === String(order._id);
+    if (!order || (!isGuestOwner && !isVerifiedLookup)) {
+      req.flash("error", "Bạn không có quyền hủy đơn hàng này.");
+      return res.redirect("/orders");
+    }
+    if (order.status !== "placed") {
+      req.flash("error", "Chỉ có thể hủy đơn hàng chưa được xác nhận.");
+      return res.redirect(`/orders/${order._id}`);
+    }
+    const selectedReason = String(req.body.cancelReason || "").trim();
+    const reasonDetail = String(req.body.cancelReasonDetail || "").trim().slice(0, 500);
+    if (!cancellationReasons.includes(selectedReason) || (selectedReason === "Lý do khác" && !reasonDetail)) {
+      req.flash("error", "Vui lòng chọn lý do hủy đơn hợp lệ.");
+      return res.redirect(`/orders/${order._id}`);
+    }
+    const reason = selectedReason === "Lý do khác"
+      ? `${selectedReason}: ${reasonDetail}`
+      : selectedReason;
+
+    const cancelled = await Order.findOneAndUpdate(
+      { _id: order._id, status: "placed" },
+      { $set: { status: "cancelled" }, $push: { statusHistory: {
+        status: "cancelled",
+        changedBy: String(order.customer_id || order.guest_id || "customer"),
+        note: `Khách hàng hủy đơn hàng. Lý do: ${reason}.`
+      } } },
+      { new: true }
+    );
+    if (!cancelled) {
+      req.flash("error", "Đơn hàng vừa được cập nhật, bạn không thể hủy đơn này.");
+      return res.redirect(`/orders/${order._id}`);
+    }
+    await restoreOrderStock(order.products);
+    req.flash("success", "Đã hủy đơn hàng và hoàn lại tồn kho.");
+    return res.redirect(`/orders/${order._id}`);
+  } catch (error) {
+    console.log("Lỗi hủy đơn hàng:", error);
+    req.flash("error", "Không thể hủy đơn hàng lúc này.");
+    return res.redirect("/orders");
+  }
 };
 const validStatuses = Object.keys(statusLabels);
 

@@ -16,8 +16,9 @@ block main
         div
           h1.h4.fw-bold.mb-1= order.orderNumber
           p.text-muted.small.mb-0 Đặt lúc #{new Date(order.createdAt).toLocaleString('vi-VN')}
-        span.badge(class=(order.status === 'delivered' ? 'text-bg-success' : order.status === 'placed' ? 'text-bg-warning' : 'text-bg-primary'))= statusLabels[order.status]
-      +order-progress(order.status)
+        span.badge(class=(order.status === 'cancelled' ? 'text-bg-danger' : order.status === 'delivered' ? 'text-bg-success' : order.status === 'placed' ? 'text-bg-warning' : 'text-bg-primary'))= statusLabels[order.status]
+      if order.status !== "cancelled"
+        +order-progress(order.status)
       .order-info-grid
         .order-info-row
           span Người nhận
@@ -58,9 +59,12 @@ block main
           strong= order.total.toLocaleString('vi-VN') + '₫'
       if order.note
         .order-note Ghi chú: #{order.note}
-      if order.paymentMethod === "vnpay" && order.paymentStatus === "failed"
+      if order.status === "placed" && order.paymentMethod === "vnpay" && order.paymentStatus === "failed"
         form.mt-3(action=`/orders/${order._id}/pay-vnpay-again` method="POST")
           button.btn.btn-warning(type="submit") Thử thanh toán VNPay lại
+      if order.status === "placed"
+        form.mt-3(action=`/orders/${order._id}/cancel` method="POST")
+          button.btn.btn-outline-danger(type="button" data-order-cancel) Hủy đơn hàng
       if order.status === "shipping"
         form.mt-3(action=`/orders/${order._id}/confirm-received` method="POST")
           button.btn.btn-success(type="submit") Xác nhận đã nhận đơn

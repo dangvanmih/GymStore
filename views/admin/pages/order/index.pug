@@ -33,7 +33,7 @@ block main
                     td= new Date(order.createdAt).toLocaleString('vi-VN')
                     td= order.total.toLocaleString('vi-VN') + '₫'
                     td
-                      span.badge(class=(order.status === 'delivered' ? 'badge-success' : order.status === 'placed' ? 'badge-warning' : 'badge-primary'))= statusLabels[order.status]
+                      span.badge(class=(order.status === 'cancelled' ? 'badge-danger' : order.status === 'delivered' ? 'badge-success' : order.status === 'placed' ? 'badge-warning' : 'badge-primary'))= statusLabels[order.status]
                     td
                       a.btn.btn-sm.btn-outline-dark(href=`${prefixAdmin}/orders/${order._id}`) Chi tiết
               else

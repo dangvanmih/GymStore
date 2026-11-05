@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// xử lý xóa role
+// xử lý xóa sản phẩm
 const buttonDelete = document.querySelectorAll("[button-delete]");
 
 if (buttonDelete.length > 0) {
@@ -219,3 +219,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+

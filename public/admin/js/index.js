@@ -158,6 +158,27 @@ if (showAlert) {
   }
 };
 
+// Xác nhận hủy đơn bằng SweetAlert2.
+document.querySelectorAll("[data-order-cancel]").forEach((button) => {
+  button.addEventListener("click", () => {
+    Swal.fire({
+      title: "Bạn có chắc muốn hủy đơn hàng?",
+      text: "Đơn hàng chưa xác nhận sẽ bị hủy và số lượng sản phẩm được hoàn lại vào tồn kho.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#334155",
+      confirmButtonText: "Đồng ý hủy",
+      cancelButtonText: "Quay lại",
+      background: "#131722",
+      color: "#f8fafc",
+      customClass: { popup: "sw2-compact-popup" }
+    }).then((result) => {
+      if (result.isConfirmed) button.closest("form").submit();
+    });
+  });
+});
+
 // Xử lý upload preview ảnh
 document.addEventListener("DOMContentLoaded", () => {
   const uploadImageWrapper = document.querySelector("[upload-image]");

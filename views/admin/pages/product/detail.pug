@@ -201,10 +201,10 @@ block main
                   h6.fw-bold.text-title.mb-2 Khởi tạo dữ liệu
                   p.mb-1.small.text-body
                     strong Người tạo: 
-                    span= product.createdBy ? createByUser.fullName : "Hệ thống"
+                    span= createByUser ? createByUser.fullName : "Hệ thống"
                   p.mb-0.small.text-body
                     strong Thời gian tạo: 
-                    span= product.createdBy ? product.createdAt.toLocaleString('vi-VN') : "N/A"
+                    span= product.createdAt ? new Date(product.createdAt).toLocaleString('vi-VN') : "N/A"
               .col-md-6.pe-0
                 .meta-card.p-3.rounded
                   h6.fw-bold.text-title.mb-2 Cập nhật gần nhất

@@ -6,5 +6,6 @@ const { requirePermission } = require("../../middlewares/admin/permission.middle
 router.get("/", requirePermission("orders_view"), controller.index);
 router.get("/:id", requirePermission("orders_view"), controller.detail);
 router.post("/:id/status", requirePermission("orders_update"), controller.advanceStatus);
+router.post("/:id/cancel", requirePermission("orders_update"), controller.cancel);
 
 module.exports = router;

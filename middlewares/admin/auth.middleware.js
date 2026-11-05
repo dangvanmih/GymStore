@@ -34,8 +34,8 @@ module.exports.requireAuth = async (req, res, next) => {
     // Đưa dữ liệu ra toàn bộ file Pug
     res.locals.user = user;
     res.locals.role = role;
-    // Treat legacy/unspecified statuses as awaiting confirmation; later statuses are excluded.
-    res.locals.pendingOrdersCount = await Order.countDocuments({ status: { $nin: ["preparing", "shipping", "delivered"] } });
+    // Chỉ đơn ở trạng thái placed đang chờ xác nhận mới được tính vào badge.
+    res.locals.pendingOrdersCount = await Order.countDocuments({ status: "placed" });
 
     next();
   } catch (error) {

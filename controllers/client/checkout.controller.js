@@ -310,7 +310,7 @@ module.exports.retryVnpay = async (req, res) => {
       _id: req.params.orderId,
       $or: [{ guest_id: guestId }, { customer_id: guestId }]
     });
-    if (!order || order.paymentMethod !== "vnpay" || order.paymentStatus !== "failed") {
+    if (!order || order.status !== "placed" || order.paymentMethod !== "vnpay" || order.paymentStatus !== "failed") {
       req.flash("error", "Đơn hàng này chưa thể thanh toán lại.");
       return res.redirect("/orders");
     }
