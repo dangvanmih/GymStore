@@ -11,13 +11,13 @@
 
 /* Nút Thêm mới - Vuông vắn, chuẩn màu thương hiệu */
 .roles-management-wrapper .btn-add-role {
-  background-color: var(--bg-btn, #7140FD) !important;
+  background-color: var(--bg-btn, #668B36) !important;
   color: #ffffff !important;
   font-weight: 500;
   font-size: 0.85rem;
   padding: 8px 16px;
   border-radius: 6px !important;
-  border: 1px solid var(--bg-btn, #7140FD) !important;
+  border: 1px solid var(--bg-btn, #668B36) !important;
   transition: background-color 0.15s ease-in-out;
   box-shadow: none !important;
   text-decoration: none;
@@ -26,8 +26,8 @@
 }
 
 .roles-management-wrapper .btn-add-role:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
   color: #ffffff !important;
   box-shadow: 0 4px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
@@ -137,7 +137,7 @@
 }
 
 .btn-action-edit:hover {
-  color: #7140FD !important;
+  color: #668B36 !important;
   background-color: rgba(113, 64, 253, 0.1) !important;
   border-color: rgba(113, 64, 253, 0.2) !important;
 }

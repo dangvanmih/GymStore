@@ -1,0 +1,87 @@
+/* Shared green palette for admin controls; semantic success/error colors stay distinct. */
+:root {
+  --admin-forest: #26372d;
+  --admin-green: #668b36;
+  --admin-green-hover: #526f2e;
+  --admin-lime: #c8ef68;
+  --admin-green-soft: #eef3e9;
+  --admin-green-border: #d8e6bf;
+}
+
+.header-admin,
+.main-content { background-color: #f3f5f1 !important; }
+
+.nav-menu .nav-link:hover { background: var(--admin-green-soft) !important; color: var(--admin-forest) !important; }
+.nav-menu .nav-link:hover .menu-icon { color: var(--admin-green) !important; }
+.nav-menu .nav-link.active { background: var(--admin-forest) !important; color: #fff !important; }
+.nav-menu .nav-link.active .menu-icon { color: var(--admin-lime) !important; }
+
+.main-content .btn-primary,
+.main-content .btn-dark,
+.main-content .btn-custom,
+.main-content .btn-custom-apply,
+.main-content .btn-add-role,
+.main-content .btn-primary-custom,
+.main-content .btn-outline-dark:hover,
+.main-content .pagination .page-item.active .page-link {
+  border-color: var(--admin-forest) !important;
+  background-color: var(--admin-forest) !important;
+  color: #fff !important;
+  box-shadow: none;
+}
+
+.main-content .btn-primary:hover,
+.main-content .btn-dark:hover,
+.main-content .btn-custom:hover,
+.main-content .btn-custom-apply:hover,
+.main-content .btn-add-role:hover,
+.main-content .btn-primary-custom:hover,
+.main-content .btn-outline-dark:hover,
+.main-content .pagination .page-item.active .page-link:hover {
+  border-color: var(--admin-lime) !important;
+  background-color: var(--admin-lime) !important;
+  color: var(--admin-forest) !important;
+}
+
+.main-content .btn-outline-primary {
+  border-color: var(--admin-green) !important;
+  color: var(--admin-green) !important;
+}
+.main-content .btn-outline-primary:hover {
+  border-color: var(--admin-green) !important;
+  background-color: var(--admin-green) !important;
+  color: #fff !important;
+}
+
+.main-content .btn-action-edit:hover,
+.main-content .btn-action-detail:hover,
+.main-content .btn-action-view:hover,
+.main-content .badge-status-success,
+.main-content .badge-success {
+  color: #4d7629 !important;
+}
+.main-content .badge-status-success,
+.main-content .badge-success { background-color: #e8f2dc !important; }
+.main-content .badge-status-danger,
+.main-content .badge-danger { background-color: #fae9e6 !important; color: #a94e41 !important; }
+.main-content .badge-primary { background-color: #e8f2dc !important; color: #4d7629 !important; }
+.main-content .badge-warning { background-color: #fbf1d9 !important; color: #8e681b !important; }
+
+.main-content .pagination .page-link { color: var(--admin-green) !important; }
+.main-content .pagination .page-item.active .page-link { color: #fff !important; }
+.main-content .pagination .page-link:hover { border-color: var(--admin-green-border) !important; background: var(--admin-green-soft) !important; color: var(--admin-forest) !important; }
+.main-content .pagination .page-item.active .page-link:hover { border-color: var(--admin-lime) !important; background: var(--admin-lime) !important; color: var(--admin-forest) !important; }
+
+.main-content input:focus,
+.main-content select:focus,
+.main-content textarea:focus,
+.header-search input:focus {
+  border-color: #8aa960 !important;
+  box-shadow: 0 0 0 3px rgba(138, 169, 96, 0.13) !important;
+  outline: none;
+}
+
+.icon-btn:hover,
+.mobile-menu-toggle:hover,
+.user-profile .dropdown-item:hover { background-color: var(--admin-green-soft) !important; color: var(--admin-forest) !important; }
+.user-profile .dropdown-item.text-danger:hover { color: #a94e41 !important; }

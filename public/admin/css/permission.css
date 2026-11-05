@@ -10,8 +10,8 @@
   --perm-border-light: #F2F2F6;
   --perm-text: #242130;
   --perm-muted: #83808D;
-  --perm-primary: #7140FD;
-  --perm-primary-hover: #5d2fdc;
+  --perm-primary: #668B36;
+  --perm-primary-hover: #526f2e;
   --perm-radius: 12px;
 
   color: var(--perm-text);

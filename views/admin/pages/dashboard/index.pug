@@ -1,6 +1,85 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
+block style
+  link(rel="stylesheet", href="/admin/css/dashboard.css")
+
 block main
   +alert-success(3000)
-  h1 Trang tổng quan
+  .dashboard-page(data-default-from=defaultRange.from, data-default-to=defaultRange.to)
+    .dashboard-heading
+      .dashboard-heading-copy
+        p.dashboard-eyebrow
+          | DEGREY
+          span  /  BÁO CÁO KINH DOANH
+        h1 Tổng quan
+        p.dashboard-subtitle Theo dõi doanh thu và hoạt động kinh doanh của cửa hàng.
+      .dashboard-heading-side
+        span.dashboard-live-dot
+        span THEO DÕI CỬA HÀNG
+        strong= new Date().getFullYear()
+
+    .dashboard-stats
+      article.stat-card.stat-revenue
+        .stat-card-top
+          p.stat-label Doanh thu
+          .stat-icon
+            i.fa-solid.fa-arrow-trend-up(aria-hidden="true")
+        .stat-copy
+          p.stat-value(data-dashboard-metric="revenue")= summary.revenue.toLocaleString('vi-VN') + ' ₫'
+          p.stat-hint Đơn đã giao trong 7 ngày gần nhất
+      article.stat-card.stat-orders
+        .stat-card-top
+          p.stat-label Tổng đơn bán
+          .stat-icon
+            i.fa-solid.fa-bag-shopping(aria-hidden="true")
+        .stat-copy
+          p.stat-value(data-dashboard-metric="totalOrders")= summary.totalOrders.toLocaleString('vi-VN')
+          p.stat-hint Tổng số đơn trong 7 ngày gần nhất
+      article.stat-card.stat-completed
+        .stat-card-top
+          p.stat-label Hoàn thành
+          .stat-icon
+            i.fa-solid.fa-check(aria-hidden="true")
+        .stat-copy
+          p.stat-value(data-dashboard-metric="completedOrders")= summary.completedOrders.toLocaleString('vi-VN')
+          p.stat-hint Đơn đã giao trong 7 ngày gần nhất
+      article.stat-card.stat-cancelled
+        .stat-card-top
+          p.stat-label Đã hủy
+          .stat-icon
+            i.fa-solid.fa-xmark(aria-hidden="true")
+        .stat-copy
+          p.stat-value(data-dashboard-metric="cancelledOrders")= summary.cancelledOrders.toLocaleString('vi-VN')
+          p.stat-hint Đơn bị hủy trong 7 ngày gần nhất
+
+    .dashboard-chart-card
+      .chart-heading
+        div
+          p.chart-kicker XU HƯỚNG BÁN HÀNG
+          h2 Doanh thu và số đơn
+          p So sánh doanh thu thực nhận với lượng đơn theo thời gian.
+        .chart-legend-note
+          span.legend-dot.revenue-dot
+          | Doanh thu
+          span.legend-dot.orders-dot
+          | Số đơn
+      form#dashboardDateFilter.dashboard-date-filter
+        .date-filter-title
+          i.fa-regular.fa-calendar(aria-hidden="true")
+          span Khoảng thời gian
+        .dashboard-date-field
+          label(for="dashboardFrom") Từ ngày
+          input#dashboardFrom(type="date", required)
+        .dashboard-date-field
+          label(for="dashboardTo") Đến ngày
+          input#dashboardTo(type="date", required)
+        button(type="submit")
+          i.fa-solid.fa-filter(aria-hidden="true")
+          |  Lọc dữ liệu
+      p#dashboardChartMessage.chart-message(role="status", aria-live="polite")
+      .chart-wrap
+        canvas#dashboardChart(aria-label="Biểu đồ doanh thu và số đơn theo tháng", role="img")
+
+  script(src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js")
+  script(src="/admin/js/dashboard.js")

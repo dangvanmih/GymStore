@@ -10,7 +10,7 @@
 }
 
 .profile-avatar-wrapper img {
-  border: 3px solid #6366f1;
+  border: 3px solid #668b36;
   padding: 3px;
   background-color: #fff;
 }
@@ -22,7 +22,7 @@
 }
 
 .form-control:focus {
-  border-color: #6366f1;
+  border-color: #668b36;
   box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
 }
 

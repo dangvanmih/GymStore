@@ -60,7 +60,7 @@
 
 /* --- 4. Custom Compact Buttons --- */
 .btn-primary-custom {
-  background-color: #7140FD !important;
+  background-color: #668B36 !important;
   color: #ffffff !important;
   border: none !important;
   padding: 0.35rem 0.85rem !important;
@@ -74,7 +74,7 @@
 }
 
 .btn-primary-custom:hover {
-  background-color: #5d2fdc !important;
+  background-color: #526f2e !important;
   box-shadow: 0 3px 8px rgba(113, 64, 253, 0.25);
 }
 
@@ -93,9 +93,9 @@
 }
 
 .btn-outline-custom:hover {
-  background-color: #7140FD !important;
+  background-color: #668B36 !important;
   color: #ffffff !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
 }
 
 /* --- 5. Container Ảnh Sản Phẩm --- */
@@ -285,7 +285,7 @@
 }
 
 .variants-detail-box h6 i {
-  color: #7140FD;
+  color: #668B36;
 }
 
 /* Bảng Size theo phong cách mềm mại, hiện đại */

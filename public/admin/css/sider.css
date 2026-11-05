@@ -4,7 +4,7 @@
   min-width: 260px;
   height: 100vh;
   background-color: #ffffff !important; /* Nền trắng tinh tế theo thiết kế */
-  box-shadow: 4px 0 16px rgba(113, 64, 253, 0.06) !important;
+  box-shadow: 4px 0 16px rgba(38, 55, 45, 0.07) !important;
   display: flex;
   flex-direction: column;
   transition:
@@ -146,24 +146,24 @@
 }
 
 .nav-menu .nav-link:hover {
-  color: var(--text-title, #242130);
-  background: linear-gradient(135deg, #c3a1fd48, #9254fd44) !important;
+  color: #26372d;
+  background: #eef3e9 !important;
 }
 
 .nav-menu .nav-link:hover .menu-icon {
-  color: #7140fd;
+  color: #668b36;
 }
 
-/* Trạng thái Active - Dùng màu Tím thương hiệu */
+/* Trạng thái đang chọn dùng xanh đậm và điểm nhấn xanh non */
 .nav-menu .nav-link.active {
   color: #ffffff !important;
-  background: linear-gradient(135deg, #c2a1fd, #9154fd) !important;
+  background: #26372d !important;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(113, 64, 253, 0.25);
+  box-shadow: 0 4px 12px rgba(38, 55, 45, 0.16);
 }
 
 .nav-menu .nav-link.active .menu-icon {
-  color: #ffffff !important;
+  color: #c8ef68 !important;
 }
 
 /* Nút Toggle */

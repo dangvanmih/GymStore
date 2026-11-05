@@ -21,7 +21,7 @@ h1{
 .form-control-dark:focus {
   background-color: #FFFFFF !important;
   color: var(--text-body, #242130) !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
@@ -33,7 +33,7 @@ h1{
 /* Nút Trở về */
 .btn-secondary {
   background-color: var(--bg-btn) !important;
-  border: 0.5px solid #7140FD !important;
+  border: 0.5px solid #668B36 !important;
   color: #ffffff !important;
   font-weight: 500;
   font-size: 0.9375rem;
@@ -44,8 +44,8 @@ h1{
 }
 
 .btn-secondary:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
   box-shadow: 0 4px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
 }
@@ -54,20 +54,20 @@ h1{
 }
 /* Nút Submit Tạo mới */
 .btn-submit-role {
-  background-color: #7140FD !important;
+  background-color: #668B36 !important;
   color: #ffffff !important;
   font-weight: 600;
   font-size: 0.875rem;
   padding: 10px 24px;
   border-radius: 8px !important;
-  border: 1px solid #7140FD !important;
+  border: 1px solid #668B36 !important;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 4px 12px rgba(113, 64, 253, 0.2);
 }
 
 .btn-submit-role:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
   box-shadow: 0 6px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
   color: #ffffff !important;

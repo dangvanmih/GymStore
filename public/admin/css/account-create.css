@@ -35,7 +35,7 @@
 .accounts-create-wrapper .form-control-dark:focus {
   background-color: #FFFFFF !important;
   color: var(--text-body, #242130) !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
@@ -60,7 +60,7 @@
 }
 
 .accounts-create-wrapper .form-select-dark:focus {
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
@@ -77,7 +77,7 @@
 /* 4. Nút Trở về */
 .btn-secondary {
   background-color: var(--bg-btn) !important;
-  border: 0.5px solid #7140FD !important;
+  border: 0.5px solid #668B36 !important;
   color: #ffffff !important;
   font-weight: 500;
   font-size: 0.9375rem;
@@ -88,28 +88,28 @@
 }
 
 .accounts-create-wrapper .btn-secondary:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
   box-shadow: 0 4px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
 }
 
 /* 5. Nút Submit Tạo mới tài khoản */
 .accounts-create-wrapper .btn-submit-account {
-  background-color: #7140FD !important;
+  background-color: #668B36 !important;
   color: #ffffff !important;
   font-weight: 600;
   font-size: 0.875rem;
   padding: 10px 22px;
   border-radius: 8px !important;
-  border: 1px solid #7140FD !important;
+  border: 1px solid #668B36 !important;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 4px 12px rgba(113, 64, 253, 0.2);
 }
 
 .accounts-create-wrapper .btn-submit-account:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
   box-shadow: 0 6px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
   color: #ffffff !important;
@@ -135,7 +135,7 @@
 
 .accounts-create-wrapper input[upload-image-input]::file-selector-button {
   background-color: #EFEFF4 !important;
-  color: #7140FD !important;
+  color: #668B36 !important;
   border: 1px solid rgba(113, 64, 253, 0.2) !important;
   border-radius: 6px !important;
   padding: 6px 14px !important;
@@ -146,7 +146,7 @@
 }
 
 .accounts-create-wrapper input[upload-image-input]::file-selector-button:hover {
-  background-color: #7140FD !important;
+  background-color: #668B36 !important;
   color: #ffffff !important;
 }
 

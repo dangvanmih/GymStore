@@ -142,12 +142,12 @@ tr:hover {
 }
 
 .input-position-dark:hover {
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
 }
 
 .input-position-dark:focus {
   background-color: #FFFFFF !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
@@ -218,7 +218,7 @@ tr:hover {
 }
 
 .btn-action-edit:hover {
-  color: #7140FD !important;
+  color: #668B36 !important;
   background-color: rgba(113, 64, 253, 0.1) !important;
   border-color: rgba(113, 64, 253, 0.2) !important;
 }
@@ -259,7 +259,7 @@ tr:hover {
 .btn-outline-custom:hover {
   color: #ffffff !important;
   background-color: var(--bg-btn) !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 12px rgba(113, 64, 253, 0.25);
 }
 
@@ -267,7 +267,7 @@ tr:hover {
 .btn-outline-custom.active {
   color: #ffffff !important;
   background-color: var(--bg-btn) !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
 }
 
 .btn-outline-custom:focus {
@@ -280,7 +280,7 @@ tr:hover {
 }
 
 .btn-custom:hover {
-  background-color: #5d2fdc !important;
+  background-color: #526f2e !important;
   transition: all 0.25s ease;
 }
 
@@ -309,14 +309,14 @@ tr:hover {
 }
 
 .search-input:focus {
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
 
 .btn-search {
   background-color: var(--bg-btn) !important;
-  border: 1px solid #7140FD !important;
+  border: 1px solid #668B36 !important;
   color: #ffffff !important;
   padding: 0 14px !important;
   border-top-right-radius: 6px !important;
@@ -328,8 +328,8 @@ tr:hover {
 }
 
 .btn-search:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
 }
 
 /* ==========================================
@@ -368,7 +368,7 @@ tr:hover {
 
 .pagination .page-item.active .page-link {
   background-color: var(--bg-btn) !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   color: #ffffff !important;
   font-weight: 600;
   box-shadow: 0 0 10px rgba(113, 64, 253, 0.25);
@@ -404,14 +404,14 @@ tr:hover {
 }
 
 .custom-select-dark:focus {
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
 
 .btn-custom-apply {
   background-color: var(--bg-btn) !important;
-  border: 1px solid #7140FD !important;
+  border: 1px solid #668B36 !important;
   color: #ffffff !important;
   font-size: 0.8125rem !important;
   font-weight: 500;
@@ -423,8 +423,8 @@ tr:hover {
 }
 
 .btn-custom-apply:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
 }
 
 .form-select-dark {
@@ -444,7 +444,7 @@ tr:hover {
 }
 
 .form-select-dark:focus {
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }

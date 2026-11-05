@@ -2,24 +2,24 @@
    LIGHT THEME ENTERPRISE - COLOR SYSTEM
    ========================================== */
 :root {
-  --bg-main: #F2F2F6;
+  --bg-main: #F3F5F1;
   /* Nền tổng thể trang quản trị */
   --bg-card: #FFFF;
   /* Nền các khối thẻ (card), bảng dữ liệu */
-  --bg-card-hover: #EFEFF4;
+  --bg-card-hover: #EEF3E9;
   /* Màu khi rê chuột (Background 2) */
-  --border-color: #D9D7DE;
+  --border-color: #DCE3D9;
   /* Đường viền mảnh tinh tế */
-  --bg-btn: #6E39CB;
-  /* Màu tím thương hiệu (Brand Primary) */
-  --bg-btn-outline-active: #6E39CB;
-  --primary-color: #EFEFF4;
-  --primary-hover: #7140FD;
-  --text-title: #6E39CB;
+  --bg-btn: #26372D;
+  /* Xanh đậm dùng cho nút chính */
+  --bg-btn-outline-active: #668B36;
+  --primary-color: #668B36;
+  --primary-hover: #526F2E;
+  --text-title: #26372D;
   /* Chữ tiêu đề chính */
-  --text-body: #3A3541;
+  --text-body: #354139;
   /* Chữ nội dung (Text Light) */
-  --text-muted: #BCB8C7;
+  --text-muted: #929B94;
   --text-default: #ffff;
 }
 
@@ -305,7 +305,7 @@ body {
   text-decoration: none;
 }
 .breadcrumb-item a:hover {
-  color: #6366f1;
+  color: #668b36;
 }
 .breadcrumb-item.active {
   color: #4b5563;

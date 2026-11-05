@@ -9,8 +9,8 @@
   --border-light: #DBDCDE;
   --text-main: #242130;
   --text-muted: #83808D;
-  --primary-color: #7140FD;
-  --primary-hover: #5d2fdc;
+  --primary-color: #668B36;
+  --primary-hover: #526f2e;
 }
 
 /* 2. Đặt màu nền và viền cho tất cả các Card */
@@ -96,12 +96,12 @@
 }
 
 .upload-image-preview:hover {
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   background-color: rgba(113, 64, 253, 0.03) !important;
 }
 
 .upload-image-preview.dragover {
-  border: 2px dashed #7140FD !important;
+  border: 2px dashed #668B36 !important;
   background-color: rgba(113, 64, 253, 0.05);
   border-radius: 8px;
 }
@@ -122,7 +122,7 @@
 /* 6. Nút Tạo mới & Nút Quay lại */
 .btn-submit-create {
   background-color: var(--bg-btn) !important;
-  border: 0.5px solid #7140FD !important;
+  border: 0.5px solid #668B36 !important;
   color: #ffffff !important;
   font-weight: 600;
   font-size: 0.9375rem;
@@ -133,15 +133,15 @@
 }
 
 .btn-submit-create:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
   box-shadow: 0 4px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
 }
 
 .btn-outline-secondary {
   background-color: var(--bg-btn) !important;
-  border: 0.5px solid #7140FD !important;
+  border: 0.5px solid #668B36 !important;
   color: #ffffff !important;
   font-weight: 500;
   font-size: 0.9375rem;
@@ -151,12 +151,12 @@
   cursor: pointer;
 }
 .btn-outline-primary {
-  background-color: #6E39CB;
+  background-color: #26372D;
   color: var(--text-default);
   border: none;
 }
 .btn-outline-primary:hover {
-  background-color: #5930a0;
+  background-color: #435b34;
   color: var(--text-default);
   border: none;
 }
@@ -164,8 +164,8 @@
   border: none;
 }
 .btn-outline-secondary:hover {
-  background-color: #5d2fdc !important;
-  border-color: #5d2fdc !important;
+  background-color: #526f2e !important;
+  border-color: #526f2e !important;
   box-shadow: 0 4px 16px rgba(113, 64, 253, 0.3);
   transform: translateY(-1px);
 }
@@ -198,7 +198,7 @@
   line-height: 32px !important;
   padding: 0 14px !important;
   background-color: #EFEFF4 !important;
-  color: #7140FD !important;
+  color: #668B36 !important;
   border: 0.5px solid rgba(113, 64, 253, 0.2) !important;
   border-radius: 6px !important;
   font-size: 0.8125rem !important;
@@ -214,7 +214,7 @@
 .create-product-wrapper input[type="file"].form-control-dark::-webkit-file-upload-button:hover {
   background-color: var(--bg-btn) !important;
   color: #ffffff !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
 }
 
 /* Format nút Choose File trên Firefox */
@@ -223,7 +223,7 @@
   line-height: 32px !important;
   padding: 0 14px !important;
   background-color: #EFEFF4 !important;
-  color: #7140FD !important;
+  color: #668B36 !important;
   border: 0.5px solid rgba(113, 64, 253, 0.2) !important;
   border-radius: 6px !important;
   font-size: 0.8125rem !important;
@@ -234,9 +234,9 @@
 }
 
 .create-product-wrapper input[type="file"].form-control-dark::file-selector-button:hover {
-  background-color: #7140FD !important;
+  background-color: #668B36 !important;
   color: #ffffff !important;
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
 }
 
 /* ==========================================
@@ -332,7 +332,7 @@
 }
 
 .form-select-dark:focus {
-  border-color: #7140FD !important;
+  border-color: #668B36 !important;
   box-shadow: 0 0 0 3px rgba(113, 64, 253, 0.15) !important;
   outline: none !important;
 }
