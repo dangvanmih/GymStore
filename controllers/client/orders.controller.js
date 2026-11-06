@@ -24,9 +24,10 @@ module.exports.cancel = async (req, res) => {
     if (!/^[a-f\d]{24}$/i.test(req.params.orderId || "")) return res.redirect("/orders");
     const order = await Order.findById(req.params.orderId);
     const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    const isAccountOwner = req.user && order?.customer_id === String(req.user._id);
     const isGuestOwner = order && (order.guest_id === guestId || order.customer_id === guestId);
     const isVerifiedLookup = order && req.signedCookies.orderAccess === String(order._id);
-    if (!order || (!isGuestOwner && !isVerifiedLookup)) {
+    if (!order || (!isAccountOwner && !isGuestOwner && !isVerifiedLookup)) {
       req.flash("error", "Bạn không có quyền hủy đơn hàng này.");
       return res.redirect("/orders");
     }
@@ -76,6 +77,7 @@ module.exports.index = async (req, res) => {
   const status = validStatuses.includes(req.query.status) ? req.query.status : "";
   const keyword = String(req.query.q || "").trim();
   const accessibleOrders = [];
+  if (req.user) accessibleOrders.push({ customer_id: String(req.user._id) });
   if (guestId) accessibleOrders.push({ guest_id: guestId }, { customer_id: guestId });
   if (/^[a-f\d]{24}$/i.test(req.signedCookies.orderAccess || "")) {
     accessibleOrders.push({ _id: req.signedCookies.orderAccess });
@@ -106,9 +108,10 @@ module.exports.detail = async (req, res) => {
     if (!/^[a-f\d]{24}$/i.test(req.params.orderId || "")) return res.redirect("/orders");
     const order = await Order.findById(req.params.orderId).lean();
     const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    const isAccountOwner = req.user && order?.customer_id === String(req.user._id);
     const isGuestOwner = order && (order.guest_id === guestId || order.customer_id === guestId);
     const isVerifiedLookup = req.signedCookies.orderAccess === String(order?._id || "");
-    if (!order || (!isGuestOwner && !isVerifiedLookup)) return res.redirect("/orders");
+    if (!order || (!isAccountOwner && !isGuestOwner && !isVerifiedLookup)) return res.redirect("/orders");
     res.render("client/pages/orders/detail", {
       pageTitle: `Đơn hàng ${order.orderNumber}`,
       order,
@@ -157,10 +160,11 @@ module.exports.confirmReceived = async (req, res) => {
     if (!/^[a-f\d]{24}$/i.test(req.params.orderId || "")) return res.redirect("/orders");
     const order = await Order.findById(req.params.orderId);
     const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    const isAccountOwner = req.user && order?.customer_id === String(req.user._id);
     const isGuestOwner = order && (order.guest_id === guestId || order.customer_id === guestId);
     const isVerifiedLookup = order && req.signedCookies.orderAccess === String(order._id);
 
-    if (!order || (!isGuestOwner && !isVerifiedLookup)) {
+    if (!order || (!isAccountOwner && !isGuestOwner && !isVerifiedLookup)) {
       req.flash("error", "Bạn không có quyền cập nhật đơn hàng này.");
       return res.redirect("/orders");
     }

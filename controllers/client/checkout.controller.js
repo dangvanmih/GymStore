@@ -92,7 +92,10 @@ module.exports.index = async (req, res) => {
       req.flash("error", invalidCount ? "Có sản phẩm trong giỏ không còn khả dụng. Vui lòng kiểm tra lại giỏ hàng." : "Giỏ hàng đang trống.");
       return res.redirect("/cart");
     }
-    const addresses = await Address.find({ $or: [{ owner_id: guestId }, { customer_id: guestId }] }).sort({ isDefault: -1, createdAt: -1 }).lean();
+    const ownerId = req.user ? String(req.user._id) : guestId;
+    const addresses = await Address.find({
+      $or: [{ owner_id: ownerId }, { customer_id: ownerId }]
+    }).sort({ isDefault: -1, createdAt: -1 }).lean();
     res.render("client/pages/checkout/index", {
       pageTitle: "Thanh toán",
       lines,
@@ -120,14 +123,21 @@ module.exports.addAddress = async (req, res) => {
       return res.redirect("/checkout");
     }
 
-    const ownerFilter = { $or: [{ owner_id: guestId }, { customer_id: guestId }] };
-    const existingCount = await Address.countDocuments(ownerFilter);
-    const address = new Address({
+    const shouldBeDefault = req.body.isDefault === "on";
+    const addressData = {
       ...values,
       email: String(req.body.email || "").trim(),
-      owner_id: guestId,
-      label: String(req.body.label || "Nhà riêng").trim(),
-      isDefault: existingCount === 0 || req.body.isDefault === "on"
+      label: String(req.body.label || "Nhà riêng").trim()
+    };
+
+    const ownerId = req.user ? String(req.user._id) : guestId;
+    const ownerFilter = { $or: [{ owner_id: ownerId }, { customer_id: ownerId }] };
+    const existingCount = await Address.countDocuments(ownerFilter);
+    const address = new Address({
+      ...addressData,
+      owner_id: ownerId,
+      ...(req.user ? { customer_id: ownerId } : {}),
+      isDefault: existingCount === 0 || shouldBeDefault
     });
     if (address.isDefault) await Address.updateMany(ownerFilter, { $set: { isDefault: false } });
     await address.save();
@@ -145,9 +155,11 @@ module.exports.addAddress = async (req, res) => {
 module.exports.deleteAddress = async (req, res) => {
   try {
     const guestId = getGuestId(req, res);
-    const address = await Address.findOneAndDelete({ _id: req.params.addressId, $or: [{ owner_id: guestId }, { customer_id: guestId }] });
+    const ownerId = req.user ? String(req.user._id) : guestId;
+    const ownerFilter = { $or: [{ owner_id: ownerId }, { customer_id: ownerId }] };
+    const address = await Address.findOneAndDelete({ _id: req.params.addressId, ...ownerFilter });
     if (address?.isDefault) {
-      const nextAddress = await Address.findOne({ $or: [{ owner_id: guestId }, { customer_id: guestId }] }).sort({ createdAt: 1 });
+      const nextAddress = await Address.findOne(ownerFilter).sort({ createdAt: 1 });
       if (nextAddress) {
         nextAddress.isDefault = true;
         await nextAddress.save();
@@ -177,7 +189,11 @@ module.exports.placeOrder = async (req, res) => {
       return res.redirect("/checkout");
     }
 
-    const address = await Address.findOne({ _id: req.body.addressId, $or: [{ owner_id: guestId }, { customer_id: guestId }] }).lean();
+    const ownerId = req.user ? String(req.user._id) : guestId;
+    const address = await Address.findOne({
+      _id: req.body.addressId,
+      $or: [{ owner_id: ownerId }, { customer_id: ownerId }]
+    }).lean();
     if (!address) {
       req.flash("error", "Vui lòng chọn địa chỉ nhận hàng hợp lệ.");
       return res.redirect("/checkout");
@@ -210,6 +226,7 @@ module.exports.placeOrder = async (req, res) => {
     const order = new Order({
       orderNumber,
       ...(paymentMethod === "vnpay" ? { paymentTxnRef: orderNumber } : {}),
+      customer_id: req.user ? String(req.user._id) : "",
       guest_id: guestId,
       cart_id: String(cart._id),
       customer: { fullName: address.recipientName, phone: address.phone, email: address.email },
@@ -266,7 +283,8 @@ module.exports.vnpayReturn = async (req, res) => {
     }
     const order = await Order.findOne({ paymentTxnRef: String(req.query.vnp_TxnRef || "") });
     const guestId = req.cookies.guestId || req.cookies.customerId || "";
-    if (!order || (order.guest_id !== guestId && order.customer_id !== guestId)) return res.redirect("/orders");
+    const isAccountOwner = req.user && order?.customer_id === String(req.user._id);
+    if (!order || (!isAccountOwner && order.guest_id !== guestId && order.customer_id !== guestId)) return res.redirect("/orders");
 
     const correctMerchant = req.query.vnp_TmnCode === process.env.VNPAY_TMN_CODE;
     const correctAmount = Number(req.query.vnp_Amount) === Math.round(order.total * 100);
@@ -309,7 +327,11 @@ module.exports.retryVnpay = async (req, res) => {
     const guestId = req.cookies.guestId || req.cookies.customerId || "";
     const order = await Order.findOne({
       _id: req.params.orderId,
-      $or: [{ guest_id: guestId }, { customer_id: guestId }]
+      $or: [
+        { guest_id: guestId },
+        { customer_id: guestId },
+        ...(req.user ? [{ customer_id: String(req.user._id) }] : [])
+      ]
     });
     if (!order || order.status !== "placed" || order.paymentMethod !== "vnpay" || order.paymentStatus !== "failed") {
       req.flash("error", "Đơn hàng này chưa thể thanh toán lại.");
@@ -337,7 +359,11 @@ module.exports.complete = async (req, res) => {
     const guestId = getGuestId(req, res);
     const order = await Order.findOne({
       _id: req.params.orderId,
-      $or: [{ guest_id: guestId }, { customer_id: guestId }]
+      $or: [
+        { guest_id: guestId },
+        { customer_id: guestId },
+        ...(req.user ? [{ customer_id: String(req.user._id) }] : [])
+      ]
     }).lean();
     if (!order) return res.redirect("/");
     res.render("client/pages/checkout/complete", { pageTitle: "Đặt hàng thành công", order });

@@ -1,6 +1,7 @@
 module.exports.favoriteIds = (req, res, next) => {
-  const favorites = String(req.cookies.favoriteIds || "")
-    .split(",")
+  const source = req.user?.favoriteIds || String(req.cookies.favoriteIds || "").split(",");
+  const favorites = source
+    .map(String)
     .filter(id => /^[a-f\d]{24}$/i.test(id));
 
   res.locals.favoriteIds = favorites;

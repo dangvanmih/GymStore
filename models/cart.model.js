@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cartSchema = new mongoose.Schema(
   {
     user_id: String,
+    expiresAt: Date,
     products: [
       {
         product_id: String,
@@ -17,8 +18,10 @@ const cartSchema = new mongoose.Schema(
   }
 );
 
-// Tự xóa giỏ hàng sau 24 giờ, cùng thời hạn với cookie cartId.
-cartSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 });
+cartSchema.index(
+  { expiresAt: 1 },
+  { expireAfterSeconds: 0 }
+);
 
 const Cart = mongoose.model("Cart", cartSchema, "carts");
 

@@ -7,14 +7,14 @@ header.header.bg-white.sticky-top
         a.d-inline-block(href='/')
           img(src='/client/images/logo.webp', alt='Logo', style='height:60px; object-fit: contain;')
 
-      //- Navigation Links
+      //- Liên kết điều hướng
       .col-lg-7.d-none.d-lg-block
         nav.navbar.navbar-expand-lg.p-0
           ul.navbar-nav.mx-auto.align-items-center
             if (layoutCategories)
               each item in layoutCategories
                 if (item.children && item.children.length > 0)
-                  //- Danh mục cha có danh mục con (Hiển thị Dropdown hover)
+                  //- Danh mục cha có danh mục con (hiển thị menu khi rê chuột)
                   li.nav-item.dropdown.custom-dropdown
                     span.nav-link.custom-nav-link.d-flex.align-items-center(
                       style="cursor: pointer;",
@@ -25,43 +25,49 @@ header.header.bg-white.sticky-top
                       each sub in item.children
                         li: a.dropdown-item(href=`/products/${sub.slug}`) #{sub.title}
                 else
-                  //- Danh mục độc lập không có con
+                  //- Danh mục không có danh mục con
                   li.nav-item
                     a.nav-link.custom-nav-link(href=`/products/${item.slug}`) #{item.title}
 
-            //- Các link tĩnh
+            //- Liên kết cố định
             li.nav-item: a.nav-link.custom-nav-link(href='/cua-hang') Cửa hàng
-            li.nav-item: a.nav-link.custom-nav-link(href='/orders') Tra cứu đơn
+            li.nav-item: a.nav-link.custom-nav-link(href='/orders') Tra cứu đơn hàng
 
-      //- Action Utilities
+      //- Các tiện ích
       .col-lg-3.col-6.d-flex.align-items-center.justify-content-end
         button#btnMobileMenu.mobile-menu-toggle.d-lg-none(type='button', aria-label='Mở menu', aria-expanded='false', aria-controls='mobileNavigation')
           i.fa-solid.fa-bars(aria-hidden='true')
 
-        //- Nút kính hiển vi kích hoạt Search Overlay
+        //- Nút mở khung tìm kiếm
         button#btnOpenSearch.icon-link.btn.btn-link.mr-3(type='button', title='Tìm kiếm')
           i.fas.fa-search
 
-        //- Account Dropdown
+        //- Menu tài khoản
         .nav-icon-item.dropdown.user-dropdown.mr-3
-          a.icon-link(href='#', id='userDropdown', data-toggle='dropdown')
+          a.icon-link(href='#', id='userDropdown', data-toggle='dropdown', aria-label='Tài khoản')
             i.far.fa-user
           .dropdown-menu.dropdown-menu-right.shadow-sm.border-0
             .px-3.py-2.border-bottom.small.text-muted TÀI KHOẢN
-            a.dropdown-item.py-2(href='/user/login')
-              i.fas.fa-sign-in-alt.me-2
-              span Đăng nhập
-            a.dropdown-item.py-2(href='/user/register')
-              i.fas.fa-user-plus.me-2
-              span Đăng ký
+            if currentUser
+              .dropdown-item-text.py-2 #{currentUser.firstName || ''} #{currentUser.lastName || ''}
+              a.dropdown-item.py-2(href='/user/logout')
+                i.fas.fa-sign-out-alt.me-2
+                span Đăng xuất
+            else
+              a.dropdown-item.py-2(href='/user/login')
+                i.fas.fa-sign-in-alt.me-2
+                span Đăng nhập
+              a.dropdown-item.py-2(href='/user/register')
+                i.fas.fa-user-plus.me-2
+                span Đăng ký
 
         a.nav-icon-item.icon-link.favorite-link.mr-3(href='/favorites' aria-label='Sản phẩm yêu thích' title='Sản phẩm yêu thích')
           i.fa-regular.fa-heart
           if favoriteCount > 0
             span.favorite-badge #{favoriteCount}
 
-        //- Shopping Cart
-        a.nav-icon-item.icon-link.cart-link.mr-3(href='/cart')
+        //- Giỏ hàng
+        a.nav-icon-item.icon-link.cart-link.mr-3(href='/cart' aria-label='Giỏ hàng' title='Giỏ hàng')
           i.fas.fa-shopping-bag
           span.cart-badge #{miniCart ? miniCart.totalQuantity : 0}
 
@@ -77,31 +83,31 @@ header.header.bg-white.sticky-top
                     each sub in item.children
                       li: a.mobile-navigation-sublink(href=`/products/${sub.slug}`) #{sub.title}
           li.mobile-navigation-item: a.mobile-navigation-link(href='/cua-hang') Cửa hàng
-          li.mobile-navigation-item: a.mobile-navigation-link(href='/orders') Tra cứu đơn
+          li.mobile-navigation-item: a.mobile-navigation-link(href='/orders') Tra cứu đơn hàng
 
-//- SEARCH OVERLAY (Khung tìm kiếm phủ toàn màn hình)
+//- Khung tìm kiếm toàn màn hình
 #searchOverlay.search-overlay
   .search-overlay-content.bg-white.py-4
     .container.position-relative
-      //- Nút đóng (Dấu X)
-      button#btnCloseSearch.btn-close-search(type='button')
+      //- Nút đóng
+      button#btnCloseSearch.btn-close-search(type='button', aria-label='Đóng tìm kiếm')
         i.fas.fa-times
 
       .row.justify-content-center.align-items-center.mb-2
         .col-md-2.text-center.text-md-left.mb-3.mb-md-0
           a(href='/')
             img(src='/client/images/logo.webp', alt='Logo', style='height: 60px; object-fit: contain;')
-        
+
         .col-md-8.position-relative
           form(action='/products/search', method='GET')
             .search-input-wrapper
               i.fas.fa-search.search-icon-inside
               input#searchInput.search-input-overlay(type='text', name='q', placeholder='Tìm kiếm sản phẩm...', autocomplete='off')
 
-          //- Đặt khung kết quả ở đây để nó có cùng độ rộng với col-md-8
+          //- Kết quả tìm kiếm
           #search-results.search-results-container(style="display: none;")
-          
-          //- Khối Gợi ý từ khóa
+
+          //- Gợi ý tìm kiếm
           #searchSuggestionsBlock.search-suggestions.mt-3
             span.text-muted.small.mr-2 Gợi ý cho bạn:
             a.suggestion-link(href='/products') Tất cả sản phẩm

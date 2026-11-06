@@ -8,8 +8,10 @@ const favoritesRouter = require("../../routers/client/favorites.router");
 const checkoutRouter = require("../../routers/client/checkout.router");
 const ordersRouter = require("../../routers/client/orders.router");
 const usersRouter = require("../../routers/client/user.router")
+const userMiddleware = require("../../middlewares/client/user.middleware");
 module.exports = (app) => {
   app.use(categoryMiddleware.category);
+  app.use(userMiddleware.currentUser);
   app.use(cartMiddleware.cartId);
   app.use(favoriteMiddleware.favoriteIds);
 

@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
     },
     phone: String,
     avatar: String,
+    favoriteIds: { type: [String], default: [] },
     status: {
       type: String,
       default: "active"
