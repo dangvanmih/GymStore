@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block style
+  link(rel="stylesheet" href="/client/css/profile.css")
+
+block main
+  .account-page.py-4.py-lg-5
+    .container
+      +alert-success(5000)
+      +alert-error(7000)
+      .row.g-4.align-items-start
+        .col-lg-3
+          include ../../partials/account-sidebar.pug
+        .col-lg-9
+          section.account-content-card
+            .account-page-heading
+              div
+                h1.h4.fw-bold.mb-1 Thông tin cá nhân
+                p.text-muted.small.mb-0 Cập nhật thông tin liên hệ trong tài khoản của bạn.
+            form(action="/user/profile" method="POST")
+              .row.g-3
+                .col-md-6
+                  label.form-label(for="firstName") Họ
+                  input#firstName.form-control(type="text" name="firstName" value=user.firstName required autocomplete="given-name")
+                .col-md-6
+                  label.form-label(for="lastName") Tên
+                  input#lastName.form-control(type="text" name="lastName" value=user.lastName required autocomplete="family-name")
+                .col-md-6
+                  label.form-label(for="profileEmail") Email
+                  input#profileEmail.form-control(type="email" value=user.email readonly)
+                  .form-text Email đăng nhập không thể thay đổi tại đây.
+                .col-md-6
+                  label.form-label(for="phone") Số điện thoại
+                  input#phone.form-control(type="tel" name="phone" value=user.phone autocomplete="tel")
+              button.btn.btn-success.mt-4(type="submit") Lưu thông tin

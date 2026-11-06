@@ -4,6 +4,152 @@ const User = require("../../models/user.model");
 const bcrypt = require("bcrypt");
 const Cart = require("../../models/cart.model");
 const Order = require("../../models/order.model");
+const Address = require("../../models/address.model");
+
+module.exports.profile = async (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  try {
+    const user = await User.findById(req.user._id).select("firstName lastName email phone");
+    if (!user) return res.redirect("/user/login");
+    return res.render("client/pages/user/profile", { pageTitle: "Thông tin cá nhân", user, accountSection: "profile" });
+  } catch (error) {
+    console.log("Lỗi tải hồ sơ khách hàng:", error);
+    req.flash("error", "Không thể tải hồ sơ lúc này.");
+    return res.redirect("/");
+  }
+};
+
+module.exports.addresses = async (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  try {
+    const ownerId = String(req.user._id);
+    const [user, addresses] = await Promise.all([
+      User.findById(ownerId).select("firstName lastName email phone"),
+      Address.find({ $or: [{ owner_id: ownerId }, { customer_id: ownerId }] }).sort({ isDefault: -1, createdAt: -1 }).lean()
+    ]);
+    if (!user) return res.redirect("/user/login");
+    return res.render("client/pages/user/addresses", { pageTitle: "Sổ địa chỉ", user, addresses, editingAddress: null, accountSection: "addresses" });
+  } catch (error) {
+    console.log("Lỗi tải sổ địa chỉ:", error);
+    req.flash("error", "Không thể tải sổ địa chỉ lúc này.");
+    return res.redirect("/user/profile");
+  }
+};
+
+module.exports.editAddress = async (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  try {
+    const ownerId = String(req.user._id);
+    const [user, addresses, editingAddress] = await Promise.all([
+      User.findById(ownerId).select("firstName lastName email phone"),
+      Address.find({ $or: [{ owner_id: ownerId }, { customer_id: ownerId }] }).sort({ isDefault: -1, createdAt: -1 }).lean(),
+      Address.findOne({ _id: req.params.addressId, $or: [{ owner_id: ownerId }, { customer_id: ownerId }] }).lean()
+    ]);
+    if (!user || !editingAddress) return res.redirect("/user/addresses");
+    return res.render("client/pages/user/addresses", { pageTitle: "Chỉnh sửa địa chỉ", user, addresses, editingAddress, accountSection: "addresses" });
+  } catch (error) {
+    req.flash("error", "Không tìm thấy địa chỉ cần chỉnh sửa.");
+    return res.redirect("/user/addresses");
+  }
+};
+
+module.exports.updateAddress = async (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  try {
+    const ownerId = String(req.user._id);
+    const fields = ["recipientName", "phone", "province", "district", "ward", "streetAddress"];
+    const values = Object.fromEntries(fields.map(field => [field, String(req.body[field] || "").trim()]));
+    if (fields.some(field => !values[field])) {
+      req.flash("error", "Vui lòng điền đầy đủ thông tin địa chỉ.");
+      return res.redirect(`/user/addresses/${req.params.addressId}/edit`);
+    }
+    const address = await Address.findOne({ _id: req.params.addressId, $or: [{ owner_id: ownerId }, { customer_id: ownerId }] });
+    if (!address) return res.redirect("/user/addresses");
+    const makeDefault = req.body.isDefault === "on";
+    if (makeDefault) await Address.updateMany({ $or: [{ owner_id: ownerId }, { customer_id: ownerId }] }, { $set: { isDefault: false } });
+    Object.assign(address, values, {
+      label: String(req.body.label || "Nhà riêng").trim(),
+      email: String(req.body.email || "").trim(),
+      isDefault: makeDefault || address.isDefault
+    });
+    await address.save();
+    req.flash("success", "Đã cập nhật địa chỉ.");
+  } catch (error) {
+    console.log("Lỗi cập nhật địa chỉ:", error);
+    req.flash("error", "Không thể cập nhật địa chỉ lúc này.");
+  }
+  return res.redirect("/user/addresses");
+};
+
+module.exports.setDefaultAddress = async (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  const ownerId = String(req.user._id);
+  try {
+    const ownerFilter = { $or: [{ owner_id: ownerId }, { customer_id: ownerId }] };
+    const address = await Address.findOne({ _id: req.params.addressId, ...ownerFilter });
+    if (!address) return res.redirect("/user/addresses");
+    await Address.updateMany(ownerFilter, { $set: { isDefault: false } });
+    address.isDefault = true;
+    await address.save();
+    req.flash("success", "Đã đặt địa chỉ mặc định.");
+  } catch (error) {
+    req.flash("error", "Không thể cập nhật địa chỉ mặc định.");
+  }
+  return res.redirect("/user/addresses");
+};
+
+module.exports.passwordPage = (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  res.render("client/pages/user/password", { pageTitle: "Đổi mật khẩu", user: req.user, accountSection: "password" });
+};
+
+module.exports.profilePost = async (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  try {
+    const firstName = String(req.body.firstName || "").trim();
+    const lastName = String(req.body.lastName || "").trim();
+    const phone = String(req.body.phone || "").trim();
+    if (!firstName || !lastName) {
+      req.flash("error", "Vui lòng nhập đầy đủ họ và tên.");
+      return res.redirect("/user/profile");
+    }
+    await User.updateOne({ _id: req.user._id }, { $set: { firstName, lastName, phone } });
+    req.flash("success", "Đã cập nhật thông tin hồ sơ.");
+  } catch (error) {
+    console.log("Lỗi cập nhật hồ sơ khách hàng:", error);
+    req.flash("error", "Không thể cập nhật hồ sơ lúc này.");
+  }
+  return res.redirect("/user/profile");
+};
+
+module.exports.changePassword = async (req, res) => {
+  if (!req.user) return res.redirect("/user/login");
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const user = await User.findById(req.user._id);
+    if (!user || !(await bcrypt.compare(String(currentPassword || ""), user.password))) {
+      req.flash("error", "Mật khẩu hiện tại không chính xác.");
+      return res.redirect("/user/profile/password");
+    }
+    if (String(newPassword || "").length < 8) {
+      req.flash("error", "Mật khẩu mới cần có ít nhất 8 ký tự.");
+      return res.redirect("/user/profile/password");
+    }
+    if (newPassword !== confirmPassword) {
+      req.flash("error", "Mật khẩu xác nhận không khớp.");
+      return res.redirect("/user/profile/password");
+    }
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.tokenUser = generateHelper.generateToken(20);
+    await user.save();
+    res.cookie("tokenUser", user.tokenUser, { httpOnly: true, sameSite: "lax" });
+    req.flash("success", "Đã đổi mật khẩu thành công.");
+  } catch (error) {
+    console.log("Lỗi đổi mật khẩu khách hàng:", error);
+    req.flash("error", "Không thể đổi mật khẩu lúc này.");
+  }
+  return res.redirect("/user/profile/password");
+};
 
 module.exports.login = (req, res) => {
   if (req.user) return res.redirect("/");

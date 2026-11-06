@@ -1,0 +1,25 @@
+aside.account-sidebar
+  .account-identity
+    .account-avatar
+      i.fa-regular.fa-user
+    div
+      .fw-bold #{user.firstName || ''} #{user.lastName || ''}
+      .small.text-muted #{user.email}
+  p.account-sidebar-label Cài đặt tài khoản
+  nav.account-sidebar-nav(aria-label="Tài khoản khách hàng")
+    a(class=(accountSection === 'profile' ? 'active' : '') href="/user/profile")
+      i.fa-regular.fa-user
+      span Thông tin cá nhân
+      i.fa-solid.fa-chevron-right.account-chevron
+    a(class=(accountSection === 'addresses' ? 'active' : '') href="/user/addresses")
+      i.fa-solid.fa-location-dot
+      span Sổ địa chỉ
+      i.fa-solid.fa-chevron-right.account-chevron
+    a(class=(accountSection === 'password' ? 'active' : '') href="/user/profile/password")
+      i.fa-solid.fa-lock
+      span Đổi mật khẩu
+      i.fa-solid.fa-chevron-right.account-chevron
+    a(href="/orders")
+      i.fa-solid.fa-truck-fast
+      span Theo dõi đơn hàng
+      i.fa-solid.fa-chevron-right.account-chevron

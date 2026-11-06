@@ -50,6 +50,9 @@ header.header.bg-white.sticky-top
             .px-3.py-2.border-bottom.small.text-muted TÀI KHOẢN
             if currentUser
               .dropdown-item-text.py-2 #{currentUser.firstName || ''} #{currentUser.lastName || ''}
+              a.dropdown-item.py-2(href='/user/profile')
+                i.fas.fa-id-card.me-2
+                span Hồ sơ của tôi
               a.dropdown-item.py-2(href='/user/logout')
                 i.fas.fa-sign-out-alt.me-2
                 span Đăng xuất

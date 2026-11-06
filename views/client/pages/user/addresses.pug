@@ -1,0 +1,130 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block style
+  link(rel="stylesheet" href="/client/css/profile.css")
+
+block main
+  .account-page.py-4.py-lg-5
+    .container
+      +alert-success(5000)
+      +alert-error(7000)
+      .row.g-4.align-items-start
+        .col-lg-3
+          include ../../partials/account-sidebar.pug
+        .col-lg-9
+          section.account-content-card
+            .account-page-heading
+              div
+                h1.h4.fw-bold.mb-1 Sổ địa chỉ
+                p.text-muted.small.mb-0 Lưu địa chỉ nhận hàng và chọn địa chỉ mặc định cho những lần đặt hàng sau.
+              if !editingAddress
+                button.btn.btn-success(type="button" onclick="document.getElementById('addAddressForm').open = true; document.getElementById('addAddressForm').scrollIntoView({ behavior: 'smooth', block: 'center' });")
+                  i.fa-solid.fa-plus.me-2
+                  | Thêm địa chỉ
+
+            if addresses.length
+              .saved-address-list
+                each address in addresses
+                  article.saved-address(class=(address.isDefault ? 'is-default' : ''))
+                    .d-flex.flex-wrap.justify-content-between.align-items-start.gap-2
+                      div
+                        .saved-address-recipient
+                          span.fw-bold #{address.recipientName}
+                          span.text-muted.mx-1 ·
+                          span.text-muted #{address.phone}
+                          if address.isDefault
+                            span.badge.rounded-pill.text-bg-success.ms-2
+                              i.fa-solid.fa-circle-check.me-1
+                              | Mặc định
+                        .small.text-muted.mt-2 #{address.streetAddress}, #{address.ward}, #{address.district}, #{address.province}
+                        if address.email
+                          .small.text-muted.mt-1 #{address.email}
+                      span.badge.rounded-pill.text-bg-light #{address.label}
+                    .saved-address-actions
+                      if !address.isDefault
+                        form(action=`/user/addresses/${address._id}/default` method="POST")
+                          button.btn.btn-sm.btn-outline-secondary(type="submit") Đặt làm mặc định
+                      a.btn.btn-sm.btn-outline-secondary(href=`/user/addresses/${address._id}/edit`)
+                        i.fa-regular.fa-pen-to-square.me-1
+                        | Chỉnh sửa
+                      form(action=`/checkout/addresses/${address._id}/delete` method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa địa chỉ này?')")
+                        button.btn.btn-sm.btn-link.text-danger(type="submit")
+                          i.fa-regular.fa-trash-can.me-1
+                          | Xóa
+            else
+              .account-empty-state
+                i.fa-solid.fa-location-dot
+                p.mb-0 Bạn chưa lưu địa chỉ nhận hàng nào.
+
+            if editingAddress
+              .address-form-panel#addAddressForm
+                h2.h6.fw-bold.mb-3 Chỉnh sửa địa chỉ
+                form(action=`/user/addresses/${editingAddress._id}/edit` method="POST")
+                  .row.g-3
+                    .col-md-6
+                      label.form-label(for="recipientName") Tên người nhận
+                      input#recipientName.form-control(type="text" name="recipientName" value=editingAddress.recipientName required)
+                    .col-md-6
+                      label.form-label(for="phone") Số điện thoại
+                      input#phone.form-control(type="tel" name="phone" value=editingAddress.phone required)
+                    .col-md-6
+                      label.form-label(for="email") Email liên hệ
+                      input#email.form-control(type="email" name="email" value=editingAddress.email)
+                    .col-md-6
+                      label.form-label(for="label") Tên địa chỉ
+                      input#label.form-control(type="text" name="label" value=editingAddress.label)
+                    .col-md-6
+                      label.form-label(for="province") Tỉnh/Thành phố
+                      input#province.form-control(type="text" name="province" value=editingAddress.province required)
+                    .col-md-6
+                      label.form-label(for="district") Quận/Huyện
+                      input#district.form-control(type="text" name="district" value=editingAddress.district required)
+                    .col-md-6
+                      label.form-label(for="ward") Phường/Xã
+                      input#ward.form-control(type="text" name="ward" value=editingAddress.ward required)
+                    .col-12
+                      label.form-label(for="streetAddress") Địa chỉ cụ thể
+                      input#streetAddress.form-control(type="text" name="streetAddress" value=editingAddress.streetAddress required)
+                    .col-12
+                      .form-check
+                        input#isDefault.form-check-input(type="checkbox" name="isDefault" checked=editingAddress.isDefault)
+                        label.form-check-label(for="isDefault") Đặt làm địa chỉ mặc định
+                  .d-flex.gap-2.mt-3
+                    button.btn.btn-success(type="submit") Lưu thay đổi
+                    a.btn.btn-outline-secondary(href="/user/addresses") Hủy
+            else
+              details.address-form-panel#addAddressForm
+                summary.address-form-summary Thêm địa chỉ mới
+                form.mt-3(action="/checkout/addresses" method="POST")
+                  .row.g-3
+                    .col-md-6
+                      label.form-label(for="recipientName") Tên người nhận
+                      input#recipientName.form-control(type="text" name="recipientName" value=((user.firstName || '') + ' ' + (user.lastName || '')).trim() required)
+                    .col-md-6
+                      label.form-label(for="phone") Số điện thoại
+                      input#phone.form-control(type="tel" name="phone" value=user.phone required)
+                    .col-md-6
+                      label.form-label(for="email") Email liên hệ
+                      input#email.form-control(type="email" name="email" value=user.email)
+                    .col-md-6
+                      label.form-label(for="label") Tên địa chỉ
+                      input#label.form-control(type="text" name="label" value="Nhà riêng")
+                    .col-md-6
+                      label.form-label(for="province") Tỉnh/Thành phố
+                      input#province.form-control(type="text" name="province" required)
+                    .col-md-6
+                      label.form-label(for="district") Quận/Huyện
+                      input#district.form-control(type="text" name="district" required)
+                    .col-md-6
+                      label.form-label(for="ward") Phường/Xã
+                      input#ward.form-control(type="text" name="ward" required)
+                    .col-12
+                      label.form-label(for="streetAddress") Địa chỉ cụ thể
+                      input#streetAddress.form-control(type="text" name="streetAddress" placeholder="Số nhà, tên đường" required)
+                    if addresses.length
+                      .col-12
+                        .form-check
+                          input#isDefault.form-check-input(type="checkbox" name="isDefault")
+                          label.form-check-label(for="isDefault") Đặt làm địa chỉ mặc định
+                  button.btn.btn-success.mt-3(type="submit") Lưu địa chỉ
