@@ -80,7 +80,7 @@ block main
                 h5.card-title.mb-0.fw-semibold Giá & Dữ liệu kho
               .card-body
                 .row.g-3.mb-3
-                  .col-md-6
+                  .col-md-4
                     label.form-label.fw-medium(for="price") Giá bán (VNĐ) #[span.text-danger *]
                     .input-group.input-group-dark
                       input#price.form-control.form-control-dark(
@@ -95,7 +95,13 @@ block main
                       )
                       span.input-group-text đ
 
-                  .col-md-6
+                  .col-md-4
+                    label.form-label.fw-medium(for="costPrice") Giá vốn (VNĐ)
+                    .input-group.input-group-dark
+                      input#costPrice.form-control.form-control-dark(type="text" name="costPrice" value="0" min="0" oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')")
+                      span.input-group-text đ
+
+                  .col-md-4
                     label.form-label.fw-medium(for="discountPercentage") % Giảm giá
                     .input-group.input-group-dark
                       input#discountPercentage.form-control.form-control-dark(
@@ -131,10 +137,12 @@ block main
                   #variants-wrapper.d-none
                     label.form-label.fw-medium.d-block Danh sách Biến thể (Size, Màu & Giá)
                     .row.g-2.mb-1.text-muted.small.fw-bold.px-1
-                      .col-md-3 Kích cỡ (Size) #[span.text-danger *]
-                      .col-md-3 Màu sắc
+                      .col-md-2 Kích cỡ (Size) #[span.text-danger *]
+                      .col-md-2 Màu sắc
                       .col-md-2 Giá riêng (VNĐ)
-                      .col-md-3 Số lượng #[span.text-danger *]
+                      .col-md-2 Giá vốn (VNĐ)
+                      .col-md-2 Số lượng #[span.text-danger *]
+                      .col-md-1 Xóa
                     #variants-list
                       //- JavaScript sẽ tự động chèn các dòng nhập vào đây
 

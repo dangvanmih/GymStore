@@ -80,7 +80,7 @@ block main
                 h5.card-title.mb-0.fw-semibold Giá & Dữ liệu kho
               .card-body
                 .row.g-3.mb-3
-                  .col-md-6
+                  .col-md-4
                     label.form-label.fw-medium(for="price") Giá bán (VNĐ) #[span.text-danger *]
                     .input-group.input-group-dark
                       input#price.form-control.form-control-dark(
@@ -92,7 +92,13 @@ block main
                       )
                       span.input-group-text đ
 
-                  .col-md-6
+                  .col-md-4
+                    label.form-label.fw-medium(for="costPrice") Giá vốn (VNĐ)
+                    .input-group.input-group-dark
+                      input#costPrice.form-control.form-control-dark(type="text" name="costPrice" value=product.costPrice min="0" oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')")
+                      span.input-group-text đ
+
+                  .col-md-4
                     label.form-label.fw-medium(for="discountPercentage") % Giảm giá
                     .input-group.input-group-dark
                       input#discountPercentage.form-control.form-control-dark(
@@ -131,17 +137,18 @@ block main
                     
                     //- Dòng tiêu đề cột (Header) giúp quản lý trực quan
                     .row.g-2.mb-1.text-muted.small.fw-bold.px-1
-                      .col-md-3 Kích cỡ (Size) #[span.text-danger *]
-                      .col-md-3 Màu sắc
+                      .col-md-2 Kích cỡ (Size) #[span.text-danger *]
+                      .col-md-2 Màu sắc
                       .col-md-2 Giá riêng (VNĐ)
-                      .col-md-3 Số lượng #[span.text-danger *]
+                      .col-md-2 Giá vốn (VNĐ)
+                      .col-md-2 Số lượng #[span.text-danger *]
                       .col-md-1 Xóa
 
                     #variants-list
                       if product.hasVariants && product.variants && product.variants.length > 0
                         each variant, index in product.variants
                           .row.g-2.mb-2.align-items-center.variant-item
-                            .col-md-3
+                            .col-md-2
                               input.form-control.form-control-dark(
                                 type="text"
                                 name=`variants[${index}][size]`
@@ -149,7 +156,7 @@ block main
                                 required
                                 value=variant.size
                               )
-                            .col-md-3
+                            .col-md-2
                               input.form-control.form-control-dark(
                                 type="text"
                                 name=`variants[${index}][color]`
@@ -164,7 +171,9 @@ block main
                                 min="0"
                                 value=variant.price || 0
                               )
-                            .col-md-3
+                            .col-md-2
+                              input.form-control.form-control-dark(type="text" name=`variants[${index}][costPrice]` placeholder="Giá vốn" min="0" value=variant.costPrice || 0 oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')")
+                            .col-md-2
                               input.form-control.form-control-dark(
                                 type="number"
                                 name=`variants[${index}][stock]`

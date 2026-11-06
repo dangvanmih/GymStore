@@ -1,0 +1,84 @@
+extends ../../layouts/default.pug
+
+block style
+  link(rel="stylesheet", href="/admin/css/dashboard.css")
+  style.
+    .analytics-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cost-dot { background: #d39a45; }
+    .profit-dot { background: #477f68; }
+    @media (max-width: 1199px) { .analytics-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 767px) { .analytics-stats { grid-template-columns: 1fr; } }
+
+block main
+  .dashboard-page(data-default-from=defaultRange.from, data-default-to=defaultRange.to)
+    .dashboard-heading
+      .dashboard-heading-copy
+        p.dashboard-eyebrow DEGREY #[span  /  BÁO CÁO KINH DOANH]
+        h1 Báo cáo doanh thu
+        p.dashboard-subtitle Tổng hợp doanh thu, giá vốn hàng đã bán và lợi nhuận gộp.
+      .dashboard-heading-side
+        span.dashboard-live-dot
+        span CHỈ TÍNH ĐƠN HOÀN TẤT
+        strong= new Date().getFullYear()
+
+    .dashboard-stats.analytics-stats
+      article.stat-card.stat-revenue
+        .stat-card-top
+          p.stat-label Tổng doanh thu
+          .stat-icon
+            i.fa-solid.fa-arrow-trend-up(aria-hidden="true")
+        .stat-copy
+          p.stat-value(data-analytics-metric="revenue")= summary.revenue.toLocaleString('vi-VN') + ' ₫'
+          p.stat-hint Tổng tiền đơn đã giao
+      article.stat-card
+        .stat-card-top
+          p.stat-label Giá vốn hàng đã bán
+          .stat-icon
+            i.fa-solid.fa-boxes-stacked(aria-hidden="true")
+        .stat-copy
+          p.stat-value(data-analytics-metric="costOfGoods")= summary.costOfGoods.toLocaleString('vi-VN') + ' ₫'
+          p.stat-hint Theo các sản phẩm đã xuất cho đơn hoàn tất
+      article.stat-card.stat-completed
+        .stat-card-top
+          p.stat-label Lợi nhuận gộp
+          .stat-icon
+            i.fa-solid.fa-sack-dollar(aria-hidden="true")
+        .stat-copy
+          p.stat-value(data-analytics-metric="grossProfit")= summary.grossProfit.toLocaleString('vi-VN') + ' ₫'
+          p.stat-hint Doanh thu trừ giá vốn hàng đã bán
+
+    .dashboard-chart-card
+      .chart-heading
+        div
+          p.chart-kicker HIỆU QUẢ KINH DOANH
+          h2 Doanh thu, giá vốn và lợi nhuận gộp
+          p So sánh theo ngày hoặc theo tháng trong khoảng thời gian đã chọn.
+        .chart-legend-note
+          span.legend-dot.revenue-dot
+          | Doanh thu
+          span.legend-dot.cost-dot
+          | Giá vốn
+          span.legend-dot.profit-dot
+          | Lợi nhuận gộp
+      form#analyticsDateFilter.dashboard-date-filter
+        .date-filter-title
+          i.fa-regular.fa-calendar(aria-hidden="true")
+          span Khoảng thời gian
+        .dashboard-date-field
+          label(for="analyticsFrom") Từ ngày
+          input#analyticsFrom(type="date", required)
+        .dashboard-date-field
+          label(for="analyticsTo") Đến ngày
+          input#analyticsTo(type="date", required)
+        button#analyticsExportButton(type="button")
+          i.fa-solid.fa-file-excel(aria-hidden="true")
+          |  Xuất Excel
+        button(type="submit")
+          i.fa-solid.fa-filter(aria-hidden="true")
+          |  Lọc dữ liệu
+      p#analyticsChartMessage.chart-message(role="status", aria-live="polite")
+      .chart-wrap
+        canvas#analyticsChart(aria-label="Biểu đồ cột doanh thu, giá vốn và lợi nhuận gộp", role="img")
+
+  script(src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js")
+  script(src="/admin/js/analytics.js")

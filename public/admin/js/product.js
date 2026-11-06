@@ -72,8 +72,6 @@ if (buttonDelete.length > 0) {
   });
 }
 
-
-
 // xử lý thêm sizeCreate & variants
 document.addEventListener("DOMContentLoaded", () => {
   const hasVariantsCheckbox = document.querySelector("#hasVariants");
@@ -109,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const div = document.createElement("div");
       div.className = "row g-2 mb-2 align-items-center variant-item";
       div.innerHTML = `
-        <div class="col-md-3">
+        <div class="col-md-2">
           <input type="text" name="variants[${index}][size]" class="form-control form-control-dark" placeholder="Size (VD: S, M, L)" required>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <input type="text" name="variants[${index}][color]" class="form-control form-control-dark" placeholder="Màu (Đen, Xám...)">
         </div>
         <div class="col-md-2">
@@ -128,7 +126,10 @@ document.addEventListener("DOMContentLoaded", () => {
             onblur="if(this.value=='') this.value='0'"
           >       
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
+          <input type="text" name="variants[${index}][costPrice]" class="form-control form-control-dark" placeholder="Giá vốn" min="0" value="0" oninput="this.value = this.value.replace(/\\D/g, '').replace(/\\B(?=(\\d{3})+(?!\\d))/g, '.')">
+        </div>
+        <div class="col-md-2">
           <input type="number" name="variants[${index}][stock]" class="form-control form-control-dark" placeholder="Số lượng" min="0" value="0" required>
         </div>
         <div class="col-md-1 text-center">

@@ -69,6 +69,7 @@ const getCartLines = async cartId => {
       quantity,
       originalPrice: Number(variant ? variant.price : product.price) || 0,
       price,
+      costPrice: Number(variant && variant.costPrice) || Number(product.costPrice) || 0,
       discountPercentage: Number(product.discountPercentage) || 0,
       total: price * quantity,
       stock: Number(variant ? variant.stock : product.stock) || 0,

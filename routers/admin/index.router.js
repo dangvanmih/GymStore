@@ -8,12 +8,14 @@ const accountRouter = require('./account.router');
 const authRouter = require('./auth.router');
 const orderRouter = require('./order.router');
 const inventoryRouter = require('./inventory.router');
+const analyticsRouter = require('./analytics.router');
 const authMiddleware = require('../../middlewares/admin/auth.middleware');
 module.exports = (app) => {
 
   const PATH_ADMIN = systemConfig.prefixAdmin;
 
   app.use(`${PATH_ADMIN}/dashboard`, authMiddleware.requireAuth, dashboardRouter);
+  app.use(`${PATH_ADMIN}/analytics`, authMiddleware.requireAuth, analyticsRouter);
   app.use(`${PATH_ADMIN}/products`, authMiddleware.requireAuth, productRouter);
   app.use(`${PATH_ADMIN}/categories`, authMiddleware.requireAuth, categoryRouter);
   app.use(`${PATH_ADMIN}/roles`, authMiddleware.requireAuth, roleRouter);

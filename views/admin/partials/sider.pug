@@ -25,12 +25,13 @@ aside.sider
             rect(x="4" y="14" width="6" height="6" rx="1")
             rect(x="14" y="14" width="6" height="6" rx="1")
           span Tổng quan
-      li.nav-item
-        a.nav-link(href=`${prefixAdmin}/analytics`)
-          svg.menu-icon(viewBox="0 0 24 24" aria-hidden="true")
-            path(d="M4 19V5M4 19h16M7 15l4-4 3 2 5-6")
-            path(d="M16 7h3v3")
-          span Báo cáo doanh thu
+      if(role.permissions.includes("orders_view"))
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/analytics`)
+            svg.menu-icon(viewBox="0 0 24 24" aria-hidden="true")
+              path(d="M4 19V5M4 19h16M7 15l4-4 3 2 5-6")
+              path(d="M16 7h3v3")
+            span Báo cáo doanh thu
 
     .menu-group-title QUẢN LÝ
     ul.nav-menu

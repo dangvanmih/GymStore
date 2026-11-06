@@ -55,7 +55,18 @@ module.exports.index = async (req, res) => {
     sortQuery.position = "desc"; // sắp xếp theo vị trí giảm dần
   }
   // end sors
-  const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems).sort(sortQuery)
+  const products = await Product.find(findQuery).limit(objectPagination.limitItems).skip(objectPagination.skipItems).sort(sortQuery);
+
+  // Tính lại giá hiển thị để sản phẩm cũ chưa có priceNew vẫn hiện đúng giá giảm.
+  for (const product of products) {
+    const discount = Number(product.discountPercentage) || 0;
+    product.priceNew = calculatePriceNew(Number(product.price) || 0, discount);
+    if (product.hasVariants && Array.isArray(product.variants)) {
+      for (const variant of product.variants) {
+        variant.priceNew = calculatePriceNew(Number(variant.price) || Number(product.price) || 0, discount);
+      }
+    }
+  }
 
 
   res.render('admin/pages/product/index', {
@@ -170,9 +181,11 @@ module.exports.createPostProduct = async (req, res) => {
   // Xử lý giá chung và phần trăm giảm giá chung (Xử lý bỏ dấu chấm nếu có)
   const rawPrice = req.body.price ? req.body.price.toString().replace(/\./g, "") : "0";
   const price = parseInt(rawPrice) || 0;
+  const costPrice = parseInt((req.body.costPrice || "0").toString().replace(/\./g, "")) || 0;
   const discountPercentage = parseInt(req.body.discountPercentage) || 0;
 
   req.body.price = price;
+  req.body.costPrice = costPrice;
   req.body.discountPercentage = discountPercentage;
 
   // Tính giá mới chung của sản phẩm (có làm tròn đẹp)
@@ -192,6 +205,7 @@ module.exports.createPostProduct = async (req, res) => {
           const rawVariantPrice = item.price ? item.price.toString().replace(/\./g, "") : "0";
           // Nếu không nhập giá riêng hoặc để 0 thì lấy giá chung của sản phẩm
           const variantPrice = parseInt(rawVariantPrice) > 0 ? parseInt(rawVariantPrice) : price;
+          const variantCostPrice = parseInt((item.costPrice || "0").toString().replace(/\./g, "")) || costPrice;
 
           // Tính giá sau giảm cho riêng biến thể này (có làm tròn đẹp)
           const variantPriceNew = calculatePriceNew(variantPrice, discountPercentage);
@@ -200,6 +214,7 @@ module.exports.createPostProduct = async (req, res) => {
             size: item.size.trim().toUpperCase(),
             color: item.color ? item.color.trim() : "",
             price: variantPrice,
+            costPrice: variantCostPrice,
             priceNew: variantPriceNew,
             stock: parseInt(item.stock) || 0
           };
@@ -278,9 +293,11 @@ module.exports.editPatchProduct = async (req, res) => {
   // 1. Xử lý giá chung và phần trăm giảm giá chung (Xử lý bỏ dấu chấm nếu có)
   const rawPrice = req.body.price ? req.body.price.toString().replace(/\./g, "") : "0";
   const price = parseInt(rawPrice) || 0;
+  const costPrice = parseInt((req.body.costPrice || "0").toString().replace(/\./g, "")) || 0;
   const discountPercentage = parseInt(req.body.discountPercentage) || 0;
 
   req.body.price = price;
+  req.body.costPrice = costPrice;
   req.body.discountPercentage = discountPercentage;
   req.body.position = parseInt(req.body.position) || 0;
 
@@ -300,6 +317,7 @@ module.exports.editPatchProduct = async (req, res) => {
           const rawVariantPrice = item.price ? item.price.toString().replace(/\./g, "") : "0";
           // Nếu không nhập giá riêng hoặc để 0 thì lấy giá chung của sản phẩm
           const variantPrice = parseInt(rawVariantPrice) > 0 ? parseInt(rawVariantPrice) : price;
+          const variantCostPrice = parseInt((item.costPrice || "0").toString().replace(/\./g, "")) || costPrice;
           
           // Tính giá sau giảm cho riêng biến thể này (có làm tròn đẹp)
           const variantPriceNew = calculatePriceNew(variantPrice, discountPercentage);
@@ -308,6 +326,7 @@ module.exports.editPatchProduct = async (req, res) => {
             size: item.size.trim().toUpperCase(), // Tự động ép size thành chữ hoa (S, M, L...)
             color: item.color ? item.color.trim() : "",
             price: variantPrice,
+            costPrice: variantCostPrice,
             priceNew: variantPriceNew,
             stock: parseInt(item.stock) || 0
           };

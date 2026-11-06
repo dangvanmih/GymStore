@@ -9,6 +9,7 @@ const orderProductSchema = new mongoose.Schema({
   quantity: { type: Number, required: true, min: 1 },
   originalPrice: { type: Number, default: 0 },
   price: { type: Number, required: true, min: 0 },
+  costPrice: { type: Number, default: 0, min: 0 },
   discountPercentage: { type: Number, default: 0 },
   total: { type: Number, required: true, min: 0 }
 }, { _id: false });

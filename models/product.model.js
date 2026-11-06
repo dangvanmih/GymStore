@@ -20,6 +20,11 @@ const variantSchema = new mongoose.Schema({
     default: 0,
     min: 0
   },
+  costPrice: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
   priceNew: {
     type: Number, // Giá sau khi đã tính giảm giá
     default: 0,
@@ -38,6 +43,8 @@ const productSchema = new mongoose.Schema(
     title: String,
     description: String,
     price: Number,
+    priceNew: { type: Number, default: 0, min: 0 },
+    costPrice: { type: Number, default: 0, min: 0 },
     discountPercentage: Number,
     category_id: {
       type: String,
