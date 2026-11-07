@@ -1,0 +1,45 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(5000)
+  +alert-error(7000)
+  .container-fluid.p-0
+    .d-flex.justify-content-between.align-items-center.flex-wrap.gap-3.mb-4
+      div
+        h1.h3.mb-1 Nhà cung cấp
+        p.text-muted.mb-0 Quản lý thông tin nhà cung cấp sản phẩm.
+      a.btn.btn-custom(href=`${prefixAdmin}/suppliers/create`)
+        i.fas.fa-plus.me-2
+        | Thêm nhà cung cấp
+    .card.border-0.shadow-sm
+      .table-responsive
+        table.table.align-middle.mb-0
+          thead
+            tr
+              th Nhà cung cấp
+              th Người liên hệ
+              th Điện thoại
+              th Email
+              th Trạng thái
+              th.text-end Thao tác
+          tbody
+            if suppliers.length
+              each supplier in suppliers
+                tr
+                  td
+                    strong= supplier.name
+                    if supplier.address
+                      small.d-block.text-muted= supplier.address
+                  td= supplier.contactName || "—"
+                  td= supplier.phone || "—"
+                  td= supplier.email || "—"
+                  td
+                    span.badge(class=(supplier.status === "active" ? "bg-success" : "bg-secondary"))= supplier.status === "active" ? "Hoạt động" : "Ngừng hoạt động"
+                  td.text-end.text-nowrap
+                    a.btn.btn-sm.btn-outline-primary.mr-1(href=`${prefixAdmin}/suppliers/edit/${supplier._id}`) Sửa
+                    form.d-inline(action=`${prefixAdmin}/suppliers/delete/${supplier._id}?_method=DELETE` method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa nhà cung cấp này?')")
+                      button.btn.btn-sm.btn-outline-danger(type="submit") Xóa
+            else
+              tr
+                td.text-center.text-muted.py-4(colspan="6") Chưa có nhà cung cấp nào.

@@ -50,6 +50,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
+    supplier_id: {
+      type: String,
+      default: ""
+    },
     // Cờ đánh dấu sản phẩm có phân loại Size hay không
     hasVariants: {
       type: Boolean,

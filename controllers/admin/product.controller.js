@@ -6,6 +6,7 @@ const systemConfig = require('../../configs/system');
 const createTreeHelper = require("../../helpers/createTree");
 const Category = require('../../models/category.model');
 const Account = require('../../models/account.model');
+const Supplier = require('../../models/supplier.model');
 const {calculatePriceNew}= require('../../helpers/calculatePrice')
 // GET: /admin/product
 module.exports.index = async (req, res) => {
@@ -159,18 +160,34 @@ module.exports.createProduct = async (req, res) => {
     deleted: false,
   };
 
-  const category = await Category.find(findQuery)
+  const [category, suppliers] = await Promise.all([
+    Category.find(findQuery),
+    Supplier.find({ deleted: false, status: "active" }).sort({ name: 1 }).lean()
+  ]);
 
   const newCategory = createTreeHelper.tree(category)
 
   res.render('admin/pages/product/create', {
     pageTitle: 'Trang sản phẩm',
-    category: newCategory
+    category: newCategory,
+    suppliers
   });
 };
 
 // POST: /admin/product/create
 module.exports.createPostProduct = async (req, res) => {
+
+  const supplierId = String(req.body.supplier_id || "").trim();
+  if (supplierId) {
+    const supplier = /^[a-f\d]{24}$/i.test(supplierId)
+      ? await Supplier.exists({ _id: supplierId, deleted: false, status: "active" })
+      : null;
+    if (!supplier) {
+      req.flash("error", "Nhà cung cấp không hợp lệ hoặc đã ngừng hoạt động.");
+      return res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products/create`);
+    }
+  }
+  req.body.supplier_id = supplierId;
 
   // kiểm tra quyền ngăn postman có thể tạo sản phẩm
   // const permissions = res.locals.role.permissions;
@@ -269,14 +286,18 @@ module.exports.editProduct = async (req, res) => {
 
     const product = await Product.findOne(findQuery);
 
-    const category = await Category.find({ deleted: false });
+    const [category, suppliers] = await Promise.all([
+      Category.find({ deleted: false }),
+      Supplier.find({ deleted: false }).sort({ name: 1 }).lean()
+    ]);
 
     const newCategory = createTreeHelper.tree(category);
 
     res.render('admin/pages/product/edit', {
       pageTitle: 'Trang chỉnh sửa',
       product: product,
-      category: newCategory
+      category: newCategory,
+      suppliers
     });
   }
   catch (error) {
@@ -289,6 +310,17 @@ module.exports.editProduct = async (req, res) => {
 // PATCH: /admin/products/edit/:id
 module.exports.editPatchProduct = async (req, res) => {
   const id = req.params.id;
+  const supplierId = String(req.body.supplier_id || "").trim();
+  if (supplierId) {
+    const supplier = /^[a-f\d]{24}$/i.test(supplierId)
+      ? await Supplier.exists({ _id: supplierId, deleted: false })
+      : null;
+    if (!supplier) {
+      req.flash("error", "Nhà cung cấp không hợp lệ.");
+      return res.redirect(req.get("Referer") || `${systemConfig.prefixAdmin}/products/edit/${id}`);
+    }
+  }
+  req.body.supplier_id = supplierId;
 
   // 1. Xử lý giá chung và phần trăm giảm giá chung (Xử lý bỏ dấu chấm nếu có)
   const rawPrice = req.body.price ? req.body.price.toString().replace(/\./g, "") : "0";
@@ -387,6 +419,9 @@ module.exports.detailProduct = async (req, res) => {
     const category = product.category_id
       ? await Category.findOne({ _id: product.category_id }).lean()
       : null;
+    const supplier = product.supplier_id
+      ? await Supplier.findOne({ _id: product.supplier_id }).lean()
+      : null;
     const createByUser = product.createdBy?.account_id
       ? await Account.findById(product.createdBy.account_id).select("fullName").lean()
       : null;
@@ -407,6 +442,7 @@ module.exports.detailProduct = async (req, res) => {
       pageTitle: 'Trang chi tiết sản phẩm',
       product: product,
       category: category,
+      supplier: supplier,
       createByUser: createByUser,
       updatedByUser: updatedByUser,
       latestUpdate: latestUpdate

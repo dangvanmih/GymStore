@@ -64,6 +64,16 @@ block main
                     if(category)
                       +select-tree(category, 1, product.category_id)
 
+                .mb-3
+                  label.form-label.fw-medium.mr-2(for="supplier_id") Nhà cung cấp
+                  br
+                  select#supplier_id.form-select.form-select-dark(name="supplier_id")
+                    option(value="" selected=!product.supplier_id) -- Chọn nhà cung cấp --
+                    if suppliers && suppliers.length
+                      each supplier in suppliers
+                        option(value=supplier._id selected=(String(product.supplier_id || "") === String(supplier._id)))
+                          | #{supplier.name}#{supplier.status === "inactive" ? " (Ngừng hoạt động)" : ""}
+
                 //- Mô tả
                 .mb-3
                   label.form-label.fw-medium(for="desc") Mô tả sản phẩm

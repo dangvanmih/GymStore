@@ -55,6 +55,12 @@ aside.sider
             svg.menu-icon(viewBox="0 0 24 24" aria-hidden="true")
               path(d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z")
             span Danh mục
+      if(role.permissions.includes("products_view"))
+        li.nav-item
+          a.nav-link(href=`${prefixAdmin}/suppliers`)
+            svg.menu-icon(viewBox="0 0 24 24" aria-hidden="true")
+              path(d="M3 7h18M5 7v13h14V7M8 7V4h8v3M9 11h6M9 15h6")
+            span Nhà cung cấp
       if(role.permissions.includes("orders_view"))
         li.nav-item
           a.nav-link(href=`${prefixAdmin}/orders`)

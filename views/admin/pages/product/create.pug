@@ -64,6 +64,15 @@ block main
                     if(category)
                       +select-tree(category)
 
+                .mb-3
+                  label.form-label.fw-medium.mr-2(for="supplier_id") Nhà cung cấp
+                  br
+                  select#supplier_id.form-select.form-select-dark(name="supplier_id")
+                    option(value="") -- Chọn nhà cung cấp --
+                    if suppliers && suppliers.length
+                      each supplier in suppliers
+                        option(value=supplier._id)= supplier.name
+
                 //- Mô tả
                 .mb-3
                   label.form-label.fw-medium(for="desc") Mô tả sản phẩm
