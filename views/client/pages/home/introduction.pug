@@ -1,0 +1,73 @@
+extends ../../layouts/default.pug
+
+block style
+  style.
+    .introduction-page { color: #151515; background: #fff; }
+    .introduction-shell { max-width: 1160px; }
+    .introduction-breadcrumb { font-size: 12px; color: #888; padding: 4px 0 38px; }
+    .introduction-breadcrumb a { color: #111; text-decoration: none; }
+    .introduction-main { padding-left: 12px; padding-right: 28px; }
+    .introduction-title { font-size: 28px; font-weight: 600; margin: 0 0 24px; }
+    .introduction-hero { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; margin-bottom: 10px; }
+    .introduction-content p { font-size: 14px; line-height: 1.55; margin-bottom: 12px; }
+    .introduction-editorial-image { width: 100%; height: auto; display: block; margin: 28px 0; }
+    .introduction-sidebar { padding-left: 22px; }
+    .introduction-sidebar h2 { font-size: 16px; font-weight: 600; margin: 0; padding: 0 0 12px; border-bottom: 1px solid #ddd; }
+    .introduction-side-link { display: block; padding: 13px 0; border-bottom: 1px dashed #e1e1e1; color: #111; text-decoration: none; font-size: 13px; }
+    .introduction-side-link:hover { color: #777; }
+    .introduction-side-category { border-bottom: 1px dashed #e1e1e1; }
+    .introduction-side-category summary { list-style: none; cursor: pointer; padding: 13px 0; color: #111; font-size: 13px; }
+    .introduction-side-category summary::-webkit-details-marker { display: none; }
+    .introduction-side-category summary::after { content: '+'; float: right; color: #777; font-size: 16px; line-height: 12px; }
+    .introduction-side-category[open] summary::after { content: '−'; }
+    .introduction-side-category a { display: block; padding: 5px 0 10px 10px; color: #555; text-decoration: none; font-size: 12px; }
+    @media (max-width: 767.98px) {
+      .introduction-shell { padding-left: 18px; padding-right: 18px; }
+      .introduction-breadcrumb { padding-bottom: 20px; }
+      .introduction-main { padding: 0; }
+      .introduction-title { font-size: 23px; margin-bottom: 16px; }
+      .introduction-sidebar { padding: 28px 0 0; }
+    }
+
+block main
+  main.introduction-page
+    .container.introduction-shell
+      nav.introduction-breadcrumb(aria-label="Breadcrumb")
+        a(href="/") Trang chủ
+        span.mx-2 /
+        span Degrey is us - DGSUS
+      .row
+        .col-md-9
+          article.introduction-main
+            h1.introduction-title Degrey is us - DGSUS
+            img.introduction-hero(
+              src="https://file.hstatic.net/1000281824/file/1dg_0109cbf1f1f648c19a97c5e6629a90dc.png"
+              alt="Degrey is us - DGSUS"
+              loading="eager"
+            )
+            .introduction-content
+              p
+                strong Degrey
+                |  là một thương hiệu thời trang Việt Nam nổi bật với phong cách trẻ trung, sáng tạo và mang đậm cá tính. Thành lập từ năm 2016, Degrey đã nhanh chóng chiếm được tình cảm của giới trẻ nhờ sự kết hợp độc đáo giữa truyền thống và hiện đại trong thiết kế.
+              p Degrey ra đời từ những ngày nhiều trăn trở của tuổi trẻ. Từ một ý tưởng rất ngẫu hứng, Degrey dần phát triển thành một thương hiệu thời trang mang tinh thần tự do, bền bỉ và không ngừng tiến về phía trước.
+              p Chúng tôi theo đuổi sự giao thoa giữa cảm hứng văn hóa Việt Nam và phong cách đương đại, tạo nên những sản phẩm vừa gần gũi, vừa khác biệt. Mỗi thiết kế đều ưu tiên tính ứng dụng, sự thoải mái và phù hợp với nhịp sống năng động hàng ngày.
+              p Từ trang phục đến phụ kiện, Degrey không ngừng đổi mới để mang đến những sản phẩm chất lượng, bền bỉ và giàu cá tính. Bên cạnh đó, chúng tôi cũng hướng đến việc sử dụng vật liệu và quy trình sản xuất có trách nhiệm hơn với môi trường.
+              p Degrey dành cho những người luôn muốn sống theo cách riêng của mình, dám khác biệt, không ngừng phát triển và tự tạo nên hành trình của chính mình.
+              img.introduction-editorial-image(
+                src="https://file.hstatic.net/1000281824/file/2dg_833e91b8aee842e0b7b29f1305818e96.png"
+                alt="Câu chuyện thương hiệu Degrey"
+                loading="lazy"
+              )
+              p Cái tên Degrey được tạo ra rất ngẫu hứng, xuất phát từ “Chuỗi ngày u buồn về sự nghiệp, tương lai trong quá khứ của chính mình” – theo lời chia sẻ của Degrey’s founder. Là một local brand mang khuynh hướng Á Đông, kết hợp giữa hai yếu tố truyền thống và hiện đại, Degrey luôn cố gắng mang đến những thông điệp văn hoá ý nghĩa qua từng đường nét thiết kế.
+              p Tiếp theo đó sự sang trọng, thanh lịch cũng là những yếu tố tạo nên một Degrey đầy sức hút, sự lựa chọn hoàn hảo dành cho các bạn trẻ yêu thích phong cách hoài cổ nhưng vẫn muốn thoát xác trong những bộ cánh mới mẻ hơn.
+              p.fw-semibold.text-center.mt-5.mb-2 Degrey xin gửi lời cảm ơn đến tất cả những khách hàng đã, đang và sẽ ủng hộ Degrey cũng như Xoài thời gian qua và sắp tới. Cảm ơn rất nhiều!
+        .col-md-3
+          aside.introduction-sidebar(aria-label="Danh mục trang")
+            h2 Danh mục page
+            details.introduction-side-category
+              summary SẢN PHẨM DEGREY
+              a(href="/products") Tất cả sản phẩm
+              if layoutCategories
+                each category in layoutCategories
+                  a(href=`/products/${category.slug}`)= category.title
+            a.introduction-side-link(href="/introduction") DEGREY | ABOUT US

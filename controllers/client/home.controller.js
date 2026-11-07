@@ -2,6 +2,10 @@ const Category = require("../../models/category.model");
 const Product = require("../../models/product.model");
 const { calculateProductsPrice } = require("../../helpers/productPrice");
 
+module.exports.introduction = (req, res) => {
+  res.render("client/pages/home/introduction", { pageTitle: "Giới thiệu | Degrey is us - DGSUS" });
+};
+
 // [GET] /
 module.exports.index = async (req, res) => {
   try {
