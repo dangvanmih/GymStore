@@ -2,7 +2,7 @@ const Setting = require("../models/setting.model");
 
 const defaults = {
   clientLogo: "/client/images/logo.webp",
-  copyright: "Copyright © 2026 DEGREY VIETNAM. Powered by Haravan",
+  copyright: "© 2026 DEGREY VIETNAM",
 };
 
 module.exports = async (req, res, next) => {

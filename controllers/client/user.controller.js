@@ -335,6 +335,7 @@ module.exports.resetPasswordPost = async (req, res) => {
 module.exports.logout = (req, res) => {
   res.clearCookie("tokenUser");
   res.clearCookie("cartId");
+  res.clearCookie("favoriteIds", { httpOnly: true, sameSite: "lax" });
   req.flash("success", "Bạn đã đăng xuất.");
   res.redirect("/");
 };
