@@ -1,0 +1,136 @@
+.introduction-page {
+  color: #151515;
+  background: #fff;
+}
+
+.introduction-shell {
+  max-width: 1160px;
+}
+
+.introduction-breadcrumb {
+  font-size: 12px;
+  color: #888;
+  padding: 4px 0 38px;
+}
+
+.introduction-breadcrumb a {
+  color: #111;
+  text-decoration: none;
+}
+
+.introduction-main {
+  padding-left: 12px;
+  padding-right: 28px;
+}
+
+.introduction-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 24px;
+}
+
+.introduction-hero {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.introduction-content p {
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.introduction-editorial-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 28px 0;
+}
+
+.introduction-sidebar {
+  padding-left: 22px;
+}
+
+.introduction-sidebar h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0 0 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.introduction-side-link {
+  display: block;
+  padding: 13px 0;
+  border-bottom: 1px dashed #e1e1e1;
+  color: #111;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.introduction-side-link:hover {
+  color: #777;
+}
+
+.introduction-side-category {
+  border-bottom: 1px dashed #e1e1e1;
+}
+
+.introduction-side-category summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 13px 0;
+  color: #111;
+  font-size: 13px;
+}
+
+.introduction-side-category summary::-webkit-details-marker {
+  display: none;
+}
+
+.introduction-side-category summary::after {
+  content: '+';
+  float: right;
+  color: #777;
+  font-size: 16px;
+  line-height: 12px;
+}
+
+.introduction-side-category[open] summary::after {
+  content: '-';
+}
+
+.introduction-side-category a {
+  display: block;
+  padding: 5px 0 10px 10px;
+  color: #555;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+@media (max-width: 767.98px) {
+  .introduction-shell {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .introduction-breadcrumb {
+    padding-bottom: 20px;
+  }
+
+  .introduction-main {
+    padding: 0;
+  }
+
+  .introduction-title {
+    font-size: 23px;
+    margin-bottom: 16px;
+  }
+
+  .introduction-sidebar {
+    padding: 28px 0 0;
+  }
+}
