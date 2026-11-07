@@ -87,7 +87,8 @@ const getCartLines = async cartId => {
 module.exports.index = async (req, res) => {
   try {
     const guestId = getGuestId(req, res);
-    const { lines, subtotal, discountTotal, invalidCount } = await getCartLines(req.cookies.cartId);
+    const checkoutCartId = req.cookies.buyNowCartId || req.cookies.cartId;
+    const { lines, subtotal, discountTotal, invalidCount } = await getCartLines(checkoutCartId);
     if (!lines.length || invalidCount) {
       req.flash("error", invalidCount ? "Có sản phẩm trong giỏ không còn khả dụng. Vui lòng kiểm tra lại giỏ hàng." : "Giỏ hàng đang trống.");
       return res.redirect("/cart");
@@ -199,7 +200,9 @@ module.exports.placeOrder = async (req, res) => {
       return res.redirect("/checkout");
     }
 
-    const { cart, lines, subtotal, discountTotal, invalidCount } = await getCartLines(req.cookies.cartId);
+    const isBuyNow = Boolean(req.cookies.buyNowCartId);
+    const checkoutCartId = req.cookies.buyNowCartId || req.cookies.cartId;
+    const { cart, lines, subtotal, discountTotal, invalidCount } = await getCartLines(checkoutCartId);
     if (!cart || !lines.length || invalidCount) {
       req.flash("error", "Giỏ hàng đang trống hoặc sản phẩm không còn khả dụng.");
       return res.redirect("/cart");
@@ -253,7 +256,12 @@ module.exports.placeOrder = async (req, res) => {
     await order.save();
     savedOrder = order;
 
-    await Cart.updateOne({ _id: cart._id }, { $set: { products: [] } });
+    if (isBuyNow) {
+      await Cart.deleteOne({ _id: cart._id });
+      res.clearCookie("buyNowCartId");
+    } else {
+      await Cart.updateOne({ _id: cart._id }, { $set: { products: [] } });
+    }
     if (paymentUrl) return res.redirect(paymentUrl);
     return res.redirect(`/orders/${order._id}/complete`);
   } catch (error) {

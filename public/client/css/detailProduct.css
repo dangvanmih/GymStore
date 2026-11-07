@@ -146,6 +146,35 @@
   font-size: 0.875rem !important;
 }
 
+.product-purchase-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.product-purchase-actions .btn-buy-now,
+.product-purchase-actions .btn-add-cart {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+}
+
+.btn-buy-now {
+  background-color: #c62828 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  padding: 0 20px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.5px !important;
+}
+
+.btn-buy-now:hover {
+  background-color: #a61f1f !important;
+  color: #fff !important;
+}
+
 .btn-add-cart {
   background-color: #1a202c !important;
   color: #ffffff !important;

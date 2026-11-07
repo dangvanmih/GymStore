@@ -84,7 +84,7 @@ block main
               input(type="hidden" name="size" id="input-selected-size" value=product.hasVariants && product.variants[0] ? product.variants[0].size : "")
               input(type="hidden" name="color" id="input-selected-color" value=product.hasVariants && product.variants[0] ? product.variants[0].color : "")
 
-              .d-flex.align-items-center.mr-3.mb-4
+              .d-flex.align-items-center.mr-3.mb-3
                 .quantity-input-group.d-flex.align-items-center.mr-3
                   button.btn-qty(type="button" action-qty="minus") -
                   input.form-control.input-qty(
@@ -96,11 +96,8 @@ block main
                   )
                   button.btn-qty(type="button" action-qty="plus") +
 
-                button.btn.btn-chat-now.mr-3(type="button")
-                  svg.mr-1(xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 18 18")
-                    path(d="M8 0C3.58 0 0 3.356 0 7.5 0 9.882 1.156 12 2.96 13.435V16l2.457-1.35c.813.226 1.68.35 2.583.35 4.42 0 8-3.356 8-7.5S12.42 0 8 0zm.82 9.946-2.072-2.21-4.04 2.21 4.444-4.71 2.124 2.21 3.987-2.21-4.443 4.71z")
-                  span Chat ngay
-
+              .product-purchase-actions
+                button.btn.btn-buy-now(type="submit" name="buyNow" value="1") MUA NGAY
                 button.btn.btn-add-cart(type="submit") THÊM VÀO GIỎ
 
             //- Khối chính sách

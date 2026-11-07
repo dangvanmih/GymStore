@@ -115,6 +115,17 @@ module.exports.addPost = async (req, res) => {
     req.flash("error", "Phân loại sản phẩm này hiện đã hết hàng!");
     return res.redirect(req.get("Referer") || "/products");
   }
+
+  if (req.body.buyNow === "1") {
+    const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+    const checkoutCart = await Cart.create({
+      expiresAt,
+      products: [{ product_id: productId, quantity: Math.min(availableStock, quantity), size, color }]
+    });
+    res.cookie("buyNowCartId", String(checkoutCart._id), { httpOnly: true, sameSite: "lax", maxAge: 30 * 60 * 1000 });
+    return res.redirect("/checkout");
+  }
+
   const newQuantity = Math.min(availableStock, quantity + (existProductInCart?.quantity || 0));
 
   //Nếu sản phẩm đã có trong giỏ hàng thì cập nhật  
@@ -152,7 +163,7 @@ module.exports.addPost = async (req, res) => {
   }
 
   req.flash("success", "Thêm sản phẩm vào giỏ hàng thành công!");
-  res.redirect(req.get("Referer"));
+  res.redirect(req.get("Referer") || "/cart");
 }
 
 
