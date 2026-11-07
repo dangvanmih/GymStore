@@ -46,8 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let timeout = null;
 
     const showSearchResults = () => {
-      const inputBottom = searchInput.getBoundingClientRect().bottom;
-      const top = Math.max(0, inputBottom + 8);
+      const inputRect = searchInput.getBoundingClientRect();
+      const top = Math.max(0, inputRect.bottom + 8);
+      const width = Math.min(inputRect.width, window.innerWidth - 24);
+      const left = Math.max(12, Math.min(inputRect.left, window.innerWidth - width - 12));
+      searchResultsContainer.style.left = `${left}px`;
+      searchResultsContainer.style.right = "auto";
+      searchResultsContainer.style.width = `${width}px`;
       searchResultsContainer.style.top = `${top}px`;
       searchResultsContainer.style.maxHeight = `${Math.max(0, window.innerHeight - top - 12)}px`;
       searchResultsContainer.style.display = "block";
@@ -79,15 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 const priceOldStr = item.price && item.price > item.priceNew ? item.price.toLocaleString('vi-VN') + 'đ' : '';
 
                 html += `
-                  <a href="/products/detail/${item.slug}" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-3 border-bottom">
-                    <div class="pr-3">
+                  <a href="/products/detail/${item.slug}" class="list-group-item list-group-item-action search-result-item">
+                    <div class="search-result-info">
                       <h6 class="mb-1 text-dark font-weight-bold" style="font-size: 14px; line-height: 1.4;">${item.title}</h6>
                       <div class="d-flex align-items-center">
                         <span class="text-danger font-weight-bold mr-2" style="font-size: 13px;">${priceNewStr}</span>
                         ${priceOldStr ? `<span class="text-muted text-decoration-line-through small" style="font-size: 12px;">${priceOldStr}</span>` : ''}
                       </div>
                     </div>
-                    <img src="${item.thumbnail}" alt="${item.title}" style="width: 50px; height: 60px; object-fit: cover; border-radius: 4px;" class="flex-shrink-0">
+                    <img src="${item.thumbnail}" alt="${item.title}" class="search-result-image">
                   </a>
                 `;
               });

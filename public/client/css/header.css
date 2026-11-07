@@ -356,8 +356,8 @@
   position: fixed;
   top: auto;
   left: 0;
-  right: 0;
-  width: 100%;
+  right: auto;
+  width: min(600px, calc(100vw - 24px));
   z-index: 10000;
   background: #fff;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
@@ -375,13 +375,34 @@
 }
 
 .search-results-container .list-group-item {
-  padding: 14px 18px !important;
+  padding: 12px 14px !important;
   border-bottom: 1px solid #eee !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
+  gap: 16px;
   background-color: #fff !important;
   transition: background-color 0.2s ease;
+}
+
+.search-results-container .search-result-info {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 0;
+}
+
+.search-results-container .search-result-info h6 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-results-container .search-result-image {
+  flex: 0 0 50px;
+  width: 50px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 .search-results-container .list-group-item:hover {
