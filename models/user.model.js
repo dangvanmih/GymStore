@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema(
     otp: String,
     otpExpires: Date,
     otpResendAt: Date,
+    passwordResetOtp: String,
+    passwordResetOtpExpires: Date,
+    passwordResetOtpResendAt: Date,
+    passwordResetSession: String,
+    passwordResetSessionExpires: Date,
     deletedAt: Date
   },
 
