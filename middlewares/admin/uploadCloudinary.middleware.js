@@ -23,12 +23,12 @@ module.exports.uploadCloudinary = (req, res, next) => {
           streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
       };
-      async function upload(req) {
-        let result = await streamUpload(req);
-        req.body[req.file.fieldname] = result.secure_url;
-        next();
-      }
-      upload(req);
+      streamUpload(req)
+        .then((result) => {
+          req.body[req.file.fieldname] = result.secure_url;
+          next();
+        })
+        .catch(next);
     } else {
       next();
     }

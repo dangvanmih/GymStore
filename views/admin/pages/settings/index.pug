@@ -1,0 +1,30 @@
+extends ../../layouts/default.pug
+include ../../mixins/breadcrumb.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(5000)
+  +alert-error(5000)
+  .container-fluid.px-4.py-3
+    +breadcrumb("Cài đặt website", [
+      { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
+      { title: "Cài đặt website", link: "#" }
+    ])
+    .card.shadow-sm.border-0
+      .card-header.bg-white
+        h5.mb-0 Thông tin hiển thị bên client
+      .card-body
+        form(action=`${prefixAdmin}/settings?_method=PATCH`, method="POST", enctype="multipart/form-data")
+          .form-group
+            label(for="clientLogoFile") Logo client
+            if settings.clientLogo
+              .mb-3
+                img(src=settings.clientLogo, alt="Logo client hiện tại", style="max-width: 240px; max-height: 100px; object-fit: contain;")
+            input#clientLogoFile.form-control-file(type="file", name="clientLogoFile", accept="image/*")
+            small.form-text.text-muted Chọn ảnh mới nếu muốn thay logo hiện tại (tối đa 5 MB).
+          .form-group.mt-4
+            label(for="copyright") Dòng bản quyền (Copyright)
+            input#copyright.form-control(type="text", name="copyright", value=settings.copyright, maxlength="250", required)
+          button.btn.btn-primary(type="submit")
+            i.fas.fa-save.mr-2
+            | Lưu cài đặt

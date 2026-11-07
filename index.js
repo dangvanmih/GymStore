@@ -8,6 +8,7 @@ const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const database = require('./configs/database.js');
+const settingMiddleware = require('./middlewares/setting.middleware');
 
 
 const systemConfig = require('./configs/system.js');
@@ -37,6 +38,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 app.use(express.static(`${__dirname}/public`));
+app.use(settingMiddleware);
 
 //route
 routerClient(app);

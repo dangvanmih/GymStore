@@ -10,6 +10,11 @@ const orderRouter = require('./order.router');
 const inventoryRouter = require('./inventory.router');
 const analyticsRouter = require('./analytics.router');
 const authMiddleware = require('../../middlewares/admin/auth.middleware');
+const settingRouter = require('./setting.router');
+const requireSettingsPermission = (req, res, next) => {
+  if (res.locals.role?.permissions?.includes('settings_view')) return next();
+  return res.status(403).send('Bạn không có quyền truy cập cài đặt.');
+};
 module.exports = (app) => {
 
   const PATH_ADMIN = systemConfig.prefixAdmin;
@@ -23,5 +28,6 @@ module.exports = (app) => {
   app.use(`${PATH_ADMIN}/orders`, authMiddleware.requireAuth, orderRouter);
   app.use(`${PATH_ADMIN}/inventory`, authMiddleware.requireAuth, inventoryRouter);
   app.use(`${PATH_ADMIN}/profile`, authMiddleware.requireAuth, profileRouter);
+  app.use(`${PATH_ADMIN}/settings`, authMiddleware.requireAuth, requireSettingsPermission, settingRouter);
   app.use(`${PATH_ADMIN}/auth`, authRouter);
 };

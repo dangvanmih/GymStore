@@ -5,7 +5,7 @@ header.header.bg-white.sticky-top
       //- Logo
       .col-lg-2.col-6
         a.d-inline-block(href='/')
-          img(src='/client/images/logo.webp', alt='Logo', style='height:60px; object-fit: contain;')
+          img(src=(siteSettings && siteSettings.clientLogo) || '/client/images/logo.webp', alt='Logo', style='height:60px; object-fit: contain;')
 
       //- Liên kết điều hướng
       .col-lg-7.d-none.d-lg-block
@@ -99,7 +99,7 @@ header.header.bg-white.sticky-top
       .row.justify-content-center.align-items-center.mb-2
         .col-md-2.text-center.text-md-left.mb-3.mb-md-0
           a(href='/')
-            img(src='/client/images/logo.webp', alt='Logo', style='height: 60px; object-fit: contain;')
+            img(src=(siteSettings && siteSettings.clientLogo) || '/client/images/logo.webp', alt='Logo', style='height: 60px; object-fit: contain;')
 
         .col-md-8.position-relative
           form(action='/products/search', method='GET')
