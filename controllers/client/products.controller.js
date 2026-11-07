@@ -62,6 +62,10 @@ module.exports.detailProduct = async (req, res) => {
       product.variants = []; // Đảm bảo mảng rỗng để file Pug tự động ẩn phần chọn size
     }
 
+    product.isOutOfStock = product.hasVariants
+      ? !product.variants.some(variant => Number(variant.stock) > 0)
+      : !(Number(product.stock) > 0);
+
     const relatedProducts = await Product.find({
       category_id: product.category_id,
       _id: { $ne: product._id },

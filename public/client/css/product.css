@@ -123,9 +123,31 @@
   transition: transform 0.4s ease;
 }
 
+.product-item.is-out-of-stock .inner-image img {
+  opacity: 0.38;
+  filter: grayscale(45%);
+}
+
+.out-of-stock-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 4px 7px;
+  background: #555;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 .product-item:hover .inner-image img {
   transform: scale(1.06);
   /* Hiệu ứng zoom nhẹ khi rê chuột */
+}
+
+.product-item.is-out-of-stock:hover .inner-image img {
+  opacity: 0.38;
 }
 
 /* --- Nội Dung & Tên Sản Phẩm --- */

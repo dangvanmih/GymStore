@@ -20,7 +20,9 @@ block main
         //- Cột trái: Ảnh
         .col-lg-6
           .product-image-container.position-relative.rounded.overflow-hidden
-            if product.discountPercentage > 0
+            if product.isOutOfStock
+              span.out-of-stock-badge Tạm hết hàng
+            else if product.discountPercentage > 0
               span.badge-discount -#{product.discountPercentage}% OFF
             img.img-fluid.w-100.product-main-img(
               src=product.thumbnail
@@ -84,21 +86,24 @@ block main
               input(type="hidden" name="size" id="input-selected-size" value=product.hasVariants && product.variants[0] ? product.variants[0].size : "")
               input(type="hidden" name="color" id="input-selected-color" value=product.hasVariants && product.variants[0] ? product.variants[0].color : "")
 
-              .d-flex.align-items-center.mr-3.mb-3
-                .quantity-input-group.d-flex.align-items-center.mr-3
-                  button.btn-qty(type="button" action-qty="minus") -
-                  input.form-control.input-qty(
-                    type="number"
-                    name="quantity"
-                    value="1"
-                    min="1"
-                    max=product.stock || 99
-                  )
-                  button.btn-qty(type="button" action-qty="plus") +
+              if product.isOutOfStock
+                button.btn.btn-out-of-stock(type="button" disabled) TẠM HẾT HÀNG
+              else
+                .d-flex.align-items-center.mr-3.mb-3
+                  .quantity-input-group.d-flex.align-items-center.mr-3
+                    button.btn-qty(type="button" action-qty="minus") -
+                    input.form-control.input-qty(
+                      type="number"
+                      name="quantity"
+                      value="1"
+                      min="1"
+                      max=product.stock || 99
+                    )
+                    button.btn-qty(type="button" action-qty="plus") +
 
-              .product-purchase-actions
-                button.btn.btn-buy-now(type="submit" name="buyNow" value="1") MUA NGAY
-                button.btn.btn-add-cart(type="submit") THÊM VÀO GIỎ
+                .product-purchase-actions
+                  button.btn.btn-buy-now(type="submit" name="buyNow" value="1") MUA NGAY
+                  button.btn.btn-add-cart(type="submit") THÊM VÀO GIỎ
 
             //- Khối chính sách
             .row.g-3.mb-4
@@ -107,7 +112,7 @@ block main
                   p.mb-0 Giao hàng toàn quốc
               .col-6
                 .policy-box.text-center.p-3
-                  p.mb-0 Đổi hàng chưa qua sử dụng trong vòng 30 ngày
+                  p.mb-0 Free ship cho tất cả đơn hàng mua tại cửa hàng
 
             //- Accordion Thông tin thêm
             .product-accordion.accordion#productAccordion
