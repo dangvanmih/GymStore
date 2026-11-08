@@ -1,0 +1,55 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+append style
+  link(rel="stylesheet" href="/admin/css/product-detail.css")
+
+block main
+  if(role.permissions.includes("products-category_view"))
+    +alert-success(5000)
+    +alert-error(5000)
+    .container-fluid.py-4
+      .d-flex.justify-content-between.align-items-center.mb-4
+        div
+          h1.page-title.mb-1 Chi tiết danh mục
+          p.text-muted.mb-0 Thông tin danh mục sản phẩm.
+        .d-flex.gap-2
+          a.btn.btn-secondary(href=`${prefixAdmin}/categories`)
+            i.fas.fa-arrow-left.mr-2
+            | Quay lại
+          if(role.permissions.includes("products-category_edit"))
+            a.btn.btn-custom(href=`${prefixAdmin}/categories/edit/${category.id}`)
+              i.fas.fa-edit.mr-2
+              | Chỉnh sửa
+      .row
+        .col-lg-4.mb-3
+          .card.card-dark.border-0.shadow-sm.h-100
+            .card-body.text-center.p-4
+              if(category.thumbnail)
+                img.rounded.mb-3(src=category.thumbnail alt=category.title style="max-width:100%;max-height:260px;object-fit:contain")
+              else
+                .text-muted.py-5
+                  i.fas.fa-image.fa-3x.mb-2
+                  p.mb-0 Chưa có ảnh đại diện
+              h4.text-light #{category.title}
+              if(category.status === 'active')
+                span.badge.badge-success Hoạt động
+              else
+                span.badge.badge-secondary Ngừng hoạt động
+        .col-lg-8.mb-3
+          .card.card-dark.border-0.shadow-sm.h-100
+            .card-header Thông tin danh mục
+            .card-body
+              dl.row.mb-0
+                dt.col-sm-4.text-muted Mã danh mục
+                dd.col-sm-8 #{category.id}
+                dt.col-sm-4.text-muted Danh mục cha
+                dd.col-sm-8 #{parent ? parent.title : 'Danh mục gốc'}
+                dt.col-sm-4.text-muted Đường dẫn
+                dd.col-sm-8 #{category.slug || '—'}
+                dt.col-sm-4.text-muted Vị trí
+                dd.col-sm-8 #{category.position || '—'}
+                dt.col-sm-4.text-muted Số sản phẩm
+                dd.col-sm-8 #{productCount}
+                dt.col-sm-4.text-muted Mô tả
+                dd.col-sm-8 !{category.description || 'Chưa có mô tả'}

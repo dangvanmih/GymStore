@@ -1,0 +1,51 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+append style
+  link(rel="stylesheet" href="/admin/css/account-create.css")
+
+block main
+  if(role.permissions.includes("accounts-view"))
+    +alert-success(5000)
+    +alert-error(5000)
+    .accounts-create-wrapper.container-fluid.py-4
+      .d-flex.justify-content-between.align-items-center.mb-4
+        div
+          h1.page-title.mb-1 Chi tiết tài khoản
+          p.text-muted.mb-0 Thông tin hồ sơ và quyền truy cập.
+        .d-flex.gap-2
+          a.btn.btn-secondary-dark(href=`${prefixAdmin}/accounts`)
+            i.fas.fa-arrow-left.mr-2
+            | Quay lại
+          if(role.permissions.includes("accounts-view_edit"))
+            a.btn.btn-submit-account(href=`${prefixAdmin}/accounts/edit/${account.id}`)
+              i.fas.fa-edit.mr-2
+              | Chỉnh sửa
+      .row.justify-content-center
+        .col-lg-9
+          .card.card-dark.border-0.shadow-sm
+            .card-body.p-4
+              .row.align-items-center
+                .col-md-4.text-center.mb-4.mb-md-0
+                  if(account.avatar)
+                    img.rounded-circle(src=account.avatar alt=account.fullName style="width:150px;height:150px;object-fit:cover")
+                  else
+                    .rounded-circle.bg-secondary.d-inline-flex.align-items-center.justify-content-center.text-white(style="width:150px;height:150px")
+                      i.fas.fa-user.fa-3x
+                  h4.text-light.mt-3 #{account.fullName || 'Chưa cập nhật họ tên'}
+                  if(account.status === 'active')
+                    span.badge.badge-success Hoạt động
+                  else
+                    span.badge.badge-secondary Ngừng hoạt động
+                .col-md-8
+                  dl.row.mb-0
+                    dt.col-sm-4.text-muted Mã tài khoản
+                    dd.col-sm-8 #{account.id}
+                    dt.col-sm-4.text-muted Email
+                    dd.col-sm-8 #{account.email}
+                    dt.col-sm-4.text-muted Điện thoại
+                    dd.col-sm-8 #{account.phone || '—'}
+                    dt.col-sm-4.text-muted Vai trò
+                    dd.col-sm-8 #{accountRole ? accountRole.title : 'Chưa được gán vai trò'}
+                    dt.col-sm-4.text-muted Ngày tạo
+                    dd.col-sm-8 #{account.createdAt ? new Date(account.createdAt).toLocaleString('vi-VN') : '—'}

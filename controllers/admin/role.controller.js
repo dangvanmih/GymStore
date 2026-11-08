@@ -1,4 +1,5 @@
 const Role = require("../../models/role.model")
+const Account = require("../../models/account.model")
 const systemConfig = require("../../configs/system")
 const { isAdministratorRole } = require("../../configs/permissions");
 // GET: /admin/roles
@@ -13,6 +14,21 @@ module.exports.index = async (req, res) => {
   res.render('admin/pages/role/index', {
     pageTitle: 'Trang danh sách vai trò',
     roles: roles
+  });
+};
+
+// GET: /admin/roles/detail/:id
+module.exports.detail = async (req, res) => {
+  const role = await Role.findOne({ _id: req.params.id, deleted: false });
+  if (!role) {
+    req.flash('error', 'Không tìm thấy vai trò!');
+    return res.redirect(`${systemConfig.prefixAdmin}/roles`);
+  }
+  const accountCount = await Account.countDocuments({ role_id: role.id, deleted: false });
+  return res.render('admin/pages/role/detail', {
+    pageTitle: 'Chi tiết vai trò',
+    roleDetail: role,
+    accountCount
   });
 };
 

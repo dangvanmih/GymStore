@@ -7,6 +7,7 @@ const validate = require('../../validates/admin/category.validate');
 const controller = require('../../controllers/admin/category.controller');
 
 router.get('/', controller.index);
+router.get('/detail/:id', controller.detail);
 router.get('/create', controller.create);
 router.patch('/change-multi/', controller.changeMulti);
 router.patch('/change-status/:status/:id', controller.changeStatus);

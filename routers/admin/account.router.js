@@ -6,6 +6,7 @@ const uploadCloudinaryMiddleware = require('../../middlewares/admin/uploadCloudi
 const controller = require('../../controllers/admin/account.controller');
 const validate = require('../../validates/admin/acccount.validate');
 router.get('/', controller.index);
+router.get('/detail/:id', controller.detail);
 router.get('/create', controller.create);
 router.post('/create',
   upload.single('avatar'),

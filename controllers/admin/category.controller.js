@@ -38,6 +38,27 @@ module.exports.index = async (req, res) => {
   });
 };
 
+// GET: /admin/categories/detail/:id
+module.exports.detail = async (req, res) => {
+  const category = await Category.findOne({ _id: req.params.id, deleted: false });
+  if (!category) {
+    req.flash('error', 'Không tìm thấy danh mục!');
+    return res.redirect(`${systemConfig.prefixAdmin}/categories`);
+  }
+
+  const parent = category.parent_id
+    ? await Category.findOne({ _id: category.parent_id, deleted: false })
+    : null;
+  const productCount = await Product.countDocuments({ category_id: category.id, deleted: false });
+
+  return res.render('admin/pages/category/detail', {
+    pageTitle: 'Chi tiết danh mục',
+    category,
+    parent,
+    productCount
+  });
+};
+
 // GET: /admin/categories/create
 module.exports.create = async (req, res) => {
 

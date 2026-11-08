@@ -24,6 +24,21 @@ module.exports.index = async (req, res) => {
   });
 };
 
+// GET: /admin/accounts/detail/:id
+module.exports.detail = async (req, res) => {
+  const account = await Account.findOne({ _id: req.params.id, deleted: false }).select('-password -token');
+  if (!account) {
+    req.flash('error', 'Không tìm thấy tài khoản!');
+    return res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+  }
+  const role = await Role.findOne({ _id: account.role_id, deleted: false });
+  return res.render('admin/pages/account/detail', {
+    pageTitle: 'Chi tiết tài khoản',
+    account,
+    accountRole: role
+  });
+};
+
 // GET: /admin/accounts/create
 module.exports.create = async (req, res) => {
   const find = {
