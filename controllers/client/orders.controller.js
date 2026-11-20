@@ -1,5 +1,4 @@
 const Order = require("../../models/order.model");
-const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model");
 const { restoreOrderStock } = require("../../helpers/cancel-order");
 
@@ -87,41 +86,20 @@ module.exports.reorder = async (req, res) => {
       return res.redirect("/orders");
     }
 
-    const cart = req.user
-      ? await Cart.findOne({ user_id: String(req.user._id) })
-      : await Cart.findById(req.cookies.cartId);
-    if (!cart) {
-      req.flash("error", "Không tìm thấy giỏ hàng. Vui lòng tải lại trang rồi thử lại.");
-      return res.redirect("/orders");
+    const firstItem = (order.products || [])[0];
+    const product = firstItem
+      ? await Product.findOne({ _id: firstItem.product_id, deleted: false, status: "active" }).select("slug").lean()
+      : null;
+    if (!product) {
+      req.flash("error", "Sản phẩm trong đơn hàng hiện không còn được bán.");
+      return res.redirect(`/orders/${order._id}`);
     }
 
-    let added = 0;
-    let unavailable = 0;
-    for (const item of order.products || []) {
-      const product = await Product.findOne({ _id: item.product_id, deleted: false, status: "active" }).lean();
-      if (!product) { unavailable++; continue; }
-      const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
-      const variant = hasVariants
-        ? product.variants.find(v => (v.size || "") === (item.size || "") && (v.color || "") === (item.color || ""))
-        : null;
-      if (hasVariants && !variant) { unavailable++; continue; }
-      const stock = Math.max(0, Number(variant ? variant.stock : product.stock) || 0);
-      if (!stock) { unavailable++; continue; }
-
-      const matchIndex = cart.products.findIndex(line => String(line.product_id) === String(item.product_id) &&
-        (line.size || "") === (item.size || "") && (line.color || "") === (item.color || ""));
-      const currentQuantity = matchIndex >= 0 ? Number(cart.products[matchIndex].quantity) || 0 : 0;
-      const nextQuantity = Math.min(stock, currentQuantity + (Number(item.quantity) || 1));
-      if (matchIndex >= 0) cart.products[matchIndex].quantity = nextQuantity;
-      else cart.products.push({ product_id: String(item.product_id), quantity: nextQuantity, size: item.size || "", color: item.color || "" });
-      added++;
-    }
-
-    await cart.save();
-    req.flash(added ? "success" : "error", added
-      ? `Đã thêm ${added} sản phẩm vào giỏ hàng${unavailable ? `; ${unavailable} sản phẩm hiện không còn hàng` : ""}.`
-      : "Các sản phẩm trong đơn hiện không còn bán hoặc đã hết hàng.");
-    return res.redirect(added ? "/cart" : `/orders/${order._id}`);
+    const params = new URLSearchParams();
+    if (firstItem.color) params.set("color", firstItem.color);
+    if (firstItem.size) params.set("size", firstItem.size);
+    const query = params.toString();
+    return res.redirect(`/products/detail/${encodeURIComponent(product.slug)}${query ? `?${query}` : ""}`);
   } catch (error) {
     console.log("Lỗi mua lại đơn hàng:", error);
     req.flash("error", "Không thể mua lại đơn hàng lúc này.");
@@ -135,10 +113,15 @@ module.exports.index = async (req, res) => {
   const status = validStatuses.includes(req.query.status) ? req.query.status : "";
   const keyword = String(req.query.q || "").trim();
   const accessibleOrders = [];
-  if (req.user) accessibleOrders.push({ customer_id: String(req.user._id) });
-  if (guestId) accessibleOrders.push({ guest_id: guestId }, { customer_id: guestId });
-  if (/^[a-f\d]{24}$/i.test(req.signedCookies.orderAccess || "")) {
-    accessibleOrders.push({ _id: req.signedCookies.orderAccess });
+  if (req.user) {
+    // Khi đã đăng nhập, danh sách chỉ chứa đơn gắn với tài khoản này.
+    accessibleOrders.push({ customer_id: String(req.user._id) });
+  } else {
+    if (guestId) accessibleOrders.push({ guest_id: guestId }, { customer_id: guestId });
+    // Guest có thể thấy đơn vừa tra cứu; cookie này không mở rộng danh sách của tài khoản đăng nhập.
+    if (/^[a-f\d]{24}$/i.test(req.signedCookies.orderAccess || "")) {
+      accessibleOrders.push({ _id: req.signedCookies.orderAccess });
+    }
   }
   const find = { $and: [{ $or: accessibleOrders }] };
   if (status) find.status = status;

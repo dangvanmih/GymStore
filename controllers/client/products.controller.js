@@ -66,6 +66,12 @@ module.exports.detailProduct = async (req, res) => {
       ? !product.variants.some(variant => Number(variant.stock) > 0)
       : !(Number(product.stock) > 0);
 
+    const requestedColor = String(req.query.color || "");
+    const requestedSize = String(req.query.size || "");
+    const selectedVariant = product.variants.find(variant =>
+      (variant.color || "") === requestedColor && (variant.size || "") === requestedSize
+    ) || product.variants[0];
+
     const relatedProducts = await Product.find({
       category_id: product.category_id,
       _id: { $ne: product._id },
@@ -79,6 +85,8 @@ module.exports.detailProduct = async (req, res) => {
     res.render("client/pages/products/detail", {
       pageTitle: product.title,
       product: product,
+      selectedColor: selectedVariant?.color || "",
+      selectedSize: selectedVariant?.size || "",
       relatedProducts: calculateProductsPrice(relatedProducts)
     });
   } catch (error) {
