@@ -74,6 +74,10 @@ block main
                 span Tổng cộng:
                 strong.text-success.ms-1 #{order.total.toLocaleString('vi-VN')}₫
             .d-flex.flex-wrap.gap-2
+              form(action=`/orders/${order._id}/reorder` method="POST")
+                button.btn.btn-outline-primary.btn-sm(type="submit")
+                  i.fa-solid.fa-rotate-right.me-1
+                  | Mua lại
               if order.status === "placed"
                 form(action=`/orders/${order._id}/cancel` method="POST")
                   button.btn.btn-outline-danger.btn-sm(type="button" data-order-cancel) Hủy đơn

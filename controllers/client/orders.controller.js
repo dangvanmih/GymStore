@@ -1,4 +1,6 @@
 const Order = require("../../models/order.model");
+const Cart = require("../../models/cart.model");
+const Product = require("../../models/product.model");
 const { restoreOrderStock } = require("../../helpers/cancel-order");
 
 const cancellationReasons = [
@@ -70,6 +72,62 @@ module.exports.cancel = async (req, res) => {
 const validStatuses = Object.keys(statusLabels);
 
 const escapeRegex = value => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// POST /orders/:orderId/reorder: thêm các mặt hàng còn bán được vào giỏ hiện tại.
+module.exports.reorder = async (req, res) => {
+  try {
+    if (!/^[a-f\d]{24}$/i.test(req.params.orderId || "")) return res.redirect("/orders");
+    const order = await Order.findById(req.params.orderId).lean();
+    const guestId = req.cookies.guestId || req.cookies.customerId || "";
+    const isAccountOwner = req.user && order?.customer_id === String(req.user._id);
+    const isGuestOwner = order && (order.guest_id === guestId || order.customer_id === guestId);
+    const isVerifiedLookup = order && req.signedCookies.orderAccess === String(order._id);
+    if (!order || (!isAccountOwner && !isGuestOwner && !isVerifiedLookup)) {
+      req.flash("error", "Bạn không có quyền mua lại đơn hàng này.");
+      return res.redirect("/orders");
+    }
+
+    const cart = req.user
+      ? await Cart.findOne({ user_id: String(req.user._id) })
+      : await Cart.findById(req.cookies.cartId);
+    if (!cart) {
+      req.flash("error", "Không tìm thấy giỏ hàng. Vui lòng tải lại trang rồi thử lại.");
+      return res.redirect("/orders");
+    }
+
+    let added = 0;
+    let unavailable = 0;
+    for (const item of order.products || []) {
+      const product = await Product.findOne({ _id: item.product_id, deleted: false, status: "active" }).lean();
+      if (!product) { unavailable++; continue; }
+      const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
+      const variant = hasVariants
+        ? product.variants.find(v => (v.size || "") === (item.size || "") && (v.color || "") === (item.color || ""))
+        : null;
+      if (hasVariants && !variant) { unavailable++; continue; }
+      const stock = Math.max(0, Number(variant ? variant.stock : product.stock) || 0);
+      if (!stock) { unavailable++; continue; }
+
+      const matchIndex = cart.products.findIndex(line => String(line.product_id) === String(item.product_id) &&
+        (line.size || "") === (item.size || "") && (line.color || "") === (item.color || ""));
+      const currentQuantity = matchIndex >= 0 ? Number(cart.products[matchIndex].quantity) || 0 : 0;
+      const nextQuantity = Math.min(stock, currentQuantity + (Number(item.quantity) || 1));
+      if (matchIndex >= 0) cart.products[matchIndex].quantity = nextQuantity;
+      else cart.products.push({ product_id: String(item.product_id), quantity: nextQuantity, size: item.size || "", color: item.color || "" });
+      added++;
+    }
+
+    await cart.save();
+    req.flash(added ? "success" : "error", added
+      ? `Đã thêm ${added} sản phẩm vào giỏ hàng${unavailable ? `; ${unavailable} sản phẩm hiện không còn hàng` : ""}.`
+      : "Các sản phẩm trong đơn hiện không còn bán hoặc đã hết hàng.");
+    return res.redirect(added ? "/cart" : `/orders/${order._id}`);
+  } catch (error) {
+    console.log("Lỗi mua lại đơn hàng:", error);
+    req.flash("error", "Không thể mua lại đơn hàng lúc này.");
+    return res.redirect("/orders");
+  }
+};
 
 // GET /orders: hiển thị các đơn khách đã đặt trên trình duyệt hiện tại, có thể tìm/lọc trạng thái.
 module.exports.index = async (req, res) => {
