@@ -121,7 +121,7 @@ module.exports.addAddress = async (req, res) => {
     const values = Object.fromEntries(fields.map(field => [field, String(req.body[field] || "").trim()]));
     if (fields.some(field => !values[field])) {
       req.flash("error", "Vui lòng điền đầy đủ thông tin địa chỉ.");
-      return res.redirect(req.user ? "/user/addresses" : "/checkout");
+      return res.redirect(req.get("Referer"));
     }
 
     const shouldBeDefault = req.body.isDefault === "on";
@@ -143,11 +143,11 @@ module.exports.addAddress = async (req, res) => {
     if (address.isDefault) await Address.updateMany(ownerFilter, { $set: { isDefault: false } });
     await address.save();
     req.flash("success", "Đã lưu địa chỉ nhận hàng.");
-    res.redirect(req.user ? "/user/addresses" : "/checkout");
+    res.redirect(req.get("Referer"));
   } catch (error) {
     console.log("Lỗi lưu địa chỉ nhận hàng:", error);
     req.flash("error", "Không thể lưu địa chỉ. Vui lòng thử lại.");
-    res.redirect(req.user ? "/user/addresses" : "/checkout");
+    res.redirect(req.get("Referer"));
   }
 };
 
@@ -170,7 +170,7 @@ module.exports.deleteAddress = async (req, res) => {
   } catch (error) {
     req.flash("error", "Không thể xóa địa chỉ.");
   }
-  res.redirect(req.user ? "/user/addresses" : "/checkout");
+  res.redirect(req.get("Referer"));
 };
 
 // POST /checkout/place-order: xác thực địa chỉ và giỏ, tính giá phía server,
@@ -277,7 +277,7 @@ module.exports.placeOrder = async (req, res) => {
     }
     console.log("Lỗi tạo đơn hàng:", error);
     req.flash("error", error.message || "Không thể tạo đơn hàng. Vui lòng thử lại.");
-    res.redirect(req.user ? "/user/addresses" : "/checkout");
+    res.redirect(req.get("Referer"));
   }
 };
 
