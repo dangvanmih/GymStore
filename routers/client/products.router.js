@@ -4,6 +4,7 @@ const controller = require('../../controllers/client/products.controller');
 
 router.get('/', controller.index);
 router.get('/api/search', controller.searchSuggestion);
+router.get('/search/more', controller.searchMore);
 router.get('/search', controller.search);
 router.get('/featured', controller.featured);
 router.get('/detail/:slug', controller.detailProduct);

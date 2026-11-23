@@ -10,17 +10,22 @@ block main
       .col-12
         p.text-muted 
           | Tìm thấy 
-          span.font-weight-bold.text-dark #{products.length} 
+          span.font-weight-bold.text-dark #{totalProducts}
           | sản phẩm cho từ khóa "
           span.font-weight-bold.text-dark #{keyword}
           | "
 
     if products.length > 0
-      .row.g-3
+      #search-product-list.row.g-3
         each item in products
           .col-6.col-md-3.mb-4
             //- Gọi lại mixin hiển thị thẻ sản phẩm quen thuộc của bạn
             +product-item(item)
+      if totalProducts > products.length
+        .text-center.mb-5
+          button#load-more-search.btn.btn-dark.px-4(type="button" data-query=keyword data-loaded=products.length data-total=totalProducts) Xem thêm
+          p#load-more-error.text-danger.mt-2.d-none Không thể tải thêm sản phẩm. Vui lòng thử lại.
+      script(src="/client/js/search-more.js")
     else
       .text-center.py-5
         img(src="/client/images/no-result.svg", alt="Không tìm thấy", style="width: 120px; opacity: 0.5; margin-bottom: 20px;")

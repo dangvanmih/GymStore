@@ -338,33 +338,55 @@ module.exports.search = async (req, res) => {
 
     if (keyword.trim()) {
       // Dùng biểu thức chính quy (regex) để tìm kiếm gần đúng, không phân biệt hoa thường
-      const regex = new RegExp(keyword, "i");
+      const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
 
       products = await Product.find({
         title: regex,
         status: "active",
         deleted: false
-      }).lean();
+      }).sort({ position: -1, createdAt: -1 }).lean();
 
-      // (Tùy chọn) Chuẩn hóa lại giá mới và giá cũ cho từng sản phẩm giống trang chủ
-      products.forEach(item => {
-        let discount = Number(item.discountPercentage) || 0;
-        let basePrice = Number(item.price) || 0;
-        if (discount > 0 && basePrice > 0) {
-          item.priceNew = Math.round((basePrice * (100 - discount) / 100) / 10000) * 10000;
-        } else {
-          item.priceNew = basePrice;
-        }
-      });
     }
+
+    const total = products.length;
+    const initialProducts = calculateProductsPrice(products.slice(0, 8));
 
     res.render("client/pages/products/search", {
       pageTitle: `Kết quả tìm kiếm: ${keyword}`,
       keyword: keyword,
-      products: products
+      products: initialProducts,
+      totalProducts: total
     });
   } catch (error) {
     console.log("Lỗi trang tìm kiếm:", error);
     res.redirect("/");
+  }
+};
+
+module.exports.searchMore = async (req, res) => {
+  try {
+    const keyword = String(req.query.q || "").trim();
+    const skip = Math.max(0, Number.parseInt(req.query.skip, 10) || 0);
+    const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    const products = await Product.find({
+      title: regex,
+      status: "active",
+      deleted: false
+    }).sort({ position: -1, createdAt: -1 }).skip(skip).limit(8).lean();
+
+    const total = await Product.countDocuments({
+      title: regex,
+      status: "active",
+      deleted: false
+    });
+    const pricedProducts = calculateProductsPrice(products);
+
+    return res.render("client/partials/product-list.pug", { products: pricedProducts }, (err, html) => {
+      if (err) return res.status(500).json({ error: "Không thể tải thêm sản phẩm." });
+      return res.json({ html, loaded: skip + products.length, total });
+    });
+  } catch (error) {
+    console.log("Lỗi tải thêm kết quả tìm kiếm:", error);
+    return res.status(500).json({ error: "Không thể tải thêm sản phẩm." });
   }
 };
