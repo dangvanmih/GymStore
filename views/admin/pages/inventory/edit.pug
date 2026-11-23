@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/breadcrumb.pug
+
+block main
+  if(role.permissions.includes("inventory_view"))
+    +alert-success(3000)
+    +alert-error(3000)
+    .container-fluid.p-0
+      +breadcrumb("Cập nhật tồn kho", [
+        { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
+        { title: "Tồn kho", link: `${prefixAdmin}/inventory` },
+        { title: "Chi tiết", link: "#" }
+      ])
+      .card.border-0.shadow-sm.rounded-3
+        .card-header.bg-white
+          h5.mb-0 Cập nhật tồn kho: #{product.title}
+        .card-body
+          form(method="POST" action=`${prefixAdmin}/inventory/edit/${product._id}`)
+            if product.hasVariants && product.variants.length
+              .table-responsive
+                table.table.table-bordered.align-middle
+                  thead
+                    tr
+                      th Size
+                      th Màu sắc
+                      th(style="width: 220px") Số lượng tồn kho
+                  tbody
+                    each variant, index in product.variants
+                      tr
+                        td= variant.size
+                        td= variant.color || "—"
+                        td
+                          input.form-control(type="number" name=`variants[${index}][stock]` min="0" step="1" required value=variant.stock)
+            else
+              .form-group
+                label(for="stock") Số lượng tồn kho
+                input#stock.form-control(type="number" name="stock" min="0" step="1" required value=product.stock)
+            .d-flex.justify-content-end.mt-3
+              a.btn.btn-outline-secondary.mr-2(href=`${prefixAdmin}/inventory`) Quay lại
+              button.btn.btn-primary(type="submit") Lưu thay đổi

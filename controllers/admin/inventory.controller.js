@@ -3,6 +3,7 @@ const Order = require('../../models/order.model');
 const filterStatusHelper = require('../../helpers/filterStatus');
 const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
+const systemConfig = require('../../configs/system');
 
 module.exports.index = async (req, res) => {
   const status = ['active', 'inactive'].includes(req.query.status) ? req.query.status : '';
@@ -82,4 +83,44 @@ module.exports.index = async (req, res) => {
     stockFilter: req.query.stock || '',
     pagination
   });
+};
+
+module.exports.edit = async (req, res) => {
+  const product = await Product.findOne({ _id: req.params.id, deleted: false }).lean();
+  if (!product) {
+    req.flash('error', 'Không tìm thấy sản phẩm.');
+    return res.redirect(`${systemConfig.prefixAdmin}/inventory`);
+  }
+  res.render('admin/pages/inventory/edit', { pageTitle: 'Cập nhật tồn kho', product });
+};
+
+module.exports.update = async (req, res) => {
+  const product = await Product.findOne({ _id: req.params.id, deleted: false });
+  if (!product) {
+    req.flash('error', 'Không tìm thấy sản phẩm.');
+    return res.redirect(`${systemConfig.prefixAdmin}/inventory`);
+  }
+  const parseStock = value => {
+    const stock = Number(value);
+    return Number.isInteger(stock) && stock >= 0 ? stock : null;
+  };
+  if (product.hasVariants) {
+    const stocks = product.variants.map((_, index) => parseStock(req.body[`variants[${index}][stock]`]));
+    if (stocks.some(stock => stock === null)) {
+      req.flash('error', 'Số lượng tồn kho phải là số nguyên không âm.');
+      return res.redirect(`${systemConfig.prefixAdmin}/inventory/edit/${product._id}`);
+    }
+    product.variants.forEach((variant, index) => { variant.stock = stocks[index]; });
+  } else {
+    const stock = parseStock(req.body.stock);
+    if (stock === null) {
+      req.flash('error', 'Số lượng tồn kho phải là số nguyên không âm.');
+      return res.redirect(`${systemConfig.prefixAdmin}/inventory/edit/${product._id}`);
+    }
+    product.stock = stock;
+  }
+  product.updatedBy.push({ account_id: res.locals.user.id, updatedAt: new Date() });
+  await product.save();
+  req.flash('success', 'Đã cập nhật tồn kho.');
+  res.redirect(`${systemConfig.prefixAdmin}/inventory`);
 };
