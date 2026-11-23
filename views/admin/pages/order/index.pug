@@ -10,6 +10,22 @@ block main
       { title: "Dashboard", link: `${prefixAdmin}/dashboard` },
       { title: "Đơn hàng" }
     ])
+    .card.border-0.shadow-sm.rounded-3.mb-3
+      .card-body
+        form.row.align-items-end(method="GET" action=`${prefixAdmin}/orders`)
+          .form-group.col-md-4.mb-2
+            label(for="status") Trạng thái đơn hàng
+            select#status.form-control(name="status")
+              option(value="") Tất cả trạng thái
+              each label, value in statusLabels
+                option(value=value selected=(selectedStatus === value))= label
+          .form-group.col-md-5.mb-2
+            label(for="keyword") Mã đơn hàng hoặc số điện thoại
+            input#keyword.form-control(type="search" name="keyword" value=keyword placeholder="Nhập mã đơn hoặc SĐT")
+          .form-group.col-md-3.mb-2
+            button.btn.btn-primary(type="submit")
+              i.fas.fa-search.mr-1
+              | Tìm kiếm
     .card.border-0.shadow-sm.rounded-3
       .card-body.p-0
         .table-responsive

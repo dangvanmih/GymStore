@@ -54,11 +54,23 @@ const nextAction = {
 };
 
 module.exports.index = async (req, res) => {
-  const orders = await Order.find().sort({ createdAt: -1 }).lean();
+  const validStatuses = Object.keys(statusLabels);
+  const status = validStatuses.includes(req.query.status) ? req.query.status : '';
+  const keyword = String(req.query.keyword || '').trim();
+  const query = {};
+  if (status) query.status = status;
+  if (keyword) {
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const searchRegex = new RegExp(escapedKeyword, 'i');
+    query.$or = [{ orderNumber: searchRegex }, { 'customer.phone': searchRegex }];
+  }
+  const orders = await Order.find(query).sort({ createdAt: -1 }).lean();
   res.render("admin/pages/order/index", {
     pageTitle: "Quản lý đơn hàng",
     orders,
-    statusLabels
+    statusLabels,
+    selectedStatus: status,
+    keyword
   });
 };
 
