@@ -65,7 +65,7 @@ block main
       if order.status === "placed"
         form.mt-3(action=`/orders/${order._id}/cancel` method="POST")
           button.btn.btn-outline-danger(type="button" data-order-cancel) Hủy đơn hàng
-      if order.status === "shipping"
+      if order.status === "shipping" && (order.paymentMethod !== "vnpay" || order.paymentStatus === "paid")
         form.mt-3(action=`/orders/${order._id}/confirm-received` method="POST")
           button.btn.btn-success(type="submit") Xác nhận đã nhận đơn
       .mt-3

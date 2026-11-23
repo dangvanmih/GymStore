@@ -30,6 +30,43 @@ const getUnitPrice = (product, variant) => {
     : basePrice;
 };
 
+const decrementOrderStock = async items => {
+  const changed = [];
+  try {
+    for (const item of items) {
+      const isVariant = Boolean(item.size || item.color);
+      const filter = isVariant
+        ? { _id: item.product_id, variants: { $elemMatch: { size: item.size || "", color: item.color || "", stock: { $gte: item.quantity } } } }
+        : { _id: item.product_id, stock: { $gte: item.quantity } };
+      const update = isVariant
+        ? { $inc: { "variants.$.stock": -item.quantity } }
+        : { $inc: { stock: -item.quantity } };
+      const updated = await Product.findOneAndUpdate(filter, update, { new: true }).select("_id");
+      if (!updated) throw new Error(`Sản phẩm ${item.title} vừa hết hàng hoặc không đủ tồn kho.`);
+      changed.push(item);
+    }
+  } catch (error) {
+    for (const item of changed.reverse()) {
+      const isVariant = Boolean(item.size || item.color);
+      await Product.updateOne(
+        isVariant ? { _id: item.product_id, variants: { $elemMatch: { size: item.size || "", color: item.color || "" } } } : { _id: item.product_id },
+        isVariant ? { $inc: { "variants.$.stock": item.quantity } } : { $inc: { stock: item.quantity } }
+      ).catch(() => {});
+    }
+    throw error;
+  }
+};
+
+const incrementOrderStock = async items => {
+  for (const item of items) {
+    const isVariant = Boolean(item.size || item.color);
+    await Product.updateOne(
+      isVariant ? { _id: item.product_id, variants: { $elemMatch: { size: item.size || "", color: item.color || "" } } } : { _id: item.product_id },
+      isVariant ? { $inc: { "variants.$.stock": item.quantity } } : { $inc: { stock: item.quantity } }
+    );
+  }
+};
+
 const getCartLines = async cartId => {
   if (!/^[a-f\d]{24}$/i.test(cartId || "")) return { cart: null, lines: [], subtotal: 0 };
   const cart = await Cart.findById(cartId).lean();
@@ -208,7 +245,7 @@ module.exports.placeOrder = async (req, res) => {
       return res.redirect("/cart");
     }
 
-    for (const line of lines) {
+    if (paymentMethod === "cod") for (const line of lines) {
       if (line.stock < line.quantity) throw new Error(`Sản phẩm ${line.title} không đủ tồn kho.`);
       const filter = line.hasVariant
         ? {
@@ -247,7 +284,7 @@ module.exports.placeOrder = async (req, res) => {
       discountTotal,
       shippingFee: 0,
       total: subtotal - discountTotal,
-      status: "placed",
+      status: paymentMethod === "vnpay" ? "payment_pending" : "placed",
       paymentMethod,
       paymentStatus: paymentMethod === "vnpay" ? "pending" : "unpaid",
       statusHistory: [{ status: "placed", note: "Khách hàng gửi yêu cầu đặt hàng." }]
@@ -256,11 +293,13 @@ module.exports.placeOrder = async (req, res) => {
     await order.save();
     savedOrder = order;
 
-    if (isBuyNow) {
-      await Cart.deleteOne({ _id: cart._id });
-      res.clearCookie("buyNowCartId");
-    } else {
-      await Cart.updateOne({ _id: cart._id }, { $set: { products: [] } });
+    if (paymentMethod === "cod") {
+      if (isBuyNow) {
+        await Cart.deleteOne({ _id: cart._id });
+        res.clearCookie("buyNowCartId");
+      } else {
+        await Cart.updateOne({ _id: cart._id }, { $set: { products: [] } });
+      }
     }
     if (paymentUrl) return res.redirect(paymentUrl);
     return res.redirect(`/orders/${order._id}/complete`);
@@ -306,16 +345,51 @@ module.exports.vnpayReturn = async (req, res) => {
         : { success: false, message: `Thanh toán chưa thành công (mã ${req.query.vnp_ResponseCode || "không rõ"}). Bạn có thể thử thanh toán lại từ trang chi tiết đơn hàng.` };
 
     if (validPaymentResponse && order.paymentStatus === "pending") {
-      order.paymentStatus = callbackSuccess ? "paid" : "failed";
-      order.paymentResponseCode = String(req.query.vnp_ResponseCode || "");
-      order.paymentTransactionNo = String(req.query.vnp_TransactionNo || "");
-      if (callbackSuccess) order.paidAt = new Date();
-      await order.save();
+      if (!callbackSuccess) {
+        order.paymentStatus = "failed";
+        order.paymentResponseCode = String(req.query.vnp_ResponseCode || "");
+        order.paymentTransactionNo = String(req.query.vnp_TransactionNo || "");
+        await order.save();
+      } else if (order.status === "payment_pending") {
+        const claimed = await Order.findOneAndUpdate(
+          { _id: order._id, status: "payment_pending", paymentStatus: "pending" },
+          { $set: { status: "payment_confirming", paymentStatus: "paid", paymentResponseCode: "00", paymentTransactionNo: String(req.query.vnp_TransactionNo || ""), paidAt: new Date() } },
+          { new: true }
+        );
+        if (claimed) {
+          let stockDecremented = false;
+          try {
+            await decrementOrderStock(claimed.products);
+            stockDecremented = true;
+            claimed.status = "placed";
+            claimed.statusHistory.push({ status: "placed", note: "Khách hàng thanh toán VNPay thành công và gửi yêu cầu đặt hàng." });
+            await claimed.save();
+          } catch (error) {
+            if (stockDecremented) await incrementOrderStock(claimed.products).catch(() => {});
+            claimed.status = "placed";
+            claimed.paymentStatus = "paid";
+            claimed.statusHistory.push({ status: "placed", note: "Thanh toán VNPay thành công; cần kiểm tra tồn kho trước khi xử lý." });
+            await claimed.save();
+            console.log("VNPay đã thanh toán nhưng cần kiểm tra tồn kho:", error);
+          }
+          try {
+            const cart = await Cart.findById(claimed.cart_id).select("_id").lean();
+            if (cart && req.cookies.buyNowCartId === String(cart._id)) {
+              await Cart.deleteOne({ _id: cart._id });
+              res.clearCookie("buyNowCartId");
+            } else if (cart) {
+              await Cart.updateOne({ _id: cart._id }, { $set: { products: [] } });
+            }
+          } catch (error) {
+            console.log("Lá»—i xÃ³a giá» sau thanh toÃ¡n VNPay:", error);
+          }
+        }
+      }
     }
 
     return res.render("client/pages/checkout/complete", {
       pageTitle: "Kết quả thanh toán",
-      order: order.toObject(),
+      order: await Order.findById(order._id).lean(),
       paymentNotice
     });
   } catch (error) {
@@ -341,7 +415,7 @@ module.exports.retryVnpay = async (req, res) => {
         ...(req.user ? [{ customer_id: String(req.user._id) }] : [])
       ]
     });
-    if (!order || order.status !== "placed" || order.paymentMethod !== "vnpay" || order.paymentStatus !== "failed") {
+    if (!order || order.status !== "payment_pending" || order.paymentMethod !== "vnpay" || order.paymentStatus !== "failed") {
       req.flash("error", "Đơn hàng này chưa thể thanh toán lại.");
       return res.redirect("/orders");
     }

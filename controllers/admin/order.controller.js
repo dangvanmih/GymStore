@@ -57,8 +57,7 @@ module.exports.index = async (req, res) => {
   const validStatuses = Object.keys(statusLabels);
   const status = validStatuses.includes(req.query.status) ? req.query.status : '';
   const keyword = String(req.query.keyword || '').trim();
-  const query = {};
-  if (status) query.status = status;
+  const query = { status: status || { $nin: ["payment_pending", "payment_confirming"] } };
   if (keyword) {
     const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const searchRegex = new RegExp(escapedKeyword, 'i');
@@ -80,7 +79,7 @@ module.exports.detail = async (req, res) => {
   }
 
   const order = await Order.findById(req.params.id).lean();
-  if (!order) {
+  if (!order || ["payment_pending", "payment_confirming"].includes(order.status)) {
     req.flash("error", "Không tìm thấy đơn hàng.");
     return res.redirect(`${systemConfig.prefixAdmin}/orders`);
   }

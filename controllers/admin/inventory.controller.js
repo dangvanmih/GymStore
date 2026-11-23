@@ -39,7 +39,7 @@ module.exports.index = async (req, res) => {
   const soldRows = productIds.length
     ? await Order.aggregate([
       { $unwind: '$products' },
-      { $match: { 'products.product_id': { $in: productIds } } },
+      { $match: { 'products.product_id': { $in: productIds }, status: { $nin: ['payment_pending', 'payment_confirming'] } } },
       {
         $group: {
           _id: {

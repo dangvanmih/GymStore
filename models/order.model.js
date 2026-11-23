@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema({
   total: { type: Number, required: true, min: 0 },
   status: {
     type: String,
-    enum: ["placed", "preparing", "shipping", "delivered", "cancelled"],
+    enum: ["payment_pending", "payment_confirming", "placed", "preparing", "shipping", "delivered", "cancelled"],
     default: "placed",
     index: true
   },
@@ -51,7 +51,7 @@ const orderSchema = new mongoose.Schema({
   paymentResponseCode: { type: String, default: "" },
   paidAt: { type: Date, default: null },
   statusHistory: [{
-    status: { type: String, enum: ["placed", "preparing", "shipping", "delivered", "cancelled"] },
+    status: { type: String, enum: ["payment_pending", "payment_confirming", "placed", "preparing", "shipping", "delivered", "cancelled"] },
     changedBy: { type: String, default: "" },
     note: { type: String, default: "" },
     changedAt: { type: Date, default: Date.now }

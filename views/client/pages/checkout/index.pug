@@ -103,4 +103,5 @@ block main
                 label.form-check-label(for="payment-vnpay") Thanh toán qua VNPay
                 if !vnpayEnabled
                   .small.text-muted Cửa hàng chưa cấu hình VNPay sandbox.
-              button.btn.btn-dark.btn-lg.w-100(type="submit" form="place-order-form" disabled=(addresses.length === 0)) Gửi đơn chờ xác nhận
+              button#place-order-submit.btn.btn-dark.btn-lg.w-100(type="submit" form="place-order-form" disabled=(addresses.length === 0)) Gửi yêu cầu xác nhận
+  script(src="/client/js/checkout.js")

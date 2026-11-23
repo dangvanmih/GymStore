@@ -123,7 +123,7 @@ module.exports.index = async (req, res) => {
       accessibleOrders.push({ _id: req.signedCookies.orderAccess });
     }
   }
-  const find = { $and: [{ $or: accessibleOrders }] };
+  const find = { status: { $nin: ["payment_pending", "payment_confirming"] }, $and: [{ $or: accessibleOrders }] };
   if (status) find.status = status;
   if (keyword) {
     const regex = new RegExp(escapeRegex(keyword), "i");
@@ -152,7 +152,7 @@ module.exports.detail = async (req, res) => {
     const isAccountOwner = req.user && order?.customer_id === String(req.user._id);
     const isGuestOwner = order && (order.guest_id === guestId || order.customer_id === guestId);
     const isVerifiedLookup = req.signedCookies.orderAccess === String(order?._id || "");
-    if (!order || (!isAccountOwner && !isGuestOwner && !isVerifiedLookup)) return res.redirect("/orders");
+    if (!order || ["payment_pending", "payment_confirming"].includes(order.status) || (!isAccountOwner && !isGuestOwner && !isVerifiedLookup)) return res.redirect("/orders");
     res.render("client/pages/orders/detail", {
       pageTitle: `Đơn hàng ${order.orderNumber}`,
       order,
@@ -176,7 +176,7 @@ module.exports.lookup = async (req, res) => {
   try {
     const order = await Order.findOne({ orderNumber }).lean();
     const savedPhone = String(order?.customer?.phone || "").replace(/\D/g, "");
-    if (!order || savedPhone !== phone) {
+    if (!order || ["payment_pending", "payment_confirming"].includes(order.status) || savedPhone !== phone) {
       req.flash("error", "Không tìm thấy đơn hàng phù hợp với mã đơn và số điện thoại.");
       return res.redirect("/orders");
     }
@@ -211,6 +211,10 @@ module.exports.confirmReceived = async (req, res) => {
     }
     if (order.status !== "shipping") {
       req.flash("error", "Chỉ có thể xác nhận đã nhận khi đơn hàng đang được giao.");
+      return res.redirect(`/orders/${order._id}`);
+    }
+    if (order.paymentMethod === "vnpay" && order.paymentStatus !== "paid") {
+      req.flash("error", "Chỉ có thể xác nhận đơn VNPay sau khi thanh toán thành công.");
       return res.redirect(`/orders/${order._id}`);
     }
 
